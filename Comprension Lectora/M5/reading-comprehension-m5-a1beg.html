@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension | Module 5 | A1-Beginner | JUCUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* A1 Beginner - Rosa/Melón Theme */
+            --primary: #FF8A65;
+            --primary-light: #FBE9E7;
+            --primary-dark: #E64A19;
+            --primary-gradient: linear-gradient(135deg, #FFAB91 0%, #FF8A65 100%);
+            --accent: #FF5722;
+            --success: #4CAF50;
+            --success-light: #E8F5E9;
+            --error: #E53935;
+            --error-light: #FFEBEE;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #FFF3E0;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(255, 138, 101, 0.3);
+            --shadow-hover: 0 8px 30px rgba(255, 138, 101, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .mode-title {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .mode-btn .mode-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .mode-btn .mode-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .mode-btn .mode-desc {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        /* Badges Section */
+        .badges-section {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .badges-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .badges-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .badges-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 3px;
+        }
+
+        /* Badges Container */
+        .badges-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .badge.unlocked {
+            opacity: 1;
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            animation: badgeUnlock 0.6s ease;
+        }
+
+        @keyframes badgeUnlock {
+            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .badge-tooltip {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .badge:hover .badge-tooltip {
+            opacity: 1;
+        }
+
+        /* Story Toggle */
+        .story-toggle {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .story-toggle-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-light);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .story-toggle-btn:hover {
+            background: #FFCCBC;
+        }
+
+        .story-toggle-btn .arrow {
+            transition: transform 0.3s;
+        }
+
+        .story-toggle-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .story-content.open {
+            max-height: 2500px;
+        }
+
+        .story-inner {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .story-paragraph {
+            margin-bottom: 15px;
+        }
+
+        .story-en {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .story-es {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .story-en strong {
+            color: var(--primary-dark);
+            background: var(--primary-light);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Krashen Tips */
+        .krashen-tip {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .krashen-tip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .krashen-tip-header .icon {
+            font-size: 1.2rem;
+        }
+
+        .krashen-tip-header .title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1565C0;
+        }
+
+        .krashen-tip p {
+            font-size: 0.8rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .krashen-tip .highlight {
+            color: #1565C0;
+            font-weight: 600;
+        }
+
+        /* Questions Section */
+        .questions-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .question-card:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .question-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .question-number.answered-correct {
+            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+        }
+
+        .question-number.answered-wrong {
+            background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .complexity-low {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .complexity-medium {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .complexity-high {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .option-btn {
+            padding: 12px 15px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn .option-letter {
+            width: 28px;
+            height: 28px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.selected-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-btn.selected-wrong {
+            border-color: var(--error);
+            background: var(--error-light);
+        }
+
+        .option-btn.selected-wrong .option-letter {
+            background: var(--error);
+            color: white;
+        }
+
+        .option-btn.show-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.show-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            border-left: 4px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: #2E7D32;
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: #C62828;
+        }
+
+        .feedback-text {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .results-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .results-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .results-message {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .results-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .result-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--primary-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .krashen-final {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #FFCCBC 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .krashen-final h4 {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krashen-final p {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Retry Button */
+        .retry-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Celebration Overlay */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-overlay.show {
+            display: flex;
+        }
+
+        .celebration-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            animation: celebrationPop 0.5s ease;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 5rem;
+            animation: celebrationSpin 1s ease;
+        }
+
+        @keyframes celebrationSpin {
+            0% { transform: rotate(-10deg) scale(0); }
+            50% { transform: rotate(10deg) scale(1.2); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .celebration-title {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin: 15px 0 10px;
+        }
+
+        .celebration-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .celebration-close {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Theme Toggle Info */
+        .moral-theme {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #FFCCBC 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .moral-theme .icon {
+            font-size: 2rem;
+        }
+
+        .moral-theme .text h4 {
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            margin-bottom: 3px;
+        }
+
+        .moral-theme .text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .badge {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>📚 Reading Comprehension</h1>
+                <div class="subtitle">Module 5 • Finding Home</div>
+                <div class="level-badge">🧡 A1-Beginner | Básico</div>
+            </div>
+        </div>
+
+        <!-- Moral Theme -->
+        <div class="moral-theme">
+            <div class="icon">🎯</div>
+            <div class="text">
+                <h4>Tema Moral: El Propósito (Purpose)</h4>
+                <p>"Living with purpose means thinking ahead."</p>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <div class="mode-title">Selecciona el modo de práctica</div>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="setMode('es-es')" id="mode-es-es">
+                    <span class="mode-icon">🇪🇸➡️🇪🇸</span>
+                    <span class="mode-label">Español → Español</span>
+                    <span class="mode-desc">Comprensión total</span>
+                </button>
+                <button class="mode-btn" onclick="setMode('es-en')" id="mode-es-en">
+                    <span class="mode-icon">🇪🇸➡️🇬🇧</span>
+                    <span class="mode-label">Español → English</span>
+                    <span class="mode-desc">Desafío bilingüe</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Krashen Tip -->
+        <div class="krashen-tip">
+            <div class="krashen-tip-header">
+                <span class="icon">🧠</span>
+                <span class="title">Hipótesis del Input (Krashen i+1)</span>
+            </div>
+            <p>
+                Esta historia está un nivel por encima de tu conocimiento actual — eso es el <span class="highlight">"i+1"</span> de Krashen. 
+                No necesitas entender cada palabra; tu cerebro <span class="highlight">adquiere el idioma naturalmente</span> cuando el contexto te ayuda a comprender. 
+                ¡Relájate y disfruta la historia de Sofia!
+            </p>
+        </div>
+
+        <!-- Badges Section -->
+        <div class="badges-section">
+            <div class="badges-header">
+                <div class="badges-title">🏆 Logros por Desbloquear</div>
+                <div class="badges-subtitle">Responde correctamente para ganar insignias</div>
+            </div>
+            
+            <div class="badges-container">
+                <div class="badge" id="badge-1" data-badge="first">
+                    🌱
+                    <span class="badge-tooltip">Primera Respuesta</span>
+                </div>
+                <div class="badge" id="badge-3" data-badge="streak">
+                    🔥
+                    <span class="badge-tooltip">3 Correctas Seguidas</span>
+                </div>
+                <div class="badge" id="badge-literal" data-badge="literal">
+                    📖
+                    <span class="badge-tooltip">Comprensión Literal</span>
+                </div>
+                <div class="badge" id="badge-inferential" data-badge="inferential">
+                    🔍
+                    <span class="badge-tooltip">Comprensión Inferencial</span>
+                </div>
+                <div class="badge" id="badge-critical" data-badge="critical">
+                    🎓
+                    <span class="badge-tooltip">Pensamiento Crítico</span>
+                </div>
+                <div class="badge" id="badge-perfect" data-badge="perfect">
+                    ⭐
+                    <span class="badge-tooltip">Perfección</span>
+                </div>
+                <div class="badge" id="badge-purpose" data-badge="purpose">
+                    🎯
+                    <span class="badge-tooltip">Propósito</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Toggle -->
+        <div class="story-toggle">
+            <button class="story-toggle-btn" onclick="toggleStory()" id="storyToggleBtn">
+                <span>📖 Ver la Historia "Finding Home"</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="story-content" id="storyContent">
+                <div class="story-inner">
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia wants to find <strong>the</strong> best <strong>place</strong> to live.</p>
+                        <p class="story-es">Sofia quiere encontrar el mejor lugar para vivir.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She <strong>begins</strong> her search with a clear plan.</p>
+                        <p class="story-es">Comienza su búsqueda con un plan claro.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">First, she <strong>makes</strong> a list of what she needs.</p>
+                        <p class="story-es">Primero, hace una lista de lo que necesita.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I <strong>require</strong> a <strong>large</strong> bedroom and good internet," she thinks.</p>
+                        <p class="story-es">"Requiero un dormitorio grande e internet bueno," piensa.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia <strong>goes</strong> to see three apartments <strong>around</strong> <strong>the</strong> city.</p>
+                        <p class="story-es">Sofia va a ver tres apartamentos alrededor de la ciudad.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>The</strong> first apartment is <strong>between</strong> two busy streets.</p>
+                        <p class="story-es">El primer apartamento está entre dos calles concurridas.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">It's loud, and Sofia <strong>notices</strong> <strong>the</strong> noise immediately.</p>
+                        <p class="story-es">Es ruidoso, y Sofia nota el ruido inmediatamente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"This won't work," she says. "I need a quieter <strong>place</strong>."</p>
+                        <p class="story-es">"Esto no funcionará," dice. "Necesito un lugar más tranquilo."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She <strong>comes</strong> to <strong>the</strong> second apartment with her mom.</p>
+                        <p class="story-es">Viene al segundo apartamento con su mamá.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>The</strong> landlord <strong>lets</strong> them <strong>examine</strong> every room.</p>
+                        <p class="story-es">El propietario les permite examinar cada habitación.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"<strong>The</strong> rent <strong>might</strong> <strong>increase</strong> next year," he explains.</p>
+                        <p class="story-es">"El alquiler podría aumentar el próximo año," explica.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia <strong>understands</strong> but <strong>still</strong> wants to think about it.</p>
+                        <p class="story-es">Sofia entiende pero todavía quiere pensarlo.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"Can I <strong>reach</strong> you tomorrow?" she asks.</p>
+                        <p class="story-es">"¿Puedo contactarlo mañana?" pregunta.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>Now</strong> she visits <strong>the</strong> third apartment with Diego, <strong>the</strong> landlord.</p>
+                        <p class="story-es">Ahora visita el tercer apartamento con Diego, el propietario.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">He shows her <strong>the</strong> living room and kitchen.</p>
+                        <p class="story-es">Él le muestra la sala y la cocina.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>The</strong> bedroom is <strong>large</strong> and has big windows.</p>
+                        <p class="story-es">El dormitorio es grande y tiene ventanas grandes.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I <strong>like</strong> this one <strong>the</strong> most," Sofia thinks.</p>
+                        <p class="story-es">"Me gusta este el más," piensa Sofia.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She <strong>determines</strong> this is <strong>the</strong> right <strong>place</strong> for her.</p>
+                        <p class="story-es">Determina que este es el lugar correcto para ella.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Diego explains <strong>the</strong> rules. "We <strong>require</strong> quiet hours <strong>between</strong> 10 PM and 8 AM."</p>
+                        <p class="story-es">Diego explica las reglas. "Requerimos horas de silencio entre las 10 PM y las 8 AM."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"That's perfect," Sofia responds. "I <strong>do</strong> not <strong>make</strong> much noise."</p>
+                        <p class="story-es">"Eso es perfecto," responde Sofia. "No hago mucho ruido."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"You can move in <strong>now</strong>," Diego says. "Would you <strong>like</strong> to sign <strong>the</strong> contract?"</p>
+                        <p class="story-es">"Puede mudarse ahora," dice Diego. "¿Le gustaría firmar el contrato?"</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia calls her mom to <strong>help</strong> her decide.</p>
+                        <p class="story-es">Sofia llama a su mamá para ayudarla a decidir.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I <strong>expect</strong> this will be <strong>the</strong> best decision," her mom says.</p>
+                        <p class="story-es">"Espero que esta sea la mejor decisión," dice su mamá.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia signs <strong>the</strong> papers with confidence.</p>
+                        <p class="story-es">Sofia firma los papeles con confianza.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Later, Sofia meets Carlos, who <strong>also</strong> just moved into <strong>the</strong> building.</p>
+                        <p class="story-es">Más tarde, Sofia conoce a Carlos, quien también acaba de mudarse al edificio.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I'm your neighbor," he says. "How did you <strong>reach</strong> your decision?"</p>
+                        <p class="story-es">"Soy tu vecino," dice. "¿Cómo llegaste a tu decisión?"</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia smiles. "I knew what I wanted and didn't <strong>fail</strong> to ask questions."</p>
+                        <p class="story-es">Sofia sonríe. "Sabía lo que quería y no dejé de hacer preguntas."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"That's smart," Carlos says. "<strong>Let</strong> me know if you need anything."</p>
+                        <p class="story-es">"Eso es inteligente," dice Carlos. "Avísame si necesitas algo."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"We can <strong>help</strong> each other," Sofia agrees.</p>
+                        <p class="story-es">"Podemos ayudarnos mutuamente," acuerda Sofia.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">They <strong>come</strong> to <strong>understand</strong> that good neighbors <strong>relate</strong> well.</p>
+                        <p class="story-es">Llegan a entender que buenos vecinos se relacionan bien.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>The</strong> next day, Sofia <strong>begins</strong> to organize her new <strong>place</strong>.</p>
+                        <p class="story-es">Al día siguiente, Sofia comienza a organizar su nuevo lugar.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She <strong>produces</strong> a schedule for cleaning and paying bills.</p>
+                        <p class="story-es">Produce un horario para limpiar y pagar cuentas.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I won't <strong>fail</strong> to plan," she tells herself.</p>
+                        <p class="story-es">"No dejaré de planear," se dice a sí misma.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Living with <strong>purpose</strong> <strong>means</strong> thinking ahead.</p>
+                        <p class="story-es">Vivir con propósito significa pensar con anticipación.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia turns <strong>the</strong> lights <strong>off</strong> when she <strong>goes</strong> out.</p>
+                        <p class="story-es">Sofia apaga las luces cuando sale.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She takes good care of her <strong>own</strong> <strong>place</strong>.</p>
+                        <p class="story-es">Cuida bien de su propio lugar.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Diego <strong>notices</strong> how responsible she is.</p>
+                        <p class="story-es">Diego nota lo responsable que es.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"You're <strong>the</strong> most organized tenant," he says.</p>
+                        <p class="story-es">"Eres la inquilina más organizada," dice.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia is happy with her choice.</p>
+                        <p class="story-es">Sofia está feliz con su elección.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>Whether</strong> it's a small apartment or a <strong>large</strong> house, having a clear <strong>purpose</strong> matters.</p>
+                        <p class="story-es">Ya sea un apartamento pequeño o una casa grande, tener un propósito claro importa.</p>
+                    </div>
+                    <div class="story-paragraph" style="background: var(--primary-light); padding: 12px; border-radius: 10px; margin-top: 10px;">
+                        <p class="story-en" style="font-weight: 600; font-size: 1.05rem;">And <strong>now</strong>, Sofia feels at home. 🎯</p>
+                        <p class="story-es">Y ahora, Sofia se siente en casa.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Section -->
+        <div class="questions-section" id="questionsSection">
+            <!-- Questions will be dynamically loaded based on mode -->
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-icon" id="resultsIcon">🏆</div>
+            <h2 class="results-title" id="resultsTitle">¡Completado!</h2>
+            <div class="results-score" id="finalScore">7/7</div>
+            <p class="results-message" id="resultsMessage">¡Excelente comprensión lectora!</p>
+            
+            <div class="results-badges" id="resultsBadges"></div>
+            
+            <div class="krashen-final">
+                <h4>🧠 Reflexión de Aprendizaje</h4>
+                <p id="krashenFinalTip">
+                    Al completar este ejercicio, tu cerebro procesó vocabulario avanzado en contexto. 
+                    Según Krashen, <strong>la adquisición ocurre inconscientemente</strong> cuando el input es comprensible y significativo.
+                </p>
+            </div>
+            
+            <button class="retry-btn" onclick="resetQuiz()">🔄 Intentar de Nuevo</button>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">🏆</div>
+            <h3 class="celebration-title" id="celebrationTitle">¡Logro Desbloqueado!</h3>
+            <p class="celebration-desc" id="celebrationDesc">Has completado algo increíble</p>
+            <button class="celebration-close" onclick="closeCelebration()">¡Genial!</button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti" id="confettiContainer"></div>
+
+    <script>
+        // ========================================
+        // QUIZ DATA - Both Modes
+        // ========================================
+        
+        const quizData = {
+            'es-es': [
+                {
+                    id: 1,
+                    question: '¿Qué quiere encontrar Sofia al principio de la historia?',
+                    options: [
+                        'Un trabajo nuevo',
+                        'El mejor lugar para vivir',
+                        'Un amigo para ayudarla',
+                        'Una escuela cerca de casa'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! La historia comienza: "Sofia wants to find the best place to live."',
+                    feedbackIncorrect: 'Revisa la primera oración: "Sofia wants to find the best place to live" (Sofia quiere encontrar el mejor lugar para vivir).',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: '¿Cuántos apartamentos visita Sofia en total?',
+                    options: [
+                        'Dos apartamentos',
+                        'Tres apartamentos',
+                        'Cuatro apartamentos',
+                        'Cinco apartamentos'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! "Sofia goes to see three apartments around the city."',
+                    feedbackIncorrect: 'La historia menciona: "Sofia goes to see three apartments around the city."',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: '¿Por qué Sofia rechaza el primer apartamento?',
+                    options: [
+                        'Porque es muy caro',
+                        'Porque es muy pequeño',
+                        'Porque es muy ruidoso',
+                        'Porque no tiene internet'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! El primer apartamento está entre calles concurridas, es ruidoso, y Sofia dice: "I need a quieter place."',
+                    feedbackIncorrect: 'La historia dice que está "between two busy streets", "It\'s loud", y Sofia dice: "I need a quieter place."',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: '¿Qué información da el propietario del segundo apartamento?',
+                    options: [
+                        'Que no permite mascotas',
+                        'Que el alquiler podría aumentar el próximo año',
+                        'Que tiene problemas de agua',
+                        'Que va a vender el edificio'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! El propietario explica: "The rent might increase next year."',
+                    feedbackIncorrect: 'El propietario dice: "The rent might increase next year" (El alquiler podría aumentar el próximo año).',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: '¿Por qué Sofia decide elegir el tercer apartamento?',
+                    options: [
+                        'Porque es el más barato de todos',
+                        'Porque tiene el dormitorio más grande con ventanas grandes',
+                        'Porque está más cerca de su trabajo',
+                        'Porque su mamá vive en el mismo edificio'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! "The bedroom is large and has big windows" y Sofia piensa: "I like this one the most."',
+                    feedbackIncorrect: 'La historia describe: "The bedroom is large and has big windows" y Sofia piensa "I like this one the most."',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: '¿Qué característica de Sofia impresiona a Diego al final?',
+                    options: [
+                        'Que es muy simpática',
+                        'Que cocina muy bien',
+                        'Que tiene muchos amigos',
+                        'Que es muy organizada y responsable'
+                    ],
+                    correct: 3,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! Diego nota lo responsable que es y dice: "You\'re the most organized tenant."',
+                    feedbackIncorrect: '"Diego notices how responsible she is" y le dice: "You\'re the most organized tenant."',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: '¿Cuál es el mensaje principal de esta historia?',
+                    options: [
+                        'Tener un propósito claro y planificar ayuda a tomar buenas decisiones',
+                        'Los apartamentos grandes siempre son mejores que los pequeños',
+                        'Es mejor vivir solo que con vecinos',
+                        'Hay que mudarse muchas veces para encontrar el lugar perfecto'
+                    ],
+                    correct: 0,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Crítico',
+                    feedbackCorrect: '¡Correcto! El tema es "Purpose". Sofia planifica, hace preguntas, y la historia dice: "Living with purpose means thinking ahead."',
+                    feedbackIncorrect: 'El tema moral es "Purpose". Sofia planifica y hace preguntas. La historia concluye: "Living with purpose means thinking ahead."',
+                    type: 'critical'
+                }
+            ],
+            'es-en': [
+                {
+                    id: 1,
+                    question: '¿Qué hace Sofia primero antes de buscar apartamentos?',
+                    options: [
+                        'She calls her mom',
+                        'She makes a list of what she needs',
+                        'She visits her neighbor',
+                        'She signs a contract'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "First, she makes a list of what she needs."',
+                    feedbackIncorrect: 'The story says: "First, she makes a list of what she needs."',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: '¿Quién es Diego en la historia?',
+                    options: [
+                        'Sofia\'s brother',
+                        'The landlord of the third apartment',
+                        'Sofia\'s new neighbor',
+                        'A friend from work'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "Now she visits the third apartment with Diego, the landlord."',
+                    feedbackIncorrect: 'The story says: "Now she visits the third apartment with Diego, the landlord."',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: '¿Qué requisitos menciona Sofia que necesita en un apartamento?',
+                    options: [
+                        'A swimming pool and a garden',
+                        'A large bedroom and good internet',
+                        'A garage and two bathrooms',
+                        'A balcony and a fireplace'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! Sofia thinks: "I require a large bedroom and good internet."',
+                    feedbackIncorrect: 'Sofia says: "I require a large bedroom and good internet."',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: '¿Cuáles son las horas de silencio según las reglas del edificio?',
+                    options: [
+                        'Between 8 PM and 6 AM',
+                        'Between 10 PM and 8 AM',
+                        'Between 9 PM and 7 AM',
+                        'Between 11 PM and 9 AM'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! Diego explains: "We require quiet hours between 10 PM and 8 AM."',
+                    feedbackIncorrect: 'Diego says: "We require quiet hours between 10 PM and 8 AM."',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: '¿Cómo se siente Sofia cuando llama a su mamá para decidir?',
+                    options: [
+                        'Confused and worried',
+                        'Angry and frustrated',
+                        'Looking for support and advice',
+                        'Sad and lonely'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! Sofia calls her mom "to help her decide" and her mom responds positively. This shows she\'s seeking support.',
+                    feedbackIncorrect: 'Sofia "calls her mom to help her decide" - this indicates she\'s looking for support and advice.',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: '¿Qué aprenden Sofia y Carlos sobre los buenos vecinos?',
+                    options: [
+                        'Good neighbors compete with each other',
+                        'Good neighbors ignore each other',
+                        'Good neighbors relate well and help each other',
+                        'Good neighbors live far apart'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! "They come to understand that good neighbors relate well" and "We can help each other."',
+                    feedbackIncorrect: 'The story says: "They come to understand that good neighbors relate well" and Sofia says "We can help each other."',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: 'Según la historia, ¿qué significa "vivir con propósito"?',
+                    options: [
+                        'Living in the biggest house possible',
+                        'Thinking ahead and planning for the future',
+                        'Always doing what others tell you',
+                        'Moving to a new place every year'
+                    ],
+                    correct: 1,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Crítico',
+                    feedbackCorrect: 'Correct! "Living with purpose means thinking ahead." Sofia demonstrates this by making lists, planning, and being organized.',
+                    feedbackIncorrect: 'The story explicitly states: "Living with purpose means thinking ahead."',
+                    type: 'critical'
+                }
+            ]
+        };
+
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        
+        let currentMode = 'es-es';
+        let answers = {};
+        let correctCount = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let unlockedBadges = new Set();
+        let literalCorrect = 0;
+        let inferentialCorrect = 0;
+        let criticalCorrect = 0;
+        let firstAnswerGiven = false;
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        function init() {
+            renderQuestions();
+        }
+
+        // ========================================
+        // MODE SWITCHING
+        // ========================================
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            
+            resetQuizState();
+            renderQuestions();
+        }
+
+        function resetQuizState() {
+            answers = {};
+            correctCount = 0;
+            streak = 0;
+            maxStreak = 0;
+            literalCorrect = 0;
+            inferentialCorrect = 0;
+            criticalCorrect = 0;
+            firstAnswerGiven = false;
+            unlockedBadges = new Set();
+            
+            document.querySelectorAll('.badge').forEach(b => b.classList.remove('unlocked'));
+            document.getElementById('resultsSection').classList.remove('show');
+        }
+
+        // ========================================
+        // RENDER QUESTIONS
+        // ========================================
+        
+        function renderQuestions() {
+            const container = document.getElementById('questionsSection');
+            const questions = quizData[currentMode];
+            
+            let html = '<h3 style="margin-bottom: 20px; color: var(--primary-dark); font-size: 1rem;">📝 Preguntas de Comprensión</h3>';
+            
+            questions.forEach((q, index) => {
+                const complexityClass = q.complexity === 'low' ? 'complexity-low' : 
+                                       q.complexity === 'medium' ? 'complexity-medium' : 'complexity-high';
+                
+                html += `
+                    <div class="question-card" id="question-${q.id}">
+                        <div class="question-header">
+                            <div class="question-number" id="qnum-${q.id}">${index + 1}</div>
+                            <div class="question-text">
+                                ${q.question}
+                                <div class="complexity-badge ${complexityClass}">${q.complexityLabel}</div>
+                            </div>
+                        </div>
+                        <div class="options-grid" id="options-${q.id}">
+                            ${q.options.map((opt, i) => `
+                                <button class="option-btn" onclick="selectOption(${q.id}, ${i})" id="opt-${q.id}-${i}">
+                                    <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                    <span>${opt}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="feedback" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ========================================
+        // ANSWER HANDLING
+        // ========================================
+        
+        function selectOption(questionId, optionIndex) {
+            if (answers[questionId] !== undefined) return;
+            
+            const questions = quizData[currentMode];
+            const question = questions.find(q => q.id === questionId);
+            const isCorrect = optionIndex === question.correct;
+            
+            answers[questionId] = optionIndex;
+            
+            if (!firstAnswerGiven) {
+                firstAnswerGiven = true;
+                unlockBadge('badge-1', '🌱', '¡Primera Respuesta!', 'Has comenzado tu viaje de comprensión lectora.');
+            }
+            
+            const optionBtn = document.getElementById(`opt-${questionId}-${optionIndex}`);
+            const qNum = document.getElementById(`qnum-${questionId}`);
+            
+            question.options.forEach((_, i) => {
+                document.getElementById(`opt-${questionId}-${i}`).disabled = true;
+            });
+            
+            if (isCorrect) {
+                optionBtn.classList.add('selected-correct');
+                qNum.classList.add('answered-correct');
+                correctCount++;
+                streak++;
+                maxStreak = Math.max(maxStreak, streak);
+                
+                if (question.type === 'literal') literalCorrect++;
+                else if (question.type === 'inferential') inferentialCorrect++;
+                else if (question.type === 'critical') criticalCorrect++;
+                
+                if (streak >= 3 && !unlockedBadges.has('badge-3')) {
+                    unlockBadge('badge-3', '🔥', '¡Racha de 3!', '3 respuestas correctas seguidas. ¡Estás en fuego!');
+                }
+                
+                if (literalCorrect >= 3 && !unlockedBadges.has('badge-literal')) {
+                    unlockBadge('badge-literal', '📖', '¡Comprensión Literal!', 'Dominas la información explícita del texto.');
+                }
+                if (inferentialCorrect >= 2 && !unlockedBadges.has('badge-inferential')) {
+                    unlockBadge('badge-inferential', '🔍', '¡Detective de Inferencias!', 'Conectas información para sacar conclusiones.');
+                }
+                if (criticalCorrect >= 1 && !unlockedBadges.has('badge-critical')) {
+                    unlockBadge('badge-critical', '🎓', '¡Pensador Crítico!', 'Identificas el mensaje profundo de la historia.');
+                }
+                
+                showFeedback(questionId, true, question.feedbackCorrect);
+            } else {
+                optionBtn.classList.add('selected-wrong');
+                qNum.classList.add('answered-wrong');
+                document.getElementById(`opt-${questionId}-${question.correct}`).classList.add('show-correct');
+                streak = 0;
+                
+                showFeedback(questionId, false, question.feedbackIncorrect);
+            }
+            
+            if (Object.keys(answers).length === questions.length) {
+                setTimeout(showResults, 1500);
+            }
+        }
+
+        // ========================================
+        // FEEDBACK
+        // ========================================
+        
+        function showFeedback(questionId, isCorrect, message) {
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = `
+                <div class="feedback-title">
+                    ${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}
+                </div>
+                <div class="feedback-text">${message}</div>
+            `;
+        }
+
+        // ========================================
+        // BADGES
+        // ========================================
+        
+        function unlockBadge(badgeId, icon, title, description) {
+            if (unlockedBadges.has(badgeId)) return;
+            
+            unlockedBadges.add(badgeId);
+            const badge = document.getElementById(badgeId);
+            badge.classList.add('unlocked');
+            
+            showCelebration(icon, title, description);
+        }
+
+        function showCelebration(icon, title, description) {
+            document.getElementById('celebrationIcon').textContent = icon;
+            document.getElementById('celebrationTitle').textContent = title;
+            document.getElementById('celebrationDesc').textContent = description;
+            document.getElementById('celebrationOverlay').classList.add('show');
+            
+            createConfetti();
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationOverlay').classList.remove('show');
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = '';
+            
+            const colors = ['#FF8A65', '#FFAB91', '#FF5722', '#4CAF50', '#2196F3', '#E91E63'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => container.innerHTML = '', 3000);
+        }
+
+        // ========================================
+        // RESULTS
+        // ========================================
+        
+        function showResults() {
+            const total = quizData[currentMode].length;
+            const percentage = Math.round((correctCount / total) * 100);
+            
+            let icon, title, message;
+            if (percentage === 100) {
+                icon = '🏆';
+                title = '¡PERFECTO!';
+                message = '¡Comprensión lectora excepcional! Dominas completamente la historia.';
+                if (!unlockedBadges.has('badge-perfect')) {
+                    unlockBadge('badge-perfect', '⭐', '¡Perfección!', '7 de 7 correctas. ¡Eres increíble!');
+                }
+            } else if (percentage >= 85) {
+                icon = '🌟';
+                title = '¡EXCELENTE!';
+                message = '¡Gran comprensión! Entiendes muy bien la historia de Sofia.';
+            } else if (percentage >= 70) {
+                icon = '👍';
+                title = '¡MUY BIEN!';
+                message = 'Buena comprensión. Sigue practicando para mejorar.';
+            } else if (percentage >= 50) {
+                icon = '📚';
+                title = '¡SIGUE ADELANTE!';
+                message = 'Vas por buen camino. Lee la historia nuevamente y vuelve a intentarlo.';
+            } else {
+                icon = '💪';
+                title = '¡NO TE RINDAS!';
+                message = 'La práctica hace al maestro. Lee la historia con calma y vuelve a intentarlo.';
+            }
+            
+            if (!unlockedBadges.has('badge-purpose')) {
+                unlockBadge('badge-purpose', '🎯', '¡Propósito!', 'Como Sofia: "Living with purpose means thinking ahead."');
+            }
+            
+            document.getElementById('resultsIcon').textContent = icon;
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('finalScore').textContent = `${correctCount}/${total}`;
+            document.getElementById('resultsMessage').textContent = message;
+            
+            const badgesContainer = document.getElementById('resultsBadges');
+            badgesContainer.innerHTML = '';
+            unlockedBadges.forEach(badgeId => {
+                const badge = document.getElementById(badgeId);
+                const tooltip = badge.querySelector('.badge-tooltip').textContent;
+                const icon = badge.textContent.trim().split('\n')[0];
+                badgesContainer.innerHTML += `<div class="result-badge">${icon} ${tooltip}</div>`;
+            });
+            
+            const krashenTips = [
+                "Al leer sobre Sofia buscando su hogar ideal, tu cerebro procesó estructuras gramaticales complejas sin darse cuenta. ¡Eso es adquisición natural!",
+                "Esta historia contiene vocabulario de nivel intermedio presentado en contexto. Según Krashen, así es como realmente aprendemos un idioma.",
+                "El 'filtro afectivo bajo' (sin estrés) te permitió procesar mejor la historia. Las emociones positivas mejoran la adquisición del idioma.",
+                "Cada vez que entiendes una historia en inglés, construyes 'competencia adquirida' — conocimiento que usarás automáticamente al hablar."
+            ];
+            document.getElementById('krashenFinalTip').innerHTML = krashenTips[Math.floor(Math.random() * krashenTips.length)];
+            
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            
+            if (percentage >= 70) {
+                createConfetti();
+            }
+        }
+
+        // ========================================
+        // STORY TOGGLE
+        // ========================================
+        
+        function toggleStory() {
+            const content = document.getElementById('storyContent');
+            const btn = document.getElementById('storyToggleBtn');
+            
+            content.classList.toggle('open');
+            btn.classList.toggle('open');
+        }
+
+        // ========================================
+        // RESET
+        // ========================================
+        
+        function resetQuiz() {
+            resetQuizState();
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

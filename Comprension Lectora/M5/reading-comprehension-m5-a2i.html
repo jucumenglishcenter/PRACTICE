@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension | Module 5 | A2-Bloque I | JUCUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* A2 Bloque I - Green Theme */
+            --primary: #66BB6A;
+            --primary-light: #E8F5E9;
+            --primary-dark: #388E3C;
+            --primary-gradient: linear-gradient(135deg, #81C784 0%, #66BB6A 100%);
+            --accent: #43A047;
+            --success: #2E7D32;
+            --success-light: #C8E6C9;
+            --error: #E53935;
+            --error-light: #FFEBEE;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #E8F5E9;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(102, 187, 106, 0.3);
+            --shadow-hover: 0 8px 30px rgba(102, 187, 106, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .mode-title {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .mode-btn .mode-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .mode-btn .mode-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .mode-btn .mode-desc {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        /* Badges Section */
+        .badges-section {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .badges-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .badges-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .badges-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 3px;
+        }
+
+        /* Badges Container */
+        .badges-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .badge.unlocked {
+            opacity: 1;
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            animation: badgeUnlock 0.6s ease;
+        }
+
+        @keyframes badgeUnlock {
+            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .badge-tooltip {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .badge:hover .badge-tooltip {
+            opacity: 1;
+        }
+
+        /* Story Toggle */
+        .story-toggle {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .story-toggle-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-light);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .story-toggle-btn:hover {
+            background: #C8E6C9;
+        }
+
+        .story-toggle-btn .arrow {
+            transition: transform 0.3s;
+        }
+
+        .story-toggle-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .story-content.open {
+            max-height: 3000px;
+        }
+
+        .story-inner {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .story-paragraph {
+            margin-bottom: 15px;
+        }
+
+        .story-en {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .story-es {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .story-en strong {
+            color: var(--primary-dark);
+            background: var(--primary-light);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Krashen Tips */
+        .krashen-tip {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .krashen-tip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .krashen-tip-header .icon {
+            font-size: 1.2rem;
+        }
+
+        .krashen-tip-header .title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1565C0;
+        }
+
+        .krashen-tip p {
+            font-size: 0.8rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .krashen-tip .highlight {
+            color: #1565C0;
+            font-weight: 600;
+        }
+
+        /* Questions Section */
+        .questions-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .question-card:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .question-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .question-number.answered-correct {
+            background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+        }
+
+        .question-number.answered-wrong {
+            background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .complexity-low {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+
+        .complexity-medium {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .complexity-high {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .option-btn {
+            padding: 12px 15px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn .option-letter {
+            width: 28px;
+            height: 28px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.selected-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-btn.selected-wrong {
+            border-color: var(--error);
+            background: var(--error-light);
+        }
+
+        .option-btn.selected-wrong .option-letter {
+            background: var(--error);
+            color: white;
+        }
+
+        .option-btn.show-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.show-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            border-left: 4px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: #1B5E20;
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: #C62828;
+        }
+
+        .feedback-text {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .results-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .results-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .results-message {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .results-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .result-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--primary-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .krashen-final {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #A5D6A7 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .krashen-final h4 {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krashen-final p {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Retry Button */
+        .retry-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Celebration Overlay */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-overlay.show {
+            display: flex;
+        }
+
+        .celebration-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            animation: celebrationPop 0.5s ease;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 5rem;
+            animation: celebrationSpin 1s ease;
+        }
+
+        @keyframes celebrationSpin {
+            0% { transform: rotate(-10deg) scale(0); }
+            50% { transform: rotate(10deg) scale(1.2); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .celebration-title {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin: 15px 0 10px;
+        }
+
+        .celebration-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .celebration-close {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Theme Toggle Info */
+        .moral-theme {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #A5D6A7 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .moral-theme .icon {
+            font-size: 2rem;
+        }
+
+        .moral-theme .text h4 {
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            margin-bottom: 3px;
+        }
+
+        .moral-theme .text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .badge {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>📚 Reading Comprehension</h1>
+                <div class="subtitle">Module 5 • Sofia's Maintenance Plan</div>
+                <div class="level-badge">💚 A2-Bloque I | Intermedio</div>
+            </div>
+        </div>
+
+        <!-- Moral Theme -->
+        <div class="moral-theme">
+            <div class="icon">🎯</div>
+            <div class="text">
+                <h4>Tema Moral: El Propósito (Purpose)</h4>
+                <p>"With purpose and planning, everything will function well."</p>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <div class="mode-title">Select your practice mode / Selecciona el modo</div>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="setMode('es-es')" id="mode-es-es">
+                    <span class="mode-icon">🇪🇸➡️🇪🇸</span>
+                    <span class="mode-label">Español → Español</span>
+                    <span class="mode-desc">Comprensión en español</span>
+                </button>
+                <button class="mode-btn" onclick="setMode('en-en')" id="mode-en-en">
+                    <span class="mode-icon">🇬🇧➡️🇬🇧</span>
+                    <span class="mode-label">English → English</span>
+                    <span class="mode-desc">Full English challenge</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Krashen Tip -->
+        <div class="krashen-tip">
+            <div class="krashen-tip-header">
+                <span class="icon">🧠</span>
+                <span class="title">Acquisition vs Learning (Krashen)</span>
+            </div>
+            <p>
+                At A2 level, you're ready to process more <span class="highlight">complex input</span>. 
+                Try the English-English mode! According to Krashen, <span class="highlight">thinking in English</span> 
+                (not translating) accelerates fluency. Your brain is building an independent English system!
+            </p>
+        </div>
+
+        <!-- Badges Section -->
+        <div class="badges-section">
+            <div class="badges-header">
+                <div class="badges-title">🏆 Achievements to Unlock / Logros por Desbloquear</div>
+                <div class="badges-subtitle">Answer correctly to earn badges</div>
+            </div>
+            
+            <div class="badges-container">
+                <div class="badge" id="badge-1" data-badge="first">
+                    🌱
+                    <span class="badge-tooltip">First Answer</span>
+                </div>
+                <div class="badge" id="badge-3" data-badge="streak">
+                    🔥
+                    <span class="badge-tooltip">3 Streak</span>
+                </div>
+                <div class="badge" id="badge-literal" data-badge="literal">
+                    📖
+                    <span class="badge-tooltip">Literal Master</span>
+                </div>
+                <div class="badge" id="badge-inferential" data-badge="inferential">
+                    🔍
+                    <span class="badge-tooltip">Inference Pro</span>
+                </div>
+                <div class="badge" id="badge-critical" data-badge="critical">
+                    🎓
+                    <span class="badge-tooltip">Critical Thinker</span>
+                </div>
+                <div class="badge" id="badge-perfect" data-badge="perfect">
+                    ⭐
+                    <span class="badge-tooltip">Perfection</span>
+                </div>
+                <div class="badge" id="badge-planner" data-badge="planner">
+                    📋
+                    <span class="badge-tooltip">Master Planner</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Toggle -->
+        <div class="story-toggle">
+            <button class="story-toggle-btn" onclick="toggleStory()" id="storyToggleBtn">
+                <span>📖 Read "Sofia's Maintenance Plan"</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="story-content" id="storyContent">
+                <div class="story-inner">
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia sits in her apartment and looks at the kitchen that now works perfectly.</p>
+                        <p class="story-es">Sofía se sienta en su apartamento y mira la cocina que ahora funciona perfectamente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The repair <strong>period</strong> was stressful, but she learned an important <strong>lesson</strong>.</p>
+                        <p class="story-es">El período de reparación fue estresante, pero ella aprendió una lección importante.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">In her <strong>opinion</strong>, planning ahead is the best way to avoid big problems.</p>
+                        <p class="story-es">En su opinión, planear con anticipación es la mejor manera de evitar grandes problemas.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She writes a <strong>letter</strong> to <strong>herself</strong> with notes about apartment maintenance.</p>
+                        <p class="story-es">Ella escribe una carta a sí misma con notas sobre el mantenimiento del apartamento.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The <strong>subject</strong> of the first note is simple: report small problems immediately.</p>
+                        <p class="story-es">El sujeto de la primera nota es simple: reportar problemas pequeños inmediatamente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She remembers the <strong>strange</strong> drip she ignored two weeks ago.</p>
+                        <p class="story-es">Ella recuerda el goteo extraño que ignoró hace dos semanas.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">That small problem became much worse than she expected.</p>
+                        <p class="story-es">Ese pequeño problema se volvió mucho peor de lo que esperaba.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia also makes a <strong>plan</strong> to check the apartment regularly.</p>
+                        <p class="story-es">Sofía también hace un plan para revisar el apartamento regularmente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She will look under sinks, test lights, and <strong>wash</strong> the filters <strong>often</strong>.</p>
+                        <p class="story-es">Mirará debajo de los lavabos, probará las luces, y lavará los filtros a menudo.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>Besides</strong> checking the plumbing, she will inspect the windows and doors.</p>
+                        <p class="story-es">Además de revisar la plomería, inspeccionará las ventanas y puertas.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The <strong>benefit</strong> of this routine is clear: fewer surprises and lower costs.</p>
+                        <p class="story-es">El beneficio de esta rutina es claro: menos sorpresas y costos más bajos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Her neighbor Carlos told her about the noise issue in apartment 305.</p>
+                        <p class="story-es">Su vecino Carlos le contó sobre el problema de ruido en el apartamento 305.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">He explained that the <strong>movement</strong> of furniture with heavy <strong>legs</strong> caused the problem.</p>
+                        <p class="story-es">Él explicó que el movimiento de muebles con patas pesadas causó el problema.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>Nobody</strong> knew about it until Carlos sent an official complaint.</p>
+                        <p class="story-es">Nadie sabía sobre ello hasta que Carlos envió una queja oficial.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Now the building manager will <strong>announce</strong> new quiet hour rules.</p>
+                        <p class="story-es">Ahora el administrador del edificio anunciará nuevas reglas de horas de silencio.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia thinks this is fair for everyone, not just one side.</p>
+                        <p class="story-es">Sofía piensa que esto es justo para todos, no solo un lado.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She wants to avoid having any <strong>bias</strong> when problems affect neighbors.</p>
+                        <p class="story-es">Ella quiere evitar tener cualquier sesgo cuando los problemas afectan a los vecinos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The repair <strong>bill</strong> from last week was covered by the building.</p>
+                        <p class="story-es">La factura de reparación de la semana pasada fue cubierta por el edificio.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">This saved Sofia money, which made the situation less stressful.</p>
+                        <p class="story-es">Esto ahorró dinero a Sofía, lo cual hizo la situación menos estresante.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She takes a <strong>photo</strong> of her organized kitchen and feels proud.</p>
+                        <p class="story-es">Ella toma una foto de su cocina organizada y se siente orgullosa.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The new seal makes everything <strong>function</strong> smoothly again.</p>
+                        <p class="story-es">El nuevo sello hace que todo funcione suavemente otra vez.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Roberto, the technician, told her the repair would last for years.</p>
+                        <p class="story-es">Roberto, el técnico, le dijo que la reparación duraría años.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">He checked every <strong>angle</strong> to make sure the pipes were installed correctly.</p>
+                        <p class="story-es">Él revisó cada ángulo para asegurarse de que las tuberías estuvieran instaladas correctamente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia decides to share this information with new tenants.</p>
+                        <p class="story-es">Sofía decide compartir esta información con nuevos inquilinos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She wants them to feel as supported as she does now.</p>
+                        <p class="story-es">Ella quiere que se sientan tan apoyados como ella se siente ahora.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The apartment on the <strong>opposite</strong> side of the hall is empty.</p>
+                        <p class="story-es">El apartamento en el lado opuesto del pasillo está vacío.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">When someone moves in, Sofia will introduce herself immediately.</p>
+                        <p class="story-es">Cuando alguien se mude, Sofía se presentará inmediatamente.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Building good relationships with neighbors creates a better living environment.</p>
+                        <p class="story-es">Construir buenas relaciones con los vecinos crea un mejor ambiente de vida.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She learned that having a clear <strong>plan</strong> prevents small issues from growing.</p>
+                        <p class="story-es">Ella aprendió que tener un plan claro previene que los problemas pequeños crezcan.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">She thinks about how the whole <strong>body</strong> of the building depends on everyone.</p>
+                        <p class="story-es">Ella piensa en cómo todo el cuerpo del edificio depende de todos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">When tenants and management work together, problems become manageable.</p>
+                        <p class="story-es">Cuando los inquilinos y la administración trabajan juntos, los problemas se vuelven manejables.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Sofia looks forward to many peaceful months in her home.</p>
+                        <p class="story-es">Sofía espera con ansias muchos meses pacíficos en su hogar.</p>
+                    </div>
+                    <div class="story-paragraph" style="background: var(--primary-light); padding: 12px; border-radius: 10px; margin-top: 10px;">
+                        <p class="story-en" style="font-weight: 600; font-size: 1.05rem;">With purpose and planning, she knows everything will <strong>function</strong> well. 💚</p>
+                        <p class="story-es">Con propósito y planificación, ella sabe que todo funcionará bien.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Section -->
+        <div class="questions-section" id="questionsSection">
+            <!-- Questions will be dynamically loaded based on mode -->
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-icon" id="resultsIcon">🏆</div>
+            <h2 class="results-title" id="resultsTitle">¡Completado!</h2>
+            <div class="results-score" id="finalScore">7/7</div>
+            <p class="results-message" id="resultsMessage">¡Excelente comprensión lectora!</p>
+            
+            <div class="results-badges" id="resultsBadges"></div>
+            
+            <div class="krashen-final">
+                <h4>🧠 Learning Insight</h4>
+                <p id="krashenFinalTip">
+                    You've processed complex vocabulary about maintenance, planning, and community. 
+                    According to Krashen, <strong>meaningful content</strong> like this story helps build lasting language skills.
+                </p>
+            </div>
+            
+            <button class="retry-btn" onclick="resetQuiz()">🔄 Try Again / Intentar de Nuevo</button>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">🏆</div>
+            <h3 class="celebration-title" id="celebrationTitle">Achievement Unlocked!</h3>
+            <p class="celebration-desc" id="celebrationDesc">You've accomplished something great</p>
+            <button class="celebration-close" onclick="closeCelebration()">Awesome!</button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti" id="confettiContainer"></div>
+
+    <script>
+        // ========================================
+        // QUIZ DATA - Both Modes
+        // ========================================
+        
+        const quizData = {
+            'es-es': [
+                {
+                    id: 1,
+                    question: '¿Dónde se sienta Sofía al inicio de la historia?',
+                    options: [
+                        'En la oficina del edificio',
+                        'En su apartamento',
+                        'En el parque cercano',
+                        'En la casa de Carlos'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! "Sofia sits in her apartment and looks at the kitchen that now works perfectly."',
+                    feedbackIncorrect: 'La historia indica claramente al inicio que Sofía está sentada en su apartamento mirando la cocina.',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: '¿Qué escribió Sofía para recordar el mantenimiento del apartamento?',
+                    options: [
+                        'Un mensaje de texto',
+                        'Un correo electrónico',
+                        'Una carta a sí misma',
+                        'Una nota en la pared'
+                    ],
+                    correct: 2,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! "She writes a letter to herself with notes about apartment maintenance."',
+                    feedbackIncorrect: 'La historia menciona específicamente que Sofía escribe una carta a sí misma con notas sobre el mantenimiento.',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: '¿Qué problema pequeño ignoró Sofía hace dos semanas?',
+                    options: [
+                        'Un ruido extraño en la ventana',
+                        'Un goteo extraño',
+                        'Una luz que no funcionaba',
+                        'Una puerta que no cerraba'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! "She remembers the strange drip she ignored two weeks ago."',
+                    feedbackIncorrect: 'Sofía recuerda específicamente un goteo extraño (strange drip) que ignoró hace dos semanas.',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: '¿Qué causó el problema de ruido en el apartamento 305 según Carlos?',
+                    options: [
+                        'La música muy fuerte',
+                        'Las mascotas de los vecinos',
+                        'El movimiento de muebles con patas pesadas',
+                        'Las reparaciones del edificio'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! "He explained that the movement of furniture with heavy legs caused the problem."',
+                    feedbackIncorrect: 'Carlos explicó que el movimiento de muebles con patas pesadas causó el problema de ruido.',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: '¿Por qué Sofía se siente menos estresada después de la reparación?',
+                    options: [
+                        'Porque el técnico fue muy amable',
+                        'Porque la reparación la pagó el edificio',
+                        'Porque la reparación fue muy rápida',
+                        'Porque Carlos la ayudó personalmente'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! "The repair bill from last week was covered by the building. This saved Sofia money, which made the situation less stressful."',
+                    feedbackIncorrect: 'El edificio cubrió la factura de reparación, lo cual le ahorró dinero a Sofía y la hizo sentir menos estresada.',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: '¿Qué quiere evitar Sofía cuando los problemas afectan a los vecinos?',
+                    options: [
+                        'Hablar con el administrador',
+                        'Pagar las reparaciones',
+                        'Tener cualquier sesgo o parcialidad',
+                        'Conocer a nuevos vecinos'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! "She wants to avoid having any bias when problems affect neighbors."',
+                    feedbackIncorrect: 'La historia dice que Sofía quiere evitar tener cualquier sesgo (bias) cuando los problemas afectan a los vecinos.',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: '¿Cuál es la lección principal que Sofía aprendió según la historia?',
+                    options: [
+                        'Planificar con anticipación previene que los problemas pequeños crezcan',
+                        'Es mejor vivir sola que con vecinos ruidosos',
+                        'Los técnicos siempre hacen un buen trabajo',
+                        'Las reparaciones son siempre muy costosas'
+                    ],
+                    correct: 0,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Crítico',
+                    feedbackCorrect: '¡Correcto! "Planning ahead is the best way to avoid big problems" y "Having a clear plan prevents small issues from growing."',
+                    feedbackIncorrect: 'La lección principal es sobre la importancia de planificar con anticipación para evitar que los problemas pequeños crezcan.',
+                    type: 'critical'
+                }
+            ],
+            'en-en': [
+                {
+                    id: 1,
+                    question: 'What does Sofia look at when she sits in her apartment?',
+                    options: [
+                        'Her bedroom window',
+                        'The kitchen that now works perfectly',
+                        'A letter from Carlos',
+                        'The empty apartment opposite'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "Sofia sits in her apartment and looks at the kitchen that now works perfectly."',
+                    feedbackIncorrect: 'The story clearly states that Sofia looks at the kitchen that now works perfectly.',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: 'What is the subject of Sofia\'s first maintenance note?',
+                    options: [
+                        'Check the windows every week',
+                        'Report small problems immediately',
+                        'Wash the filters every day',
+                        'Call the technician monthly'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "The subject of the first note is simple: report small problems immediately."',
+                    feedbackIncorrect: 'The story mentions that the subject of her first note is: "report small problems immediately."',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: 'What will the building manager announce after Carlos\'s complaint?',
+                    options: [
+                        'New parking rules',
+                        'Higher maintenance fees',
+                        'New quiet hour rules',
+                        'New security cameras'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferential',
+                    feedbackCorrect: 'Correct! "Now the building manager will announce new quiet hour rules."',
+                    feedbackIncorrect: 'After Carlos\'s complaint about noise, the building manager will announce new quiet hour rules.',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: 'Who is Roberto in the story?',
+                    options: [
+                        'Sofia\'s neighbor',
+                        'The building manager',
+                        'The technician who fixed the pipes',
+                        'A new tenant in the building'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferential',
+                    feedbackCorrect: 'Correct! "Roberto, the technician, told her the repair would last for years."',
+                    feedbackIncorrect: 'Roberto is the technician who fixed the pipes. He checked every angle to make sure the pipes were installed correctly.',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: 'Why does Sofia want to share information with new tenants?',
+                    options: [
+                        'Because the building manager asked her to',
+                        'Because she wants them to feel as supported as she does',
+                        'Because she needs help with her apartment',
+                        'Because Carlos told her to do it'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferential',
+                    feedbackCorrect: 'Correct! "She wants them to feel as supported as she does now."',
+                    feedbackIncorrect: 'Sofia wants to share information because she wants new tenants to feel as supported as she does now.',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: 'What does Sofia think about when considering how the building functions?',
+                    options: [
+                        'That she should move to a different building',
+                        'That only the manager should solve problems',
+                        'That the whole body of the building depends on everyone',
+                        'That tenants should not communicate with each other'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferential',
+                    feedbackCorrect: 'Correct! "She thinks about how the whole body of the building depends on everyone. When tenants and management work together, problems become manageable."',
+                    feedbackIncorrect: 'Sofia thinks that the whole building depends on everyone working together. When tenants and management cooperate, problems become manageable.',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: 'What is the main message of this story about Sofia?',
+                    options: [
+                        'Living in apartments is very expensive',
+                        'Neighbors should never talk to each other',
+                        'With purpose and planning, everything can function well',
+                        'Building repairs are always the manager\'s responsibility'
+                    ],
+                    correct: 2,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Critical',
+                    feedbackCorrect: 'Correct! The moral theme is Purpose. "With purpose and planning, she knows everything will function well."',
+                    feedbackIncorrect: 'The main message is about purpose and planning. The story concludes: "With purpose and planning, she knows everything will function well."',
+                    type: 'critical'
+                }
+            ]
+        };
+
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        
+        let currentMode = 'es-es';
+        let answers = {};
+        let correctCount = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let unlockedBadges = new Set();
+        let literalCorrect = 0;
+        let inferentialCorrect = 0;
+        let criticalCorrect = 0;
+        let firstAnswerGiven = false;
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        function init() {
+            renderQuestions();
+        }
+
+        // ========================================
+        // MODE SWITCHING
+        // ========================================
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            
+            resetQuizState();
+            renderQuestions();
+        }
+
+        function resetQuizState() {
+            answers = {};
+            correctCount = 0;
+            streak = 0;
+            maxStreak = 0;
+            literalCorrect = 0;
+            inferentialCorrect = 0;
+            criticalCorrect = 0;
+            firstAnswerGiven = false;
+            unlockedBadges = new Set();
+            
+            document.querySelectorAll('.badge').forEach(b => b.classList.remove('unlocked'));
+            document.getElementById('resultsSection').classList.remove('show');
+        }
+
+        // ========================================
+        // RENDER QUESTIONS
+        // ========================================
+        
+        function renderQuestions() {
+            const container = document.getElementById('questionsSection');
+            const questions = quizData[currentMode];
+            const isEnglish = currentMode === 'en-en';
+            
+            let html = `<h3 style="margin-bottom: 20px; color: var(--primary-dark); font-size: 1rem;">📝 ${isEnglish ? 'Comprehension Questions' : 'Preguntas de Comprensión'}</h3>`;
+            
+            questions.forEach((q, index) => {
+                const complexityClass = q.complexity === 'low' ? 'complexity-low' : 
+                                       q.complexity === 'medium' ? 'complexity-medium' : 'complexity-high';
+                
+                html += `
+                    <div class="question-card" id="question-${q.id}">
+                        <div class="question-header">
+                            <div class="question-number" id="qnum-${q.id}">${index + 1}</div>
+                            <div class="question-text">
+                                ${q.question}
+                                <div class="complexity-badge ${complexityClass}">${q.complexityLabel}</div>
+                            </div>
+                        </div>
+                        <div class="options-grid" id="options-${q.id}">
+                            ${q.options.map((opt, i) => `
+                                <button class="option-btn" onclick="selectOption(${q.id}, ${i})" id="opt-${q.id}-${i}">
+                                    <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                    <span>${opt}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="feedback" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ========================================
+        // ANSWER HANDLING
+        // ========================================
+        
+        function selectOption(questionId, optionIndex) {
+            if (answers[questionId] !== undefined) return;
+            
+            const questions = quizData[currentMode];
+            const question = questions.find(q => q.id === questionId);
+            const isCorrect = optionIndex === question.correct;
+            const isEnglish = currentMode === 'en-en';
+            
+            answers[questionId] = optionIndex;
+            
+            if (!firstAnswerGiven) {
+                firstAnswerGiven = true;
+                unlockBadge('badge-1', '🌱', isEnglish ? 'First Answer!' : '¡Primera Respuesta!', isEnglish ? 'You\'ve started your reading journey.' : 'Has comenzado tu viaje de comprensión.');
+            }
+            
+            const optionBtn = document.getElementById(`opt-${questionId}-${optionIndex}`);
+            const qNum = document.getElementById(`qnum-${questionId}`);
+            
+            question.options.forEach((_, i) => {
+                document.getElementById(`opt-${questionId}-${i}`).disabled = true;
+            });
+            
+            if (isCorrect) {
+                optionBtn.classList.add('selected-correct');
+                qNum.classList.add('answered-correct');
+                correctCount++;
+                streak++;
+                maxStreak = Math.max(maxStreak, streak);
+                
+                if (question.type === 'literal') literalCorrect++;
+                else if (question.type === 'inferential') inferentialCorrect++;
+                else if (question.type === 'critical') criticalCorrect++;
+                
+                if (streak >= 3 && !unlockedBadges.has('badge-3')) {
+                    unlockBadge('badge-3', '🔥', isEnglish ? '3 Streak!' : '¡Racha de 3!', isEnglish ? '3 correct answers in a row!' : '3 respuestas correctas seguidas.');
+                }
+                
+                if (literalCorrect >= 2 && !unlockedBadges.has('badge-literal')) {
+                    unlockBadge('badge-literal', '📖', isEnglish ? 'Literal Master!' : '¡Maestro Literal!', isEnglish ? 'You understand explicit information.' : 'Dominas la información explícita.');
+                }
+                if (inferentialCorrect >= 2 && !unlockedBadges.has('badge-inferential')) {
+                    unlockBadge('badge-inferential', '🔍', isEnglish ? 'Inference Pro!' : '¡Pro de Inferencias!', isEnglish ? 'You connect information skillfully.' : 'Conectas información hábilmente.');
+                }
+                if (criticalCorrect >= 1 && !unlockedBadges.has('badge-critical')) {
+                    unlockBadge('badge-critical', '🎓', isEnglish ? 'Critical Thinker!' : '¡Pensador Crítico!', isEnglish ? 'You identify the deeper meaning.' : 'Identificas el significado profundo.');
+                }
+                
+                showFeedback(questionId, true, question.feedbackCorrect);
+            } else {
+                optionBtn.classList.add('selected-wrong');
+                qNum.classList.add('answered-wrong');
+                document.getElementById(`opt-${questionId}-${question.correct}`).classList.add('show-correct');
+                streak = 0;
+                
+                showFeedback(questionId, false, question.feedbackIncorrect);
+            }
+            
+            if (Object.keys(answers).length === questions.length) {
+                setTimeout(showResults, 1500);
+            }
+        }
+
+        // ========================================
+        // FEEDBACK
+        // ========================================
+        
+        function showFeedback(questionId, isCorrect, message) {
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            const isEnglish = currentMode === 'en-en';
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = `
+                <div class="feedback-title">
+                    ${isCorrect ? (isEnglish ? '✅ Correct!' : '✅ ¡Correcto!') : (isEnglish ? '❌ Incorrect' : '❌ Incorrecto')}
+                </div>
+                <div class="feedback-text">${message}</div>
+            `;
+        }
+
+        // ========================================
+        // BADGES
+        // ========================================
+        
+        function unlockBadge(badgeId, icon, title, description) {
+            if (unlockedBadges.has(badgeId)) return;
+            
+            unlockedBadges.add(badgeId);
+            const badge = document.getElementById(badgeId);
+            badge.classList.add('unlocked');
+            
+            showCelebration(icon, title, description);
+        }
+
+        function showCelebration(icon, title, description) {
+            document.getElementById('celebrationIcon').textContent = icon;
+            document.getElementById('celebrationTitle').textContent = title;
+            document.getElementById('celebrationDesc').textContent = description;
+            document.getElementById('celebrationOverlay').classList.add('show');
+            
+            createConfetti();
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationOverlay').classList.remove('show');
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = '';
+            
+            const colors = ['#66BB6A', '#81C784', '#43A047', '#4CAF50', '#2196F3', '#E91E63'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => container.innerHTML = '', 3000);
+        }
+
+        // ========================================
+        // RESULTS
+        // ========================================
+        
+        function showResults() {
+            const total = quizData[currentMode].length;
+            const percentage = Math.round((correctCount / total) * 100);
+            const isEnglish = currentMode === 'en-en';
+            
+            let icon, title, message;
+            if (percentage === 100) {
+                icon = '🏆';
+                title = isEnglish ? 'PERFECT!' : '¡PERFECTO!';
+                message = isEnglish ? 'Exceptional reading comprehension! You mastered the story.' : '¡Comprensión lectora excepcional! Dominaste la historia.';
+                if (!unlockedBadges.has('badge-perfect')) {
+                    unlockBadge('badge-perfect', '⭐', isEnglish ? 'Perfection!' : '¡Perfección!', isEnglish ? '7 out of 7 correct!' : '7 de 7 correctas.');
+                }
+            } else if (percentage >= 85) {
+                icon = '🌟';
+                title = isEnglish ? 'EXCELLENT!' : '¡EXCELENTE!';
+                message = isEnglish ? 'Great comprehension! You understand Sofia\'s story very well.' : '¡Gran comprensión! Entiendes muy bien la historia de Sofía.';
+            } else if (percentage >= 70) {
+                icon = '👍';
+                title = isEnglish ? 'VERY GOOD!' : '¡MUY BIEN!';
+                message = isEnglish ? 'Good comprehension. Keep practicing!' : 'Buena comprensión. ¡Sigue practicando!';
+            } else if (percentage >= 50) {
+                icon = '📚';
+                title = isEnglish ? 'KEEP GOING!' : '¡SIGUE ADELANTE!';
+                message = isEnglish ? 'You\'re on the right track. Read the story again and try once more.' : 'Vas por buen camino. Lee la historia nuevamente.';
+            } else {
+                icon = '💪';
+                title = isEnglish ? 'DON\'T GIVE UP!' : '¡NO TE RINDAS!';
+                message = isEnglish ? 'Practice makes perfect. Read the story carefully and try again.' : 'La práctica hace al maestro. Lee con calma y vuelve a intentarlo.';
+            }
+            
+            if (!unlockedBadges.has('badge-planner')) {
+                unlockBadge('badge-planner', '📋', isEnglish ? 'Master Planner!' : '¡Planificador Maestro!', isEnglish ? 'Like Sofia: "Planning ahead prevents problems."' : 'Como Sofía: "Planear previene problemas."');
+            }
+            
+            document.getElementById('resultsIcon').textContent = icon;
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('finalScore').textContent = `${correctCount}/${total}`;
+            document.getElementById('resultsMessage').textContent = message;
+            
+            const badgesContainer = document.getElementById('resultsBadges');
+            badgesContainer.innerHTML = '';
+            unlockedBadges.forEach(badgeId => {
+                const badge = document.getElementById(badgeId);
+                const tooltip = badge.querySelector('.badge-tooltip').textContent;
+                const badgeIcon = badge.textContent.trim().split('\n')[0];
+                badgesContainer.innerHTML += `<div class="result-badge">${badgeIcon} ${tooltip}</div>`;
+            });
+            
+            const krashenTips = isEnglish ? [
+                "You processed advanced vocabulary about maintenance, planning, and community living. This 'comprehensible input' builds your English system naturally!",
+                "Reading in English-only mode helps create an independent language system. You're not just learning — you're acquiring English!",
+                "Complex stories like Sofia's expose you to natural language patterns. Each reading session strengthens your intuitive grammar.",
+                "Krashen's research shows that reading is the most powerful tool for language acquisition. You're doing exactly the right thing!"
+            ] : [
+                "Has procesado vocabulario avanzado sobre mantenimiento, planificación y vida comunitaria. ¡Este 'input comprensible' construye tu sistema de inglés naturalmente!",
+                "Según Krashen, el contenido significativo como esta historia ayuda a construir habilidades lingüísticas duraderas.",
+                "Historias complejas como la de Sofía te exponen a patrones naturales del idioma. Cada lectura fortalece tu gramática intuitiva.",
+                "La investigación de Krashen muestra que la lectura es la herramienta más poderosa para la adquisición del idioma."
+            ];
+            document.getElementById('krashenFinalTip').innerHTML = krashenTips[Math.floor(Math.random() * krashenTips.length)];
+            
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            
+            if (percentage >= 70) {
+                createConfetti();
+            }
+        }
+
+        // ========================================
+        // STORY TOGGLE
+        // ========================================
+        
+        function toggleStory() {
+            const content = document.getElementById('storyContent');
+            const btn = document.getElementById('storyToggleBtn');
+            
+            content.classList.toggle('open');
+            btn.classList.toggle('open');
+        }
+
+        // ========================================
+        // RESET
+        // ========================================
+        
+        function resetQuiz() {
+            resetQuizState();
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

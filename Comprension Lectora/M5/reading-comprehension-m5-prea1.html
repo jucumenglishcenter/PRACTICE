@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension | Module 5 | Pre-A1 | JUCUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Pre-A1 Yellow Theme */
+            --primary: #F9A825;
+            --primary-light: #FFF8E1;
+            --primary-dark: #F57F17;
+            --primary-gradient: linear-gradient(135deg, #FFD54F 0%, #F9A825 100%);
+            --accent: #FF6F00;
+            --success: #4CAF50;
+            --success-light: #E8F5E9;
+            --error: #E53935;
+            --error-light: #FFEBEE;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #FFFDE7;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(249, 168, 37, 0.3);
+            --shadow-hover: 0 8px 30px rgba(249, 168, 37, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .mode-title {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .mode-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .mode-btn .mode-icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .mode-btn .mode-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .mode-btn .mode-desc {
+            font-size: 0.65rem;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+
+        /* Badges Section */
+        .badges-section {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .badges-header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .badges-title {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .badges-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 3px;
+        }
+
+        /* Badges Section */
+        .badges-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            opacity: 0.4;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .badge.unlocked {
+            opacity: 1;
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            animation: badgeUnlock 0.6s ease;
+        }
+
+        @keyframes badgeUnlock {
+            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .badge-tooltip {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-dark);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .badge:hover .badge-tooltip {
+            opacity: 1;
+        }
+
+        /* Story Toggle */
+        .story-toggle {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .story-toggle-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-light);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .story-toggle-btn:hover {
+            background: #FFF3C4;
+        }
+
+        .story-toggle-btn .arrow {
+            transition: transform 0.3s;
+        }
+
+        .story-toggle-btn.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .story-content.open {
+            max-height: 2000px;
+        }
+
+        .story-inner {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .story-paragraph {
+            margin-bottom: 15px;
+        }
+
+        .story-en {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .story-es {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-style: italic;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .story-en strong {
+            color: var(--primary-dark);
+            background: var(--primary-light);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* Krashen Tips */
+        .krashen-tip {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .krashen-tip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .krashen-tip-header .icon {
+            font-size: 1.2rem;
+        }
+
+        .krashen-tip-header .title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1565C0;
+        }
+
+        .krashen-tip p {
+            font-size: 0.8rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .krashen-tip .highlight {
+            color: #1565C0;
+            font-weight: 600;
+        }
+
+        /* Questions Section */
+        .questions-section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .question-card:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .question-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .question-number.answered-correct {
+            background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+        }
+
+        .question-number.answered-wrong {
+            background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .complexity-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .complexity-low {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .complexity-medium {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .complexity-high {
+            background: #FCE4EC;
+            color: #C2185B;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .option-btn {
+            padding: 12px 15px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn .option-letter {
+            width: 28px;
+            height: 28px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.selected-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .option-btn.selected-wrong {
+            border-color: var(--error);
+            background: var(--error-light);
+        }
+
+        .option-btn.selected-wrong .option-letter {
+            background: var(--error);
+            color: white;
+        }
+
+        .option-btn.show-correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .option-btn.show-correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: none;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            border-left: 4px solid var(--error);
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feedback.correct .feedback-title {
+            color: #2E7D32;
+        }
+
+        .feedback.incorrect .feedback-title {
+            color: #C62828;
+        }
+
+        .feedback-text {
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .results-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .results-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .results-message {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .results-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .result-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--primary-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .krashen-final {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .krashen-final h4 {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .krashen-final p {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Retry Button */
+        .retry-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Celebration Overlay */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .celebration-overlay.show {
+            display: flex;
+        }
+
+        .celebration-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            animation: celebrationPop 0.5s ease;
+        }
+
+        @keyframes celebrationPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 5rem;
+            animation: celebrationSpin 1s ease;
+        }
+
+        @keyframes celebrationSpin {
+            0% { transform: rotate(-10deg) scale(0); }
+            50% { transform: rotate(10deg) scale(1.2); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+
+        .celebration-title {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin: 15px 0 10px;
+        }
+
+        .celebration-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .celebration-close {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1001;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Theme Toggle Info */
+        .moral-theme {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #FFF9C4 100%);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .moral-theme .icon {
+            font-size: 2rem;
+        }
+
+        .moral-theme .text h4 {
+            font-size: 0.85rem;
+            color: var(--primary-dark);
+            margin-bottom: 3px;
+        }
+
+        .moral-theme .text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.2rem;
+            }
+            
+            .mode-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .badge {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>📚 Reading Comprehension</h1>
+                <div class="subtitle">Module 5 • Transport & Hope</div>
+                <div class="level-badge">💛 Pre-A1 | Básico</div>
+            </div>
+        </div>
+
+        <!-- Moral Theme -->
+        <div class="moral-theme">
+            <div class="icon">💛</div>
+            <div class="text">
+                <h4>Tema Moral: La Esperanza (Hope)</h4>
+                <p>"Yesterday was good. Tomorrow will be better."</p>
+            </div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <div class="mode-title">Selecciona el modo de práctica</div>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="setMode('es-es')" id="mode-es-es">
+                    <span class="mode-icon">🇪🇸➡️🇪🇸</span>
+                    <span class="mode-label">Español → Español</span>
+                    <span class="mode-desc">Comprensión total</span>
+                </button>
+                <button class="mode-btn" onclick="setMode('es-en')" id="mode-es-en">
+                    <span class="mode-icon">🇪🇸➡️🇬🇧</span>
+                    <span class="mode-label">Español → English</span>
+                    <span class="mode-desc">Desafío bilingüe</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Krashen Tip -->
+        <div class="krashen-tip">
+            <div class="krashen-tip-header">
+                <span class="icon">🧠</span>
+                <span class="title">Input Comprensible (Krashen)</span>
+            </div>
+            <p>
+                Según el lingüista <span class="highlight">Stephen Krashen</span>, adquirimos un idioma cuando entendemos mensajes. 
+                Lee la historia <span class="highlight">sin presión</span> — tu cerebro está absorbiendo patrones del inglés mientras disfrutas la narrativa. 
+                ¡Este es el <span class="highlight">"input comprensible"</span> en acción!
+            </p>
+        </div>
+
+        <!-- Badges Section -->
+        <div class="badges-section">
+            <div class="badges-header">
+                <div class="badges-title">🏆 Logros por Desbloquear</div>
+                <div class="badges-subtitle">Responde correctamente para ganar insignias</div>
+            </div>
+            
+            <div class="badges-container">
+                <div class="badge" id="badge-1" data-badge="first">
+                    🌱
+                    <span class="badge-tooltip">Primera Respuesta</span>
+                </div>
+                <div class="badge" id="badge-3" data-badge="streak">
+                    🔥
+                    <span class="badge-tooltip">3 Correctas Seguidas</span>
+                </div>
+                <div class="badge" id="badge-literal" data-badge="literal">
+                    📖
+                    <span class="badge-tooltip">Comprensión Literal</span>
+                </div>
+                <div class="badge" id="badge-inferential" data-badge="inferential">
+                    🔍
+                    <span class="badge-tooltip">Comprensión Inferencial</span>
+                </div>
+                <div class="badge" id="badge-critical" data-badge="critical">
+                    🎓
+                    <span class="badge-tooltip">Pensamiento Crítico</span>
+                </div>
+                <div class="badge" id="badge-perfect" data-badge="perfect">
+                    ⭐
+                    <span class="badge-tooltip">Perfección</span>
+                </div>
+                <div class="badge" id="badge-hope" data-badge="hope">
+                    💛
+                    <span class="badge-tooltip">Esperanza</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Toggle -->
+        <div class="story-toggle">
+            <button class="story-toggle-btn" onclick="toggleStory()" id="storyToggleBtn">
+                <span>📖 Ver la Historia de Maria y Carlos</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="story-content" id="storyContent">
+                <div class="story-inner">
+                    <div class="story-paragraph">
+                        <p class="story-en">Maria needs to <strong>buy</strong> a new <strong>month</strong> ticket for the bus.</p>
+                        <p class="story-es">Maria necesita comprar un nuevo boleto de mes para el autobús.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en"><strong>Yesterday</strong>, she went to the ticket office with her <strong>friend</strong> Carlos.</p>
+                        <p class="story-es">Ayer, fue a la taquilla con su amigo Carlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The <strong>person</strong> at the window is very nice.</p>
+                        <p class="story-es">La persona en la ventana es muy amable.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"<strong>What</strong> time do you go to <strong>work</strong>?" asks the <strong>person</strong>.</p>
+                        <p class="story-es">"¿A qué hora vas al trabajo?" pregunta la persona.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I go at six in the morning," says Maria.</p>
+                        <p class="story-es">"Voy a las seis de la mañana," dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Carlos needs a ticket too. "Can we <strong>buy</strong> two tickets?" asks Maria.</p>
+                        <p class="story-es">Carlos necesita un boleto también. "¿Podemos comprar dos boletos?" pregunta Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"Yes. <strong>Either</strong> the <strong>month</strong> ticket or the week ticket," says the <strong>person</strong>.</p>
+                        <p class="story-es">"Sí. Cualquiera de los dos, el boleto de mes o el boleto de semana," dice la persona.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Maria and Carlos <strong>buy</strong> the <strong>month</strong> tickets. They are happy because <strong>tomorrow</strong> they can use <strong>them</strong>.</p>
+                        <p class="story-es">Maria y Carlos compran los boletos de mes. Están felices porque mañana pueden usarlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The next day, Maria and Carlos go to the bus stop. They need to <strong>catch</strong> the bus at six.</p>
+                        <p class="story-es">Al día siguiente, Maria y Carlos van a la parada del autobús. Necesitan atrapar el autobús a las seis.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I <strong>hope</strong> we don't miss it," says Carlos.</p>
+                        <p class="story-es">"Espero que no lo perdamos," dice Carlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Maria brings <strong>food</strong> and <strong>stuff</strong> in her bag. "<strong>What</strong> do you have?" asks Carlos.</p>
+                        <p class="story-es">Maria trae comida y cosas en su bolsa. "¿Qué tienes?" pregunta Carlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"I have water and a sandwich," says Maria.</p>
+                        <p class="story-es">"Tengo agua y un sándwich," dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The bus arrives on time. They use their new <strong>month</strong> tickets.</p>
+                        <p class="story-es">El autobús llega a tiempo. Usan sus nuevos boletos de mes.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Maria and Carlos sit near the window. "This is a good plan," says Maria.</p>
+                        <p class="story-es">Maria y Carlos se sientan cerca de la ventana. "Este es un buen plan," dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">They go to <strong>work</strong> together every day now. Sometimes they go with a <strong>group</strong> of <strong>friends</strong>.</p>
+                        <p class="story-es">Van al trabajo juntos todos los días ahora. A veces van con un grupo de amigos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">One day, they miss the stop near Maria's <strong>house</strong>.</p>
+                        <p class="story-es">Un día, pierden la parada cerca de la casa de Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"Oh no! We need to <strong>build</strong> a new plan," says Carlos.</p>
+                        <p class="story-es">"¡Oh no! Necesitamos construir un nuevo plan," dice Carlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"Let's <strong>align</strong> our time better <strong>tomorrow</strong>," says Maria.</p>
+                        <p class="story-es">"Vamos a alinear nuestro tiempo mejor mañana," dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">They <strong>catch</strong> the next bus back. "I <strong>hope</strong> we don't miss it again," says Carlos.</p>
+                        <p class="story-es">Atrapan el próximo autobús de regreso. "Espero que no lo perdamos de nuevo," dice Carlos.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"We will <strong>catch</strong> it next time. For <strong>example</strong>, we can set an alarm," says Maria.</p>
+                        <p class="story-es">"Lo atraparemos la próxima vez. Por ejemplo, podemos poner una alarma," dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">They <strong>apply</strong> the new plan the next day. It works! They <strong>catch</strong> the bus on time.</p>
+                        <p class="story-es">Aplican el nuevo plan al día siguiente. ¡Funciona! Atrapan el autobús a tiempo.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Maria and Carlos are happy. They go to Maria's <strong>house</strong> to celebrate.</p>
+                        <p class="story-es">Maria y Carlos están felices. Van a la casa de Maria para celebrar.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"<strong>Tomorrow</strong> will be better," says Maria with <strong>hope</strong>.</p>
+                        <p class="story-es">"Mañana será mejor," dice Maria con esperanza.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Carlos smiles. "Yes. We can do it together."</p>
+                        <p class="story-es">Carlos sonríe. "Sí. Podemos hacerlo juntos."</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">The <strong>group</strong> of <strong>friends</strong> helps <strong>them</strong> every day. They <strong>buy</strong> <strong>food</strong> to share on the bus.</p>
+                        <p class="story-es">El grupo de amigos los ayuda todos los días. Compran comida para compartir en el autobús.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">"<strong>What</strong> a good <strong>group</strong>!" says Maria.</p>
+                        <p class="story-es">"¡Qué buen grupo!" dice Maria.</p>
+                    </div>
+                    <div class="story-paragraph">
+                        <p class="story-en">Every <strong>month</strong>, they <strong>buy</strong> new tickets together. They never miss the stop to <strong>work</strong> now.</p>
+                        <p class="story-es">Cada mes, compran boletos nuevos juntos. Nunca pierden la parada al trabajo ahora.</p>
+                    </div>
+                    <div class="story-paragraph" style="background: var(--primary-light); padding: 12px; border-radius: 10px; margin-top: 10px;">
+                        <p class="story-en" style="font-weight: 600; font-size: 1.05rem;"><strong>Yesterday</strong> was good. <strong>Tomorrow</strong> will be better. 💛</p>
+                        <p class="story-es">Ayer fue bueno. Mañana será mejor.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions Section -->
+        <div class="questions-section" id="questionsSection">
+            <!-- Questions will be dynamically loaded based on mode -->
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-icon" id="resultsIcon">🏆</div>
+            <h2 class="results-title" id="resultsTitle">¡Completado!</h2>
+            <div class="results-score" id="finalScore">7/7</div>
+            <p class="results-message" id="resultsMessage">¡Excelente comprensión lectora!</p>
+            
+            <div class="results-badges" id="resultsBadges"></div>
+            
+            <div class="krashen-final">
+                <h4>🧠 ¿Sabías que...?</h4>
+                <p id="krashenFinalTip">
+                    Al completar este ejercicio, has expuesto tu cerebro a patrones naturales del inglés. 
+                    Según Krashen, <strong>la adquisición ocurre inconscientemente</strong> cuando entendemos mensajes. 
+                    ¡Cada vez que lees una historia en inglés, estás construyendo tu competencia lingüística!
+                </p>
+            </div>
+            
+            <button class="retry-btn" onclick="resetQuiz()">🔄 Intentar de Nuevo</button>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">🏆</div>
+            <h3 class="celebration-title" id="celebrationTitle">¡Logro Desbloqueado!</h3>
+            <p class="celebration-desc" id="celebrationDesc">Has completado algo increíble</p>
+            <button class="celebration-close" onclick="closeCelebration()">¡Genial!</button>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div class="confetti" id="confettiContainer"></div>
+
+    <script>
+        // ========================================
+        // QUIZ DATA - Both Modes
+        // ========================================
+        
+        const quizData = {
+            'es-es': [
+                {
+                    id: 1,
+                    question: '¿Qué necesita comprar Maria al inicio de la historia?',
+                    options: [
+                        'Un boleto de semana',
+                        'Un boleto de mes para el autobús',
+                        'Comida para el viaje',
+                        'Un mapa de la ciudad'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! La historia dice: "Maria needs to buy a new month ticket for the bus".',
+                    feedbackIncorrect: 'Revisa la primera línea de la historia donde dice qué necesita comprar Maria.',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: '¿Con quién fue Maria a la taquilla?',
+                    options: [
+                        'Con su mamá',
+                        'Sola',
+                        'Con su amigo Carlos',
+                        'Con un grupo de amigos'
+                    ],
+                    correct: 2,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! "Yesterday, she went to the ticket office with her friend Carlos."',
+                    feedbackIncorrect: 'Busca en el segundo párrafo quién acompañó a Maria.',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: '¿A qué hora va Maria al trabajo?',
+                    options: [
+                        'A las siete de la mañana',
+                        'A las seis de la mañana',
+                        'A las ocho de la mañana',
+                        'A las cinco de la tarde'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: '¡Correcto! Maria dice: "I go at six in the morning."',
+                    feedbackIncorrect: 'Busca la respuesta de Maria a la pregunta de la persona en la ventana.',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: '¿Qué trae Maria en su bolsa para el viaje en autobús?',
+                    options: [
+                        'Libros y cuadernos',
+                        'Dinero y llaves',
+                        'Agua y un sándwich',
+                        'Su teléfono y audífonos'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! Maria dice: "I have water and a sandwich."',
+                    feedbackIncorrect: 'Busca cuando Carlos pregunta "What do you have?"',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: '¿Por qué Carlos dice "We need to build a new plan"?',
+                    options: [
+                        'Porque el autobús no llegó',
+                        'Porque perdieron la parada cerca de la casa de Maria',
+                        'Porque no tenían boletos',
+                        'Porque estaban muy cansados'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! La historia dice: "One day, they miss the stop near Maria\'s house" y luego Carlos propone el nuevo plan.',
+                    feedbackIncorrect: 'Busca la parte donde dice "Oh no!" para entender qué problema tuvieron.',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: '¿Qué solución propone Maria para no perder el autobús otra vez?',
+                    options: [
+                        'Tomar otro autobús',
+                        'Salir más temprano',
+                        'Poner una alarma',
+                        'Caminar al trabajo'
+                    ],
+                    correct: 2,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: '¡Correcto! Maria dice: "For example, we can set an alarm."',
+                    feedbackIncorrect: 'Busca cuando Maria dice "For example..." para encontrar su solución.',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: '¿Cuál es el mensaje principal de esta historia?',
+                    options: [
+                        'Es importante tener esperanza y trabajar juntos para mejorar',
+                        'Los autobuses siempre llegan tarde',
+                        'Es mejor caminar que tomar el autobús',
+                        'No debemos ir al trabajo con amigos'
+                    ],
+                    correct: 0,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Crítico',
+                    feedbackCorrect: '¡Correcto! El tema es "Hope" (Esperanza). Maria dice "Tomorrow will be better" y el grupo de amigos los ayuda cada día.',
+                    feedbackIncorrect: 'Piensa en el tema moral: "Hope" (Esperanza). ¿Qué nos enseña la historia sobre trabajar juntos?',
+                    type: 'critical'
+                }
+            ],
+            'es-en': [
+                {
+                    id: 1,
+                    question: '¿Cómo es la persona en la ventana de la taquilla?',
+                    options: [
+                        'The person is angry',
+                        'The person is very nice',
+                        'The person is tired',
+                        'The person is busy'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "The person at the window is very nice."',
+                    feedbackIncorrect: 'Look at the third paragraph of the story.',
+                    type: 'literal'
+                },
+                {
+                    id: 2,
+                    question: '¿Cuándo llegó el autobús?',
+                    options: [
+                        'The bus arrived late',
+                        'The bus arrived early',
+                        'The bus arrived on time',
+                        'The bus did not arrive'
+                    ],
+                    correct: 2,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "The bus arrives on time."',
+                    feedbackIncorrect: 'Find where the story talks about the bus arriving.',
+                    type: 'literal'
+                },
+                {
+                    id: 3,
+                    question: '¿Dónde se sientan Maria y Carlos en el autobús?',
+                    options: [
+                        'They sit near the door',
+                        'They sit near the window',
+                        'They sit in the back',
+                        'They stand up'
+                    ],
+                    correct: 1,
+                    complexity: 'low',
+                    complexityLabel: '📖 Literal',
+                    feedbackCorrect: 'Correct! "Maria and Carlos sit near the window."',
+                    feedbackIncorrect: 'Find the part where they get on the bus.',
+                    type: 'literal'
+                },
+                {
+                    id: 4,
+                    question: '¿Qué hacen Maria y Carlos cada mes?',
+                    options: [
+                        'They buy new tickets together',
+                        'They go to a new job',
+                        'They change their bus stop',
+                        'They visit different friends'
+                    ],
+                    correct: 0,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! "Every month, they buy new tickets together."',
+                    feedbackIncorrect: 'Look near the end of the story.',
+                    type: 'literal'
+                },
+                {
+                    id: 5,
+                    question: '¿Por qué Carlos dice "I hope we don\'t miss it"?',
+                    options: [
+                        'Because he is tired',
+                        'Because they need to catch the bus at six',
+                        'Because he forgot his ticket',
+                        'Because the bus is expensive'
+                    ],
+                    correct: 1,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! Carlos is worried because "They need to catch the bus at six."',
+                    feedbackIncorrect: 'Look at what happens before Carlos says this.',
+                    type: 'inferential'
+                },
+                {
+                    id: 6,
+                    question: '¿Cómo se sienten Maria y Carlos cuando el nuevo plan funciona?',
+                    options: [
+                        'They are sad',
+                        'They are angry',
+                        'They are tired',
+                        'They are happy'
+                    ],
+                    correct: 3,
+                    complexity: 'medium',
+                    complexityLabel: '🔍 Inferencial',
+                    feedbackCorrect: 'Correct! "It works! They catch the bus on time. Maria and Carlos are happy."',
+                    feedbackIncorrect: 'Look at what happens after they apply the new plan.',
+                    type: 'inferential'
+                },
+                {
+                    id: 7,
+                    question: '¿Qué nos enseña esta historia sobre los amigos?',
+                    options: [
+                        'Friends help each other every day',
+                        'Friends are not important',
+                        'Friends make problems worse',
+                        'Friends always miss the bus'
+                    ],
+                    correct: 0,
+                    complexity: 'high',
+                    complexityLabel: '🎓 Crítico',
+                    feedbackCorrect: 'Correct! "The group of friends helps them every day" and Carlos says "We can do it together."',
+                    feedbackIncorrect: 'Remember that the group of friends helps Maria and Carlos work together.',
+                    type: 'critical'
+                }
+            ]
+        };
+
+        // ========================================
+        // STATE MANAGEMENT
+        // ========================================
+        
+        let currentMode = 'es-es';
+        let answers = {};
+        let correctCount = 0;
+        let streak = 0;
+        let maxStreak = 0;
+        let unlockedBadges = new Set();
+        let literalCorrect = 0;
+        let inferentialCorrect = 0;
+        let criticalCorrect = 0;
+        let firstAnswerGiven = false;
+
+        // ========================================
+        // INITIALIZATION
+        // ========================================
+        
+        function init() {
+            renderQuestions();
+        }
+
+        // ========================================
+        // MODE SWITCHING
+        // ========================================
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update UI
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+            
+            // Reset quiz state
+            resetQuizState();
+            renderQuestions();
+        }
+
+        function resetQuizState() {
+            answers = {};
+            correctCount = 0;
+            streak = 0;
+            maxStreak = 0;
+            literalCorrect = 0;
+            inferentialCorrect = 0;
+            criticalCorrect = 0;
+            firstAnswerGiven = false;
+            unlockedBadges = new Set();
+            
+            // Reset badges UI
+            document.querySelectorAll('.badge').forEach(b => b.classList.remove('unlocked'));
+            
+            // Hide results
+            document.getElementById('resultsSection').classList.remove('show');
+        }
+
+        // ========================================
+        // RENDER QUESTIONS
+        // ========================================
+        
+        function renderQuestions() {
+            const container = document.getElementById('questionsSection');
+            const questions = quizData[currentMode];
+            
+            let html = '<h3 style="margin-bottom: 20px; color: var(--primary-dark); font-size: 1rem;">📝 Preguntas de Comprensión</h3>';
+            
+            questions.forEach((q, index) => {
+                const complexityClass = q.complexity === 'low' ? 'complexity-low' : 
+                                       q.complexity === 'medium' ? 'complexity-medium' : 'complexity-high';
+                
+                html += `
+                    <div class="question-card" id="question-${q.id}">
+                        <div class="question-header">
+                            <div class="question-number" id="qnum-${q.id}">${index + 1}</div>
+                            <div class="question-text">
+                                ${q.question}
+                                <div class="complexity-badge ${complexityClass}">${q.complexityLabel}</div>
+                            </div>
+                        </div>
+                        <div class="options-grid" id="options-${q.id}">
+                            ${q.options.map((opt, i) => `
+                                <button class="option-btn" onclick="selectOption(${q.id}, ${i})" id="opt-${q.id}-${i}">
+                                    <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                    <span>${opt}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="feedback" id="feedback-${q.id}"></div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // ========================================
+        // ANSWER HANDLING
+        // ========================================
+        
+        function selectOption(questionId, optionIndex) {
+            if (answers[questionId] !== undefined) return; // Already answered
+            
+            const questions = quizData[currentMode];
+            const question = questions.find(q => q.id === questionId);
+            const isCorrect = optionIndex === question.correct;
+            
+            // Record answer
+            answers[questionId] = optionIndex;
+            
+            // First answer badge
+            if (!firstAnswerGiven) {
+                firstAnswerGiven = true;
+                unlockBadge('badge-1', '🌱', '¡Primera Respuesta!', 'Has comenzado tu viaje de comprensión lectora.');
+            }
+            
+            // Update UI
+            const optionBtn = document.getElementById(`opt-${questionId}-${optionIndex}`);
+            const qNum = document.getElementById(`qnum-${questionId}`);
+            
+            // Disable all options
+            question.options.forEach((_, i) => {
+                document.getElementById(`opt-${questionId}-${i}`).disabled = true;
+            });
+            
+            if (isCorrect) {
+                optionBtn.classList.add('selected-correct');
+                qNum.classList.add('answered-correct');
+                correctCount++;
+                streak++;
+                maxStreak = Math.max(maxStreak, streak);
+                
+                // Track type
+                if (question.type === 'literal') literalCorrect++;
+                else if (question.type === 'inferential') inferentialCorrect++;
+                else if (question.type === 'critical') criticalCorrect++;
+                
+                // Streak badge
+                if (streak >= 3 && !unlockedBadges.has('badge-3')) {
+                    unlockBadge('badge-3', '🔥', '¡Racha de 3!', '3 respuestas correctas seguidas. ¡Estás en fuego!');
+                }
+                
+                // Type badges
+                if (literalCorrect >= 3 && !unlockedBadges.has('badge-literal')) {
+                    unlockBadge('badge-literal', '📖', '¡Comprensión Literal!', 'Dominas la información explícita del texto.');
+                }
+                if (inferentialCorrect >= 2 && !unlockedBadges.has('badge-inferential')) {
+                    unlockBadge('badge-inferential', '🔍', '¡Detective de Inferencias!', 'Conectas información para sacar conclusiones.');
+                }
+                if (criticalCorrect >= 1 && !unlockedBadges.has('badge-critical')) {
+                    unlockBadge('badge-critical', '🎓', '¡Pensador Crítico!', 'Identificas el mensaje profundo de la historia.');
+                }
+                
+                showFeedback(questionId, true, question.feedbackCorrect);
+            } else {
+                optionBtn.classList.add('selected-wrong');
+                qNum.classList.add('answered-wrong');
+                document.getElementById(`opt-${questionId}-${question.correct}`).classList.add('show-correct');
+                streak = 0;
+                
+                showFeedback(questionId, false, question.feedbackIncorrect);
+            }
+            
+            // Check if quiz complete
+            if (Object.keys(answers).length === questions.length) {
+                setTimeout(showResults, 1500);
+            }
+        }
+
+        // ========================================
+        // FEEDBACK
+        // ========================================
+        
+        function showFeedback(questionId, isCorrect, message) {
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.innerHTML = `
+                <div class="feedback-title">
+                    ${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}
+                </div>
+                <div class="feedback-text">${message}</div>
+            `;
+        }
+
+        // ========================================
+        // BADGES
+        // ========================================
+        
+        function unlockBadge(badgeId, icon, title, description) {
+            if (unlockedBadges.has(badgeId)) return;
+            
+            unlockedBadges.add(badgeId);
+            const badge = document.getElementById(badgeId);
+            badge.classList.add('unlocked');
+            
+            // Show celebration
+            showCelebration(icon, title, description);
+        }
+
+        function showCelebration(icon, title, description) {
+            document.getElementById('celebrationIcon').textContent = icon;
+            document.getElementById('celebrationTitle').textContent = title;
+            document.getElementById('celebrationDesc').textContent = description;
+            document.getElementById('celebrationOverlay').classList.add('show');
+            
+            // Confetti
+            createConfetti();
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationOverlay').classList.remove('show');
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = '';
+            
+            const colors = ['#F9A825', '#FFD54F', '#FF6F00', '#4CAF50', '#2196F3', '#E91E63'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+            }
+            
+            setTimeout(() => container.innerHTML = '', 3000);
+        }
+
+        // ========================================
+        // RESULTS
+        // ========================================
+        
+        function showResults() {
+            const total = quizData[currentMode].length;
+            const percentage = Math.round((correctCount / total) * 100);
+            
+            // Determine result tier
+            let icon, title, message;
+            if (percentage === 100) {
+                icon = '🏆';
+                title = '¡PERFECTO!';
+                message = '¡Comprensión lectora excepcional! Dominas completamente la historia.';
+                if (!unlockedBadges.has('badge-perfect')) {
+                    unlockBadge('badge-perfect', '⭐', '¡Perfección!', '7 de 7 correctas. ¡Eres increíble!');
+                }
+            } else if (percentage >= 85) {
+                icon = '🌟';
+                title = '¡EXCELENTE!';
+                message = '¡Gran comprensión! Entiendes muy bien la historia.';
+            } else if (percentage >= 70) {
+                icon = '👍';
+                title = '¡MUY BIEN!';
+                message = 'Buena comprensión. Sigue practicando para mejorar.';
+            } else if (percentage >= 50) {
+                icon = '📚';
+                title = '¡SIGUE ADELANTE!';
+                message = 'Vas por buen camino. Lee la historia nuevamente y vuelve a intentarlo.';
+            } else {
+                icon = '💪';
+                title = '¡NO TE RINDAS!';
+                message = 'La práctica hace al maestro. Lee la historia con calma y vuelve a intentarlo.';
+            }
+            
+            // Hope badge for completing
+            if (!unlockedBadges.has('badge-hope')) {
+                unlockBadge('badge-hope', '💛', '¡Esperanza!', 'Como dice Maria: "Tomorrow will be better."');
+            }
+            
+            document.getElementById('resultsIcon').textContent = icon;
+            document.getElementById('resultsTitle').textContent = title;
+            document.getElementById('finalScore').textContent = `${correctCount}/${total}`;
+            document.getElementById('resultsMessage').textContent = message;
+            
+            // Show earned badges
+            const badgesContainer = document.getElementById('resultsBadges');
+            badgesContainer.innerHTML = '';
+            unlockedBadges.forEach(badgeId => {
+                const badge = document.getElementById(badgeId);
+                const tooltip = badge.querySelector('.badge-tooltip').textContent;
+                const icon = badge.textContent.trim().split('\n')[0];
+                badgesContainer.innerHTML += `<div class="result-badge">${icon} ${tooltip}</div>`;
+            });
+            
+            // Krashen tip based on performance
+            const krashenTips = [
+                "Al leer esta historia, tu cerebro procesó más de 300 palabras en inglés. Según Krashen, cada exposición al 'input comprensible' fortalece tu sistema interno del idioma.",
+                "La comprensión lectora es una habilidad 'adquirida', no 'aprendida'. Esto significa que cada vez que entiendes una historia en inglés, tu cerebro está construyendo competencia de forma natural.",
+                "Krashen dice que los mejores resultados vienen cuando el input es 'i+1' — un poco más avanzado que tu nivel actual. ¡Esta historia está diseñada exactamente así!",
+                "El 'filtro afectivo' bajo (sin estrés ni ansiedad) permite mejor adquisición. ¡Las historias divertidas como esta son perfectas para aprender!"
+            ];
+            document.getElementById('krashenFinalTip').innerHTML = krashenTips[Math.floor(Math.random() * krashenTips.length)];
+            
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            
+            // Final confetti for good scores
+            if (percentage >= 70) {
+                createConfetti();
+            }
+        }
+
+        // ========================================
+        // STORY TOGGLE
+        // ========================================
+        
+        function toggleStory() {
+            const content = document.getElementById('storyContent');
+            const btn = document.getElementById('storyToggleBtn');
+            
+            content.classList.toggle('open');
+            btn.classList.toggle('open');
+        }
+
+        // ========================================
+        // RESET
+        // ========================================
+        
+        function resetQuiz() {
+            resetQuizState();
+            renderQuestions();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
