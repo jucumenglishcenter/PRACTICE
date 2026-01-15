@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension | Module 6 | Pre-A1 | JUCUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(246, 211, 101, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        .level-indicator {
+            font-size: 2rem;
+            margin-top: 10px;
+        }
+
+        /* Moral Theme Box */
+        .moral-box {
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+        }
+
+        .moral-box h4 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .moral-box .theme {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .moral-box .quote {
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        /* Mode Selector */
+        .mode-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .mode-section h3 {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mode-btn {
+            padding: 18px 15px;
+            border: 3px solid #f6d365;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(246, 211, 101, 0.3);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-color: #fda085;
+        }
+
+        .mode-btn .flags {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .mode-btn .mode-title {
+            font-weight: 700;
+            color: #d48806;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .mode-btn.active .mode-title {
+            color: white;
+        }
+
+        .mode-btn .mode-desc {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .mode-btn.active .mode-desc {
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Krashen Info Box */
+        .krashen-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2196f3;
+        }
+
+        .krashen-box .icon-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .krashen-box .icon {
+            font-size: 1.5rem;
+        }
+
+        .krashen-box h4 {
+            color: #1565c0;
+            font-size: 1rem;
+        }
+
+        .krashen-box p {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* Achievements Section */
+        .achievements-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .achievements-section h3 {
+            text-align: center;
+            color: #d48806;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .achievements-section .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .achievement.unlocked {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            opacity: 1;
+            box-shadow: 0 3px 10px rgba(246, 211, 101, 0.3);
+        }
+
+        .achievement .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement .name {
+            font-size: 0.65rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .achievement.unlocked .name {
+            color: #d48806;
+            font-weight: 600;
+        }
+
+        /* Story Section */
+        .story-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .story-header {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .story-header:hover {
+            filter: brightness(1.05);
+        }
+
+        .story-header h3 {
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .story-toggle {
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .story-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .story-content.open {
+            max-height: 2000px;
+        }
+
+        .story-inner {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .story-line {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #fffbf0;
+            border-radius: 10px;
+            border-left: 4px solid #f6d365;
+        }
+
+        .story-line .english {
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .story-line .spanish {
+            color: #888;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .story-line .vocab {
+            color: #d48806;
+            font-weight: 700;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header h3 {
+            color: #d48806;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .quiz-header .mode-indicator {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .question-card.correct {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .question-card.incorrect {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+
+        .question-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #555;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #f6d365;
+            background: #fff9e6;
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn.selected-correct {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .option-btn.selected-wrong {
+            background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option-btn.show-correct {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border-color: #4caf50;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct-fb {
+            background: #e8f5e9;
+            border: 2px solid #a5d6a7;
+        }
+
+        .feedback.incorrect-fb {
+            background: #ffebee;
+            border: 2px solid #ef9a9a;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .feedback.correct-fb .feedback-title {
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect-fb .feedback-title {
+            color: #c62828;
+        }
+
+        .feedback-text {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* Completion Card */
+        .completion-card {
+            display: none;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(246, 211, 101, 0.4);
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .completion-card.show {
+            display: block;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .completion-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .completion-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .completion-message {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            margin: 15px 0;
+        }
+
+        .completion-krashen {
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .completion-krashen h4 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .completion-krashen p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .reset-btn {
+            background: white;
+            color: #d48806;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Achievement Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 320px;
+            margin: 20px;
+            animation: bounceIn 0.4s ease;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            color: #d48806;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Scrollbar */
+        .story-inner::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .story-inner::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .story-inner::-webkit-scrollbar-thumb {
+            background: #f6d365;
+            border-radius: 3px;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📚 Reading Comprehension</h1>
+            <div class="subtitle">Module 6 • Errands & Purpose</div>
+            <div class="level-badge">💛 Pre-A1 | Básico</div>
+            <div class="level-indicator">💛</div>
+        </header>
+
+        <!-- Moral Theme -->
+        <div class="moral-box">
+            <h4>Tema Moral: El Propósito (Purpose)</h4>
+            <div class="theme">🎯 Purpose</div>
+            <div class="quote">"Helping others gives purpose to our day."</div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-section">
+            <h3>Selecciona el modo de práctica</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="setMode('es-es')">
+                    <div class="flags">🇪🇸➡️🇪🇸</div>
+                    <div class="mode-title">Español → Español</div>
+                    <div class="mode-desc">Comprensión total</div>
+                </button>
+                <button class="mode-btn" onclick="setMode('es-en')">
+                    <div class="flags">🇪🇸➡️🇬🇧</div>
+                    <div class="mode-title">Español → English</div>
+                    <div class="mode-desc">Desafío bilingüe</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Krashen Info -->
+        <div class="krashen-box">
+            <div class="icon-title">
+                <span class="icon">🧠</span>
+                <h4>Input Comprensible (Krashen)</h4>
+            </div>
+            <p>Según el lingüista Stephen Krashen, adquirimos un idioma cuando entendemos mensajes. Lee la historia sin presión — tu cerebro está absorbiendo patrones del inglés mientras disfrutas la narrativa. ¡Este es el "input comprensible" en acción!</p>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-section">
+            <h3>🏆 Logros por Desbloquear</h3>
+            <p class="subtitle">Responde correctamente para ganar insignias</p>
+            <div class="achievements-grid">
+                <div class="achievement" id="ach-first">
+                    <div class="icon">🌱</div>
+                    <div class="name">Primera Respuesta</div>
+                </div>
+                <div class="achievement" id="ach-streak">
+                    <div class="icon">🔥</div>
+                    <div class="name">3 Correctas Seguidas</div>
+                </div>
+                <div class="achievement" id="ach-literal">
+                    <div class="icon">📖</div>
+                    <div class="name">Comprensión Literal</div>
+                </div>
+                <div class="achievement" id="ach-inferential">
+                    <div class="icon">🔍</div>
+                    <div class="name">Comprensión Inferencial</div>
+                </div>
+                <div class="achievement" id="ach-critical">
+                    <div class="icon">🎓</div>
+                    <div class="name">Pensamiento Crítico</div>
+                </div>
+                <div class="achievement" id="ach-perfect">
+                    <div class="icon">⭐</div>
+                    <div class="name">Perfección</div>
+                </div>
+                <div class="achievement" id="ach-purpose">
+                    <div class="icon">🎯</div>
+                    <div class="name">Propósito</div>
+                </div>
+                <div class="achievement" id="ach-helper">
+                    <div class="icon">🤝</div>
+                    <div class="name">Ayudante</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Section -->
+        <div class="story-section">
+            <div class="story-header" onclick="toggleStory()">
+                <h3>📖 Ver la Historia de Ana y Carla</h3>
+                <span class="story-toggle" id="story-toggle">▼</span>
+            </div>
+            <div class="story-content" id="story-content">
+                <div class="story-inner">
+                    <div class="story-line">
+                        <div class="english">Ana lives in a small <span class="vocab">town</span>.</div>
+                        <div class="spanish">Ana vive en un pequeño pueblo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">It is a quiet <span class="vocab">place</span> with friendly people.</div>
+                        <div class="spanish">Es un lugar tranquilo con gente amable.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Today, Ana has a <span class="vocab">problem</span>.</div>
+                        <div class="spanish">Hoy, Ana tiene un problema.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Her <span class="vocab">phone</span> does not have <span class="vocab">enough</span> credit.</div>
+                        <div class="spanish">Su teléfono no tiene suficiente crédito.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She walks to a small <span class="vocab">business</span> on Main Street.</div>
+                        <div class="spanish">Ella camina a un pequeño negocio en la calle Principal.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Luis works there.</div>
+                        <div class="spanish">Luis trabaja ahí.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana pays the <span class="vocab">amount</span> and gets her <span class="vocab">change</span>.</div>
+                        <div class="spanish">Ana paga la cantidad y recibe su cambio.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Now her <span class="vocab">phone</span> works again!</div>
+                        <div class="spanish">¡Ahora su teléfono funciona otra vez!</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">On the way home, Ana sees a new family.</div>
+                        <div class="spanish">De camino a casa, Ana ve a una familia nueva.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">They</span> are standing near the park.</div>
+                        <div class="spanish">Ellos están parados cerca del parque.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana walks to them and says hello.</div>
+                        <div class="spanish">Ana camina hacia ellos y dice hola.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The woman is Carla. She is <span class="vocab">American</span>, from Texas.</div>
+                        <div class="spanish">La mujer es Carla. Es estadounidense, de Texas.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She moved from another <span class="vocab">country</span> for her husband's job.</div>
+                        <div class="spanish">Se mudó de otro país por el trabajo de su esposo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">That is the <span class="vocab">cause</span> of their move.</div>
+                        <div class="spanish">Esa es la causa de su mudanza.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Carla has a <span class="vocab">child</span> named Pedro.</div>
+                        <div class="spanish">Carla tiene un niño llamado Pedro.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Pedro has big blue <span class="vocab">eyes</span> and a happy smile.</div>
+                        <div class="spanish">Pedro tiene grandes ojos azules y una sonrisa feliz.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">He wants to <span class="vocab">train</span> soccer with the local kids.</div>
+                        <div class="spanish">Él quiere entrenar fútbol con los niños locales.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana knows a good <span class="vocab">place</span> to <span class="vocab">train</span>.</div>
+                        <div class="spanish">Ana conoce un buen lugar para entrenar.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The kids practice at the park every Saturday.</div>
+                        <div class="spanish">Los niños practican en el parque cada sábado.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Carla asks about the bus <span class="vocab">system</span> in <span class="vocab">town</span>.</div>
+                        <div class="spanish">Carla pregunta sobre el sistema de autobuses en el pueblo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana explains that the <span class="vocab">system</span> is simple.</div>
+                        <div class="spanish">Ana explica que el sistema es simple.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">Those</span> buses go to the center and the park.</div>
+                        <div class="spanish">Esos autobuses van al centro y al parque.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">They</span> stop near the soccer field.</div>
+                        <div class="spanish">Ellos paran cerca del campo de fútbol.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Carla needs to <span class="vocab">bring</span> Pedro to practice.</div>
+                        <div class="spanish">Carla necesita traer a Pedro a la práctica.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana offers to help.</div>
+                        <div class="spanish">Ana ofrece ayudar.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She can <span class="vocab">bring</span> Pedro with her own son!</div>
+                        <div class="spanish">¡Ella puede traer a Pedro con su propio hijo!</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Carla is very happy. <span class="vocab">Which</span> day is the practice?</div>
+                        <div class="spanish">Carla está muy feliz. ¿Cuál día es la práctica?</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Saturday at ten. That <span class="vocab">amount</span> of time is <span class="vocab">enough</span> to prepare.</div>
+                        <div class="spanish">Sábado a las diez. Esa cantidad de tiempo es suficiente para prepararse.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Pedro asks if he can <span class="vocab">bring</span> his <span class="vocab">American</span> ball.</div>
+                        <div class="spanish">Pedro pregunta si puede traer su pelota estadounidense.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Of course! <span class="vocab">Those</span> balls are very good.</div>
+                        <div class="spanish">¡Claro! Esas pelotas son muy buenas.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana is happy to help the new family.</div>
+                        <div class="spanish">Ana está feliz de ayudar a la familia nueva.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">This <span class="vocab">town</span> is a good <span class="vocab">place</span> for <span class="vocab">children</span>.</div>
+                        <div class="spanish">Este pueblo es un buen lugar para niños.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">They</span> will be good friends.</div>
+                        <div class="spanish">Ellos serán buenos amigos.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Ana walks home with a smile.</div>
+                        <div class="spanish">Ana camina a casa con una sonrisa.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She solved her <span class="vocab">phone</span> <span class="vocab">problem</span> and made new friends.</div>
+                        <div class="spanish">Ella resolvió su problema de teléfono e hizo nuevos amigos.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">It was a good day with clear purpose. 💛</div>
+                        <div class="spanish">Fue un buen día con propósito claro.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <div class="quiz-header">
+                <h3>✏️ Quiz de Comprensión</h3>
+                <div class="mode-indicator" id="mode-display">Modo: Español → Español</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0 de 7 preguntas</div>
+            </div>
+
+            <!-- Questions Container ES-ES -->
+            <div id="quiz-es-es">
+                <!-- Q1 - BAJA (Literal) -->
+                <div class="question-card" id="q1-es">
+                    <span class="question-badge">Pregunta 1/7 • Literal</span>
+                    <div class="question-text">¿Dónde vive Ana?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 0, 1, 'literal')">a) En una ciudad grande</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 1, 1, 'literal')">b) En un pequeño pueblo</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 2, 1, 'literal')">c) En la playa</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 3, 1, 'literal')">d) En las montañas</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q1-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "Ana lives in a small <strong>town</strong>" (Ana vive en un pequeño pueblo). Town = pueblo.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q1-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "En un pequeño pueblo". Revisa la primera línea: "Ana lives in a small town."</div>
+                    </div>
+                </div>
+
+                <!-- Q2 - BAJA (Literal) -->
+                <div class="question-card" id="q2-es">
+                    <span class="question-badge">Pregunta 2/7 • Literal</span>
+                    <div class="question-text">¿Cuál es el problema de Ana al principio de la historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 0, 0, 'literal')">a) Su teléfono no tiene suficiente crédito</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 1, 0, 'literal')">b) Ella no tiene amigos</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 2, 0, 'literal')">c) Ella está perdida</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 3, 0, 'literal')">d) Ella no tiene dinero</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q2-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "Her <strong>phone</strong> does not have <strong>enough</strong> credit." Phone = teléfono, enough = suficiente.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q2-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Su teléfono no tiene suficiente crédito". Revisa las líneas 3-4 de la historia.</div>
+                    </div>
+                </div>
+
+                <!-- Q3 - BAJA (Literal) -->
+                <div class="question-card" id="q3-es">
+                    <span class="question-badge">Pregunta 3/7 • Literal</span>
+                    <div class="question-text">¿De dónde es Carla?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 0, 2, 'literal')">a) De México</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 1, 2, 'literal')">b) De España</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 2, 2, 'literal')">c) De Texas, Estados Unidos</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 3, 2, 'literal')">d) De Inglaterra</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q3-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "She is <strong>American</strong>, from Texas." American = estadounidense.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q3-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "De Texas, Estados Unidos". Carla es American (estadounidense) de Texas.</div>
+                    </div>
+                </div>
+
+                <!-- Q4 - MEDIA (Literal/Inferencial) -->
+                <div class="question-card" id="q4-es">
+                    <span class="question-badge">Pregunta 4/7 • Literal/Inferencial</span>
+                    <div class="question-text">¿Por qué la familia de Carla se mudó al pueblo?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 0, 1, 'inferential')">a) Por el clima</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 1, 1, 'inferential')">b) Por el trabajo del esposo de Carla</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 2, 1, 'inferential')">c) Para visitar a la familia</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 3, 1, 'inferential')">d) Para estudiar español</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q4-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "She moved from another <strong>country</strong> for her husband's job. That is the <strong>cause</strong> of their move."</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q4-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Por el trabajo del esposo de Carla". Esta es la "cause" (causa) de su mudanza.</div>
+                    </div>
+                </div>
+
+                <!-- Q5 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q5-es">
+                    <span class="question-badge">Pregunta 5/7 • Inferencial</span>
+                    <div class="question-text">¿Qué quiere hacer Pedro en el pueblo?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 0, 0, 'inferential')">a) Entrenar fútbol con los niños locales</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 1, 0, 'inferential')">b) Aprender español</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 2, 0, 'inferential')">c) Ir a la escuela</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 3, 0, 'inferential')">d) Nadar en la piscina</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q5-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "He wants to <strong>train</strong> soccer with the local kids." Train = entrenar.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q5-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Entrenar fútbol con los niños locales". Pedro quiere practicar en el parque.</div>
+                    </div>
+                </div>
+
+                <!-- Q6 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q6-es">
+                    <span class="question-badge">Pregunta 6/7 • Inferencial</span>
+                    <div class="question-text">¿Cómo ayuda Ana a la nueva familia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 0, 2, 'inferential')">a) Les da dinero</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 1, 2, 'inferential')">b) Les compra comida</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 2, 2, 'inferential')">c) Ofrece traer a Pedro a la práctica de fútbol</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 3, 2, 'inferential')">d) Les enseña español</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q6-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "She can <strong>bring</strong> Pedro with her own son!" Ana ofrece ayudar llevando a Pedro. Bring = traer.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q6-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Ofrece traer a Pedro a la práctica de fútbol". Ana puede traerlo con su propio hijo.</div>
+                    </div>
+                </div>
+
+                <!-- Q7 - ALTA (Crítico - Tema Moral) -->
+                <div class="question-card" id="q7-es">
+                    <span class="question-badge">Pregunta 7/7 • Tema Moral 🎯</span>
+                    <div class="question-text">¿Cuál es el mensaje principal de esta historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 0, 1, 'critical')">a) Es importante tener un teléfono</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 1, 1, 'critical')">b) Ayudar a otros da propósito a nuestro día</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 2, 1, 'critical')">c) El fútbol es el mejor deporte</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 3, 1, 'critical')">d) Es difícil mudarse a un nuevo lugar</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q7-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">El tema moral es "Purpose" (Propósito). La historia termina: "It was a good day with clear purpose." Ana encuentra propósito ayudando a otros. 💛</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q7-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">El mensaje principal es "Ayudar a otros da propósito a nuestro día". El tema moral del módulo es PURPOSE (Propósito).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Container ES-EN -->
+            <div id="quiz-es-en" class="hidden">
+                <!-- Q1 - BAJA (Literal) -->
+                <div class="question-card" id="q1-en">
+                    <span class="question-badge">Pregunta 1/7 • Literal</span>
+                    <div class="question-text">¿Dónde vive Ana?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 0, 1, 'literal')">a) In a big city</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 1, 1, 'literal')">b) In a small town</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 2, 1, 'literal')">c) At the beach</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 3, 1, 'literal')">d) In the mountains</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q1-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "Ana lives in a small <strong>town</strong>." Town = pueblo.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q1-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "In a small town". Check the first line of the story.</div>
+                    </div>
+                </div>
+
+                <!-- Q2 - BAJA (Literal) -->
+                <div class="question-card" id="q2-en">
+                    <span class="question-badge">Pregunta 2/7 • Literal</span>
+                    <div class="question-text">¿Cuál es el problema de Ana al principio de la historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 0, 0, 'literal')">a) Her phone does not have enough credit</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 1, 0, 'literal')">b) She does not have friends</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 2, 0, 'literal')">c) She is lost</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 3, 0, 'literal')">d) She does not have money</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q2-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "Her <strong>phone</strong> does not have <strong>enough</strong> credit." Phone = teléfono, enough = suficiente.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q2-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "Her phone does not have enough credit". Check lines 3-4.</div>
+                    </div>
+                </div>
+
+                <!-- Q3 - BAJA (Literal) -->
+                <div class="question-card" id="q3-en">
+                    <span class="question-badge">Pregunta 3/7 • Literal</span>
+                    <div class="question-text">¿De dónde es Carla?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 0, 2, 'literal')">a) From Mexico</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 1, 2, 'literal')">b) From Spain</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 2, 2, 'literal')">c) From Texas, United States</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 3, 2, 'literal')">d) From England</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q3-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "She is <strong>American</strong>, from Texas." American = estadounidense.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q3-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "From Texas, United States". Carla is American.</div>
+                    </div>
+                </div>
+
+                <!-- Q4 - MEDIA (Literal/Inferencial) -->
+                <div class="question-card" id="q4-en">
+                    <span class="question-badge">Pregunta 4/7 • Literal/Inferencial</span>
+                    <div class="question-text">¿Por qué la familia de Carla se mudó al pueblo?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 0, 1, 'inferential')">a) Because of the weather</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 1, 1, 'inferential')">b) For her husband's job</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 2, 1, 'inferential')">c) To visit family</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 3, 1, 'inferential')">d) To learn Spanish</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q4-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "She moved from another <strong>country</strong> for her husband's job. That is the <strong>cause</strong> of their move."</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q4-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "For her husband's job". This is the "cause" of their move.</div>
+                    </div>
+                </div>
+
+                <!-- Q5 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q5-en">
+                    <span class="question-badge">Pregunta 5/7 • Inferencial</span>
+                    <div class="question-text">¿Qué quiere hacer Pedro en el pueblo?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 0, 0, 'inferential')">a) Train soccer with the local kids</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 1, 0, 'inferential')">b) Learn Spanish</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 2, 0, 'inferential')">c) Go to school</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 3, 0, 'inferential')">d) Swim in the pool</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q5-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "He wants to <strong>train</strong> soccer with the local kids." Train = entrenar.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q5-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "Train soccer with the local kids". Pedro wants to practice at the park.</div>
+                    </div>
+                </div>
+
+                <!-- Q6 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q6-en">
+                    <span class="question-badge">Pregunta 6/7 • Inferencial</span>
+                    <div class="question-text">¿Cómo ayuda Ana a la nueva familia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 0, 2, 'inferential')">a) She gives them money</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 1, 2, 'inferential')">b) She buys them food</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 2, 2, 'inferential')">c) She offers to bring Pedro to soccer practice</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 3, 2, 'inferential')">d) She teaches them Spanish</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q6-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "She can <strong>bring</strong> Pedro with her own son!" Bring = traer.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q6-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "She offers to bring Pedro to soccer practice". Ana can bring him with her son.</div>
+                    </div>
+                </div>
+
+                <!-- Q7 - ALTA (Crítico - Tema Moral) -->
+                <div class="question-card" id="q7-en">
+                    <span class="question-badge">Pregunta 7/7 • Tema Moral 🎯</span>
+                    <div class="question-text">¿Cuál es el mensaje principal de esta historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 0, 1, 'critical')">a) It is important to have a phone</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 1, 1, 'critical')">b) Helping others gives purpose to our day</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 2, 1, 'critical')">c) Soccer is the best sport</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 3, 1, 'critical')">d) It is difficult to move to a new place</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q7-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The moral theme is "Purpose". The story ends: "It was a good day with clear purpose." Ana finds purpose by helping others. 💛</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q7-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The main message is "Helping others gives purpose to our day". The moral theme is PURPOSE.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completion Card -->
+            <div class="completion-card" id="completion-card">
+                <div class="completion-icon">🏆</div>
+                <div class="completion-title">¡Completado!</div>
+                <div class="completion-score" id="final-score">0/7</div>
+                <div class="completion-message" id="completion-message">¡Excelente comprensión lectora!</div>
+                
+                <div class="completion-krashen">
+                    <h4>🧠 ¿Sabías que...?</h4>
+                    <p>Al completar este ejercicio, has expuesto tu cerebro a patrones naturales del inglés. Según Krashen, <strong>la adquisición ocurre inconscientemente</strong> cuando entendemos mensajes. ¡Cada vez que lees una historia en inglés, estás construyendo tu competencia lingüística!</p>
+                </div>
+                
+                <button class="reset-btn" onclick="resetQuiz()">🔄 Intentar de Nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div class="modal-overlay" id="achievement-modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modal-icon">🏆</div>
+            <h3 class="modal-title">¡Logro Desbloqueado!</h3>
+            <p class="modal-text" id="modal-text">Has completado algo increíble</p>
+            <button class="modal-btn" onclick="closeModal()">¡Genial!</button>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentMode = 'es-es';
+        let score = 0;
+        let answered = new Set();
+        let streak = 0;
+        let literalCorrect = 0;
+        let inferentialCorrect = 0;
+        let criticalCorrect = false;
+        const totalQuestions = 7;
+
+        // Toggle Story
+        function toggleStory() {
+            const content = document.getElementById('story-content');
+            const toggle = document.getElementById('story-toggle');
+            content.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        // Set Mode
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.mode-btn').classList.add('active');
+            
+            // Update mode display
+            document.getElementById('mode-display').textContent = 
+                mode === 'es-es' ? 'Modo: Español → Español' : 'Modo: Español → English';
+            
+            // Show correct quiz
+            document.getElementById('quiz-es-es').classList.toggle('hidden', mode !== 'es-es');
+            document.getElementById('quiz-es-en').classList.toggle('hidden', mode !== 'es-en');
+            
+            // Reset quiz when changing mode
+            resetQuiz();
+        }
+
+        // Check Answer
+        function checkAnswer(questionId, selectedIndex, correctIndex, type) {
+            if (answered.has(questionId)) return;
+            answered.add(questionId);
+            
+            const isCorrect = selectedIndex === correctIndex;
+            const questionCard = document.getElementById(questionId);
+            const buttons = questionCard.querySelectorAll('.option-btn');
+            
+            // Disable buttons
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Highlight answers
+            buttons[selectedIndex].classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+            if (!isCorrect) {
+                buttons[correctIndex].classList.add('show-correct');
+            }
+            
+            // Show feedback
+            document.getElementById(`fb-${questionId}-${isCorrect ? 'correct' : 'incorrect'}`).classList.add('show');
+            questionCard.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Update score and achievements
+            if (isCorrect) {
+                score++;
+                streak++;
+                
+                // Track comprehension types
+                if (type === 'literal') literalCorrect++;
+                if (type === 'inferential') inferentialCorrect++;
+                if (type === 'critical') criticalCorrect = true;
+                
+                // Check achievements
+                checkAchievements();
+            } else {
+                streak = 0;
+            }
+            
+            // Update progress
+            updateProgress();
+            
+            // Check completion
+            if (answered.size === totalQuestions) {
+                setTimeout(showCompletion, 800);
+            }
+        }
+
+        // Update Progress
+        function updateProgress() {
+            const percentage = (answered.size / totalQuestions) * 100;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${answered.size} de ${totalQuestions} preguntas`;
+        }
+
+        // Check Achievements
+        function checkAchievements() {
+            // First answer
+            if (answered.size === 1 && score === 1) {
+                unlockAchievement('ach-first', '🌱', '¡Primera Respuesta Correcta!');
+            }
+            
+            // 3 streak
+            if (streak === 3) {
+                unlockAchievement('ach-streak', '🔥', '¡3 Respuestas Correctas Seguidas!');
+            }
+            
+            // Literal comprehension (3 literal questions correct)
+            if (literalCorrect >= 3) {
+                unlockAchievement('ach-literal', '📖', '¡Comprensión Literal Dominada!');
+            }
+            
+            // Inferential comprehension (2 inferential questions correct)
+            if (inferentialCorrect >= 2) {
+                unlockAchievement('ach-inferential', '🔍', '¡Comprensión Inferencial Lograda!');
+            }
+            
+            // Critical thinking
+            if (criticalCorrect) {
+                unlockAchievement('ach-critical', '🎓', '¡Pensamiento Crítico Activado!');
+                unlockAchievement('ach-purpose', '🎯', '¡Tema Moral: Propósito!');
+            }
+            
+            // Helper achievement (got Q6 about helping correct)
+            if (answered.has('q6-es') || answered.has('q6-en')) {
+                const q6EsCorrect = document.getElementById('q6-es')?.classList.contains('correct');
+                const q6EnCorrect = document.getElementById('q6-en')?.classList.contains('correct');
+                if (q6EsCorrect || q6EnCorrect) {
+                    unlockAchievement('ach-helper', '🤝', '¡Ayudante: Entendiste cómo Ana ayuda!');
+                }
+            }
+        }
+
+        // Unlock Achievement
+        function unlockAchievement(id, icon, text) {
+            const achievement = document.getElementById(id);
+            if (!achievement.classList.contains('unlocked')) {
+                achievement.classList.add('unlocked');
+                showAchievementModal(icon, text);
+            }
+        }
+
+        // Show Achievement Modal
+        function showAchievementModal(icon, text) {
+            document.getElementById('modal-icon').textContent = icon;
+            document.getElementById('modal-text').textContent = text;
+            document.getElementById('achievement-modal').classList.add('show');
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('achievement-modal').classList.remove('show');
+        }
+
+        // Show Completion
+        function showCompletion() {
+            document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+            
+            // Set message based on score
+            let message = '';
+            if (score === 7) {
+                message = '¡Excelente comprensión lectora! 🌟';
+                unlockAchievement('ach-perfect', '⭐', '¡Puntuación Perfecta!');
+            } else if (score >= 5) {
+                message = '¡Muy bien! Tienes buena comprensión. 👏';
+            } else if (score >= 3) {
+                message = 'Buen intento. Lee la historia otra vez. 📖';
+            } else {
+                message = 'Sigue practicando. ¡Tú puedes! 💪';
+            }
+            
+            document.getElementById('completion-message').textContent = message;
+            document.getElementById('completion-card').classList.add('show');
+            
+            // Scroll to completion
+            document.getElementById('completion-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            score = 0;
+            answered.clear();
+            streak = 0;
+            literalCorrect = 0;
+            inferentialCorrect = 0;
+            criticalCorrect = false;
+            
+            // Reset all question cards in current mode
+            const quizContainer = document.getElementById(`quiz-${currentMode}`);
+            quizContainer.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+                card.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+                });
+                card.querySelectorAll('.feedback').forEach(fb => fb.classList.remove('show'));
+            });
+            
+            // Hide completion
+            document.getElementById('completion-card').classList.remove('show');
+            
+            // Reset progress
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
