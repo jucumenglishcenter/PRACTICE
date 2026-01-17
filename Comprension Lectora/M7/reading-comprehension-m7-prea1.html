@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension | Module 7 | Pre-A1 | JUCUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(246, 211, 101, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+        }
+
+        .level-indicator {
+            font-size: 2rem;
+            margin-top: 10px;
+        }
+
+        /* Moral Theme Box */
+        .moral-box {
+            background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(156, 39, 176, 0.3);
+        }
+
+        .moral-box h4 {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .moral-box .theme {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .moral-box .quote {
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        /* Mode Selector */
+        .mode-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .mode-section h3 {
+            text-align: center;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .mode-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .mode-btn {
+            padding: 18px 15px;
+            border: 3px solid #f6d365;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(246, 211, 101, 0.3);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-color: #fda085;
+        }
+
+        .mode-btn .flags {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .mode-btn .mode-title {
+            font-weight: 700;
+            color: #d48806;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .mode-btn.active .mode-title {
+            color: white;
+        }
+
+        .mode-btn .mode-desc {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .mode-btn.active .mode-desc {
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* Krashen Info Box */
+        .krashen-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2196f3;
+        }
+
+        .krashen-box .icon-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .krashen-box .icon {
+            font-size: 1.5rem;
+        }
+
+        .krashen-box h4 {
+            color: #1565c0;
+            font-size: 1rem;
+        }
+
+        .krashen-box p {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        /* Achievements Section */
+        .achievements-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .achievements-section h3 {
+            text-align: center;
+            color: #d48806;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .achievements-section .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 12px 8px;
+            border-radius: 12px;
+            background: #f5f5f5;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+
+        .achievement.unlocked {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            opacity: 1;
+            box-shadow: 0 3px 10px rgba(246, 211, 101, 0.3);
+        }
+
+        .achievement .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement .name {
+            font-size: 0.65rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .achievement.unlocked .name {
+            color: #d48806;
+            font-weight: 600;
+        }
+
+        /* Story Section */
+        .story-section {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .story-header {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .story-header:hover {
+            filter: brightness(1.05);
+        }
+
+        .story-header h3 {
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .story-toggle {
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .story-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .story-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .story-content.open {
+            max-height: 2000px;
+        }
+
+        .story-inner {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .story-line {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #fffbf0;
+            border-radius: 10px;
+            border-left: 4px solid #f6d365;
+        }
+
+        .story-line .english {
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .story-line .spanish {
+            color: #888;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .story-line .vocab {
+            color: #d48806;
+            font-weight: 700;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header h3 {
+            color: #d48806;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .quiz-header .mode-indicator {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .question-card.correct {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .question-card.incorrect {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        }
+
+        .question-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #555;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #f6d365;
+            background: #fff9e6;
+            transform: translateX(5px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .option-btn.selected-correct {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .option-btn.selected-wrong {
+            background: linear-gradient(135deg, #f44336 0%, #ef5350 100%);
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option-btn.show-correct {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border-color: #4caf50;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct-fb {
+            background: #e8f5e9;
+            border: 2px solid #a5d6a7;
+        }
+
+        .feedback.incorrect-fb {
+            background: #ffebee;
+            border: 2px solid #ef9a9a;
+        }
+
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .feedback.correct-fb .feedback-title {
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect-fb .feedback-title {
+            color: #c62828;
+        }
+
+        .feedback-text {
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* Completion Card */
+        .completion-card {
+            display: none;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(246, 211, 101, 0.4);
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .completion-card.show {
+            display: block;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .completion-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .completion-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .completion-message {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            margin: 15px 0;
+        }
+
+        .completion-krashen {
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .completion-krashen h4 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .completion-krashen p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .reset-btn {
+            background: white;
+            color: #d48806;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Achievement Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 320px;
+            margin: 20px;
+            animation: bounceIn 0.4s ease;
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            color: #d48806;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Scrollbar */
+        .story-inner::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .story-inner::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .story-inner::-webkit-scrollbar-thumb {
+            background: #f6d365;
+            border-radius: 3px;
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📚 Reading Comprehension</h1>
+            <div class="subtitle">Module 7 • Art Show</div>
+            <div class="level-badge">💛 Pre-A1 | Básico</div>
+            <div class="level-indicator">💛</div>
+        </header>
+
+        <!-- Moral Theme -->
+        <div class="moral-box">
+            <h4>Tema Moral: El Propósito (Purpose)</h4>
+            <div class="theme">🎯 Purpose</div>
+            <div class="quote">"It is good to conserve our culture and help friends."</div>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-section">
+            <h3>Selecciona el modo de práctica</h3>
+            <div class="mode-buttons">
+                <button class="mode-btn active" onclick="setMode('es-es')">
+                    <div class="flags">🇪🇸➡️🇪🇸</div>
+                    <div class="mode-title">Español → Español</div>
+                    <div class="mode-desc">Comprensión total</div>
+                </button>
+                <button class="mode-btn" onclick="setMode('es-en')">
+                    <div class="flags">🇪🇸➡️🇬🇧</div>
+                    <div class="mode-title">Español → English</div>
+                    <div class="mode-desc">Desafío bilingüe</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Krashen Info -->
+        <div class="krashen-box">
+            <div class="icon-title">
+                <span class="icon">🧠</span>
+                <h4>Input Comprensible (Krashen)</h4>
+            </div>
+            <p>Según el lingüista Stephen Krashen, adquirimos un idioma cuando entendemos mensajes. Lee la historia sin presión — tu cerebro está absorbiendo patrones del inglés mientras disfrutas la narrativa. ¡Este es el "input comprensible" en acción!</p>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-section">
+            <h3>🏆 Logros por Desbloquear</h3>
+            <p class="subtitle">Responde correctamente para ganar insignias</p>
+            <div class="achievements-grid">
+                <div class="achievement" id="ach-first">
+                    <div class="icon">🌱</div>
+                    <div class="name">Primera Respuesta</div>
+                </div>
+                <div class="achievement" id="ach-streak">
+                    <div class="icon">🔥</div>
+                    <div class="name">3 Correctas Seguidas</div>
+                </div>
+                <div class="achievement" id="ach-literal">
+                    <div class="icon">📖</div>
+                    <div class="name">Comprensión Literal</div>
+                </div>
+                <div class="achievement" id="ach-inferential">
+                    <div class="icon">🔍</div>
+                    <div class="name">Comprensión Inferencial</div>
+                </div>
+                <div class="achievement" id="ach-critical">
+                    <div class="icon">🎓</div>
+                    <div class="name">Pensamiento Crítico</div>
+                </div>
+                <div class="achievement" id="ach-perfect">
+                    <div class="icon">⭐</div>
+                    <div class="name">Perfección</div>
+                </div>
+                <div class="achievement" id="ach-purpose">
+                    <div class="icon">🎯</div>
+                    <div class="name">Propósito</div>
+                </div>
+                <div class="achievement" id="ach-artist">
+                    <div class="icon">🎨</div>
+                    <div class="name">Artista</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Story Section -->
+        <div class="story-section">
+            <div class="story-header" onclick="toggleStory()">
+                <h3>📖 Ver la Historia de Sofía y Luis</h3>
+                <span class="story-toggle" id="story-toggle">▼</span>
+            </div>
+            <div class="story-content" id="story-content">
+                <div class="story-inner">
+                    <div class="story-line">
+                        <div class="english">Last Saturday, Sofia went to the park.</div>
+                        <div class="spanish">El sábado pasado, Sofía fue al parque.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She wanted to see the <span class="vocab">art</span> show.</div>
+                        <div class="spanish">Ella quería ver la exposición de arte.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The show had <span class="vocab">eight</span> different sections.</div>
+                        <div class="spanish">La exposición tenía ocho secciones diferentes.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Sofia looked at the <span class="vocab">program</span> and <span class="vocab">chose</span> her favorite <span class="vocab">area</span>.</div>
+                        <div class="spanish">Sofía miró el programa y eligió su área favorita.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The <span class="vocab">area</span> near the lake was beautiful.</div>
+                        <div class="spanish">El área cerca del lago era hermosa.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She saw paintings about local <span class="vocab">culture</span> and history.</div>
+                        <div class="spanish">Ella vio pinturas sobre cultura e historia local.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">Who</span> painted this? Sofia asked a worker.</div>
+                        <div class="spanish">¿Quién pintó esto? Sofía le preguntó a un trabajador.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The worker gave her the <span class="vocab">answer</span>: Maria Torres.</div>
+                        <div class="spanish">El trabajador le dio la respuesta: María Torres.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Sofia <span class="vocab">noted down</span> the name in her phone.</div>
+                        <div class="spanish">Sofía anotó el nombre en su teléfono.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">She wanted to remember it for later.</div>
+                        <div class="spanish">Ella quería recordarlo para después.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Sofia <span class="vocab">compared</span> the old and new paintings.</div>
+                        <div class="spanish">Sofía comparó las pinturas viejas y nuevas.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">It was interesting to <span class="vocab">compare</span> the different styles.</div>
+                        <div class="spanish">Era interesante comparar los diferentes estilos.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Then Sofia met her friend Luis.</div>
+                        <div class="spanish">Entonces Sofía se encontró con su amigo Luis.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Luis looked worried. I lost my phone, he said.</div>
+                        <div class="spanish">Luis se veía preocupado. Perdí mi teléfono, dijo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">Whose</span> phone is that? asked Sofia. She pointed to a black phone.</div>
+                        <div class="spanish">¿De quién es ese teléfono? preguntó Sofía. Señaló un teléfono negro.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">That is mine! said Luis happily.</div>
+                        <div class="spanish">¡Ese es mío! dijo Luis felizmente.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">To whom</span> should I talk to get it back? he asked.</div>
+                        <div class="spanish">¿A quién debo hablar para recuperarlo? preguntó.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Go to the lost and found office, said Sofia.</div>
+                        <div class="spanish">Ve a la oficina de objetos perdidos, dijo Sofía.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Luis went to <span class="vocab">claim</span> his phone.</div>
+                        <div class="spanish">Luis fue a reclamar su teléfono.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The worker asked him to <span class="vocab">complete</span> a form.</div>
+                        <div class="spanish">El trabajador le pidió que completara un formulario.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Luis <span class="vocab">completed</span> it quickly.</div>
+                        <div class="spanish">Luis lo completó rápidamente.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">The worker <span class="vocab">quoted</span> the rules about lost items.</div>
+                        <div class="spanish">El trabajador citó las reglas sobre objetos perdidos.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">We <span class="vocab">conserve</span> all items for one month, he said.</div>
+                        <div class="spanish">Conservamos todos los objetos por un mes, dijo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Luis did not <span class="vocab">argue</span>. He was just happy to have his phone back.</div>
+                        <div class="spanish">Luis no discutió. Solo estaba feliz de tener su teléfono de vuelta.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Some people <span class="vocab">argue</span> about small things, but Luis was calm.</div>
+                        <div class="spanish">Algunas personas discuten por cosas pequeñas, pero Luis estaba tranquilo.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english"><span class="vocab">Today</span> was a good day, said Luis.</div>
+                        <div class="spanish">Hoy fue un buen día, dijo Luis.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Yes, said Sofia. The <span class="vocab">art</span> show was amazing.</div>
+                        <div class="spanish">Sí, dijo Sofía. La exposición de arte estuvo increíble.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Can we come back <span class="vocab">tomorrow</span>? asked Luis.</div>
+                        <div class="spanish">¿Podemos volver mañana? preguntó Luis.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Of course! said Sofia. <span class="vocab">Tomorrow</span> <span class="vocab">morning</span> is perfect.</div>
+                        <div class="spanish">¡Por supuesto! dijo Sofía. Mañana en la mañana es perfecto.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">They walked home together.</div>
+                        <div class="spanish">Caminaron a casa juntos.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">Both friends learned something important that day.</div>
+                        <div class="spanish">Ambos amigos aprendieron algo importante ese día.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">It is good to <span class="vocab">conserve</span> our <span class="vocab">culture</span> and <span class="vocab">art</span>.</div>
+                        <div class="spanish">Es bueno conservar nuestra cultura y arte.</div>
+                    </div>
+                    <div class="story-line">
+                        <div class="english">And it is important to help friends when they need us. 💛</div>
+                        <div class="spanish">Y es importante ayudar a los amigos cuando nos necesitan.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <div class="quiz-header">
+                <h3>✏️ Quiz de Comprensión</h3>
+                <div class="mode-indicator" id="mode-display">Modo: Español → Español</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0 de 7 preguntas</div>
+            </div>
+
+            <!-- Questions Container ES-ES -->
+            <div id="quiz-es-es">
+                <!-- Q1 - BAJA (Literal) -->
+                <div class="question-card" id="q1-es">
+                    <span class="question-badge">Pregunta 1/7 • Literal</span>
+                    <div class="question-text">¿A dónde fue Sofía el sábado pasado?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 0, 1, 'literal')">a) Al museo</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 1, 1, 'literal')">b) Al parque</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 2, 1, 'literal')">c) A la escuela</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-es', 3, 1, 'literal')">d) Al centro comercial</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q1-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "Last Saturday, Sofia went to the <strong>park</strong>." (El sábado pasado, Sofía fue al parque). Park = parque.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q1-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Al parque". Revisa la primera línea: "Last Saturday, Sofia went to the park."</div>
+                    </div>
+                </div>
+
+                <!-- Q2 - BAJA (Literal) -->
+                <div class="question-card" id="q2-es">
+                    <span class="question-badge">Pregunta 2/7 • Literal</span>
+                    <div class="question-text">¿Cuántas secciones tenía la exposición de arte?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 0, 2, 'literal')">a) Cinco</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 1, 2, 'literal')">b) Seis</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 2, 2, 'literal')">c) Ocho</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-es', 3, 2, 'literal')">d) Diez</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q2-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "The show had <strong>eight</strong> different sections." Eight = ocho.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q2-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Ocho". La historia dice: "The show had eight different sections."</div>
+                    </div>
+                </div>
+
+                <!-- Q3 - BAJA (Literal) -->
+                <div class="question-card" id="q3-es">
+                    <span class="question-badge">Pregunta 3/7 • Literal</span>
+                    <div class="question-text">¿Quién pintó las obras que le gustaron a Sofía?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 0, 1, 'literal')">a) Luis Torres</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 1, 1, 'literal')">b) María Torres</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 2, 1, 'literal')">c) Sofía García</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-es', 3, 1, 'literal')">d) Pedro Martínez</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q3-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "The worker gave her the <strong>answer</strong>: Maria Torres." Answer = respuesta.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q3-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "María Torres". El trabajador le dio esa respuesta a Sofía.</div>
+                    </div>
+                </div>
+
+                <!-- Q4 - MEDIA (Literal/Inferencial) -->
+                <div class="question-card" id="q4-es">
+                    <span class="question-badge">Pregunta 4/7 • Literal/Inferencial</span>
+                    <div class="question-text">¿Cuál era el problema de Luis?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 0, 0, 'inferential')">a) Perdió su teléfono</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 1, 0, 'inferential')">b) Perdió su billetera</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 2, 0, 'inferential')">c) Se perdió en el parque</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-es', 3, 0, 'inferential')">d) Olvidó el programa</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q4-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "I lost my phone, he said." Luis perdió su teléfono y estaba preocupado.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q4-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Perdió su teléfono". Luis dijo: "I lost my phone."</div>
+                    </div>
+                </div>
+
+                <!-- Q5 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q5-es">
+                    <span class="question-badge">Pregunta 5/7 • Inferencial</span>
+                    <div class="question-text">¿Qué tuvo que hacer Luis para recuperar su teléfono?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 0, 1, 'inferential')">a) Pagar una multa</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 1, 1, 'inferential')">b) Completar un formulario</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 2, 1, 'inferential')">c) Esperar una semana</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-es', 3, 1, 'inferential')">d) Llamar a la policía</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q5-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "The worker asked him to <strong>complete</strong> a form. Luis <strong>completed</strong> it quickly." Complete = completar.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q5-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Completar un formulario". El trabajador le pidió que completara un formulario.</div>
+                    </div>
+                </div>
+
+                <!-- Q6 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q6-es">
+                    <span class="question-badge">Pregunta 6/7 • Inferencial</span>
+                    <div class="question-text">¿Por cuánto tiempo conservan los objetos perdidos?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 0, 2, 'inferential')">a) Una semana</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 1, 2, 'inferential')">b) Dos semanas</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 2, 2, 'inferential')">c) Un mes</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-es', 3, 2, 'inferential')">d) Un año</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q6-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">La historia dice: "We <strong>conserve</strong> all items for one month." Conserve = conservar. One month = un mes.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q6-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">La respuesta correcta es "Un mes". El trabajador dijo: "We conserve all items for one month."</div>
+                    </div>
+                </div>
+
+                <!-- Q7 - ALTA (Crítico - Tema Moral) -->
+                <div class="question-card" id="q7-es">
+                    <span class="question-badge">Pregunta 7/7 • Tema Moral 🎯</span>
+                    <div class="question-text">¿Cuál es el mensaje principal de esta historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 0, 1, 'critical')">a) El arte es aburrido</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 1, 1, 'critical')">b) Es bueno conservar nuestra cultura y ayudar a los amigos</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 2, 1, 'critical')">c) Perder cosas es malo</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-es', 3, 1, 'critical')">d) Los parques son peligrosos</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q7-es-correct">
+                        <div class="feedback-title">✅ ¡Correcto!</div>
+                        <div class="feedback-text">El tema moral es "Purpose" (Propósito). La historia dice: "It is good to <strong>conserve</strong> our <strong>culture</strong> and <strong>art</strong>. And it is important to help friends when they need us." 💛</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q7-es-incorrect">
+                        <div class="feedback-title">❌ Incorrecto</div>
+                        <div class="feedback-text">El mensaje principal es "Es bueno conservar nuestra cultura y ayudar a los amigos". El tema moral del módulo es PURPOSE (Propósito).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Container ES-EN -->
+            <div id="quiz-es-en" class="hidden">
+                <!-- Q1 - BAJA (Literal) -->
+                <div class="question-card" id="q1-en">
+                    <span class="question-badge">Pregunta 1/7 • Literal</span>
+                    <div class="question-text">¿A dónde fue Sofía el sábado pasado?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 0, 1, 'literal')">a) To the museum</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 1, 1, 'literal')">b) To the park</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 2, 1, 'literal')">c) To the school</button>
+                        <button class="option-btn" onclick="checkAnswer('q1-en', 3, 1, 'literal')">d) To the mall</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q1-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "Last Saturday, Sofia went to the <strong>park</strong>." Park = parque.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q1-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "To the park". Check the first line of the story.</div>
+                    </div>
+                </div>
+
+                <!-- Q2 - BAJA (Literal) -->
+                <div class="question-card" id="q2-en">
+                    <span class="question-badge">Pregunta 2/7 • Literal</span>
+                    <div class="question-text">¿Cuántas secciones tenía la exposición de arte?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 0, 2, 'literal')">a) Five</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 1, 2, 'literal')">b) Six</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 2, 2, 'literal')">c) Eight</button>
+                        <button class="option-btn" onclick="checkAnswer('q2-en', 3, 2, 'literal')">d) Ten</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q2-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "The show had <strong>eight</strong> different sections." Eight = ocho.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q2-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "Eight". The story says: "The show had eight different sections."</div>
+                    </div>
+                </div>
+
+                <!-- Q3 - BAJA (Literal) -->
+                <div class="question-card" id="q3-en">
+                    <span class="question-badge">Pregunta 3/7 • Literal</span>
+                    <div class="question-text">¿Quién pintó las obras que le gustaron a Sofía?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 0, 1, 'literal')">a) Luis Torres</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 1, 1, 'literal')">b) Maria Torres</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 2, 1, 'literal')">c) Sofia Garcia</button>
+                        <button class="option-btn" onclick="checkAnswer('q3-en', 3, 1, 'literal')">d) Pedro Martinez</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q3-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "The worker gave her the <strong>answer</strong>: Maria Torres."</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q3-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "Maria Torres". The worker gave Sofia this answer.</div>
+                    </div>
+                </div>
+
+                <!-- Q4 - MEDIA (Literal/Inferencial) -->
+                <div class="question-card" id="q4-en">
+                    <span class="question-badge">Pregunta 4/7 • Literal/Inferencial</span>
+                    <div class="question-text">¿Cuál era el problema de Luis?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 0, 0, 'inferential')">a) He lost his phone</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 1, 0, 'inferential')">b) He lost his wallet</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 2, 0, 'inferential')">c) He got lost in the park</button>
+                        <button class="option-btn" onclick="checkAnswer('q4-en', 3, 0, 'inferential')">d) He forgot the program</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q4-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "I lost my phone, he said." Luis was worried because he lost his phone.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q4-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "He lost his phone". Luis said: "I lost my phone."</div>
+                    </div>
+                </div>
+
+                <!-- Q5 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q5-en">
+                    <span class="question-badge">Pregunta 5/7 • Inferencial</span>
+                    <div class="question-text">¿Qué tuvo que hacer Luis para recuperar su teléfono?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 0, 1, 'inferential')">a) Pay a fine</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 1, 1, 'inferential')">b) Complete a form</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 2, 1, 'inferential')">c) Wait a week</button>
+                        <button class="option-btn" onclick="checkAnswer('q5-en', 3, 1, 'inferential')">d) Call the police</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q5-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "The worker asked him to <strong>complete</strong> a form. Luis <strong>completed</strong> it quickly."</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q5-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "Complete a form". The worker asked Luis to complete a form.</div>
+                    </div>
+                </div>
+
+                <!-- Q6 - MEDIA (Inferencial) -->
+                <div class="question-card" id="q6-en">
+                    <span class="question-badge">Pregunta 6/7 • Inferencial</span>
+                    <div class="question-text">¿Por cuánto tiempo conservan los objetos perdidos?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 0, 2, 'inferential')">a) One week</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 1, 2, 'inferential')">b) Two weeks</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 2, 2, 'inferential')">c) One month</button>
+                        <button class="option-btn" onclick="checkAnswer('q6-en', 3, 2, 'inferential')">d) One year</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q6-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The story says: "We <strong>conserve</strong> all items for one month." Conserve = conservar.</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q6-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The correct answer is "One month". The worker said: "We conserve all items for one month."</div>
+                    </div>
+                </div>
+
+                <!-- Q7 - ALTA (Crítico - Tema Moral) -->
+                <div class="question-card" id="q7-en">
+                    <span class="question-badge">Pregunta 7/7 • Tema Moral 🎯</span>
+                    <div class="question-text">¿Cuál es el mensaje principal de esta historia?</div>
+                    <div class="options-grid">
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 0, 1, 'critical')">a) Art is boring</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 1, 1, 'critical')">b) It is good to conserve our culture and help friends</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 2, 1, 'critical')">c) Losing things is bad</button>
+                        <button class="option-btn" onclick="checkAnswer('q7-en', 3, 1, 'critical')">d) Parks are dangerous</button>
+                    </div>
+                    <div class="feedback correct-fb" id="fb-q7-en-correct">
+                        <div class="feedback-title">✅ Correct!</div>
+                        <div class="feedback-text">The moral theme is "Purpose". The story ends: "It is good to <strong>conserve</strong> our <strong>culture</strong> and <strong>art</strong>. And it is important to help friends when they need us." 💛</div>
+                    </div>
+                    <div class="feedback incorrect-fb" id="fb-q7-en-incorrect">
+                        <div class="feedback-title">❌ Incorrect</div>
+                        <div class="feedback-text">The main message is "It is good to conserve our culture and help friends". The moral theme is PURPOSE.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completion Card -->
+            <div class="completion-card" id="completion-card">
+                <div class="completion-icon">🏆</div>
+                <div class="completion-title">¡Completado!</div>
+                <div class="completion-score" id="final-score">0/7</div>
+                <div class="completion-message" id="completion-message">¡Excelente comprensión lectora!</div>
+                
+                <div class="completion-krashen">
+                    <h4>🧠 ¿Sabías que...?</h4>
+                    <p>Al completar este ejercicio, has expuesto tu cerebro a patrones naturales del inglés. Según Krashen, <strong>la adquisición ocurre inconscientemente</strong> cuando entendemos mensajes. ¡Cada vez que lees una historia en inglés, estás construyendo tu competencia lingüística!</p>
+                </div>
+                
+                <button class="reset-btn" onclick="resetQuiz()">🔄 Intentar de Nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div class="modal-overlay" id="achievement-modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modal-icon">🏆</div>
+            <h3 class="modal-title">¡Logro Desbloqueado!</h3>
+            <p class="modal-text" id="modal-text">Has completado algo increíble</p>
+            <button class="modal-btn" onclick="closeModal()">¡Genial!</button>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let currentMode = 'es-es';
+        let score = 0;
+        let answered = new Set();
+        let streak = 0;
+        let literalCorrect = 0;
+        let inferentialCorrect = 0;
+        let criticalCorrect = false;
+        const totalQuestions = 7;
+
+        // Toggle Story
+        function toggleStory() {
+            const content = document.getElementById('story-content');
+            const toggle = document.getElementById('story-toggle');
+            content.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        // Set Mode
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.mode-btn').classList.add('active');
+            
+            // Update mode display
+            document.getElementById('mode-display').textContent = 
+                mode === 'es-es' ? 'Modo: Español → Español' : 'Modo: Español → English';
+            
+            // Show correct quiz
+            document.getElementById('quiz-es-es').classList.toggle('hidden', mode !== 'es-es');
+            document.getElementById('quiz-es-en').classList.toggle('hidden', mode !== 'es-en');
+            
+            // Reset quiz when changing mode
+            resetQuiz();
+        }
+
+        // Check Answer
+        function checkAnswer(questionId, selectedIndex, correctIndex, type) {
+            if (answered.has(questionId)) return;
+            answered.add(questionId);
+            
+            const isCorrect = selectedIndex === correctIndex;
+            const questionCard = document.getElementById(questionId);
+            const buttons = questionCard.querySelectorAll('.option-btn');
+            
+            // Disable buttons
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Highlight answers
+            buttons[selectedIndex].classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+            if (!isCorrect) {
+                buttons[correctIndex].classList.add('show-correct');
+            }
+            
+            // Show feedback
+            document.getElementById(`fb-${questionId}-${isCorrect ? 'correct' : 'incorrect'}`).classList.add('show');
+            questionCard.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Update score and achievements
+            if (isCorrect) {
+                score++;
+                streak++;
+                
+                // Track comprehension types
+                if (type === 'literal') literalCorrect++;
+                if (type === 'inferential') inferentialCorrect++;
+                if (type === 'critical') criticalCorrect = true;
+                
+                // Check achievements
+                checkAchievements();
+            } else {
+                streak = 0;
+            }
+            
+            // Update progress
+            updateProgress();
+            
+            // Check completion
+            if (answered.size === totalQuestions) {
+                setTimeout(showCompletion, 800);
+            }
+        }
+
+        // Update Progress
+        function updateProgress() {
+            const percentage = (answered.size / totalQuestions) * 100;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${answered.size} de ${totalQuestions} preguntas`;
+        }
+
+        // Check Achievements
+        function checkAchievements() {
+            // First answer
+            if (answered.size === 1 && score === 1) {
+                unlockAchievement('ach-first', '🌱', '¡Primera Respuesta Correcta!');
+            }
+            
+            // 3 streak
+            if (streak === 3) {
+                unlockAchievement('ach-streak', '🔥', '¡3 Respuestas Correctas Seguidas!');
+            }
+            
+            // Literal comprehension (3 literal questions correct)
+            if (literalCorrect >= 3) {
+                unlockAchievement('ach-literal', '📖', '¡Comprensión Literal Dominada!');
+            }
+            
+            // Inferential comprehension (2 inferential questions correct)
+            if (inferentialCorrect >= 2) {
+                unlockAchievement('ach-inferential', '🔍', '¡Comprensión Inferencial Lograda!');
+            }
+            
+            // Critical thinking
+            if (criticalCorrect) {
+                unlockAchievement('ach-critical', '🎓', '¡Pensamiento Crítico Activado!');
+                unlockAchievement('ach-purpose', '🎯', '¡Tema Moral: Propósito!');
+            }
+            
+            // Artist achievement (got Q3 about the artist correct)
+            if (answered.has('q3-es') || answered.has('q3-en')) {
+                const q3EsCorrect = document.getElementById('q3-es')?.classList.contains('correct');
+                const q3EnCorrect = document.getElementById('q3-en')?.classList.contains('correct');
+                if (q3EsCorrect || q3EnCorrect) {
+                    unlockAchievement('ach-artist', '🎨', '¡Artista: Conoces a María Torres!');
+                }
+            }
+        }
+
+        // Unlock Achievement
+        function unlockAchievement(id, icon, text) {
+            const achievement = document.getElementById(id);
+            if (!achievement.classList.contains('unlocked')) {
+                achievement.classList.add('unlocked');
+                showAchievementModal(icon, text);
+            }
+        }
+
+        // Show Achievement Modal
+        function showAchievementModal(icon, text) {
+            document.getElementById('modal-icon').textContent = icon;
+            document.getElementById('modal-text').textContent = text;
+            document.getElementById('achievement-modal').classList.add('show');
+        }
+
+        // Close Modal
+        function closeModal() {
+            document.getElementById('achievement-modal').classList.remove('show');
+        }
+
+        // Show Completion
+        function showCompletion() {
+            document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+            
+            // Set message based on score
+            let message = '';
+            if (score === 7) {
+                message = '¡Excelente comprensión lectora! 🌟';
+                unlockAchievement('ach-perfect', '⭐', '¡Puntuación Perfecta!');
+            } else if (score >= 5) {
+                message = '¡Muy bien! Tienes buena comprensión. 👏';
+            } else if (score >= 3) {
+                message = 'Buen intento. Lee la historia otra vez. 📖';
+            } else {
+                message = 'Sigue practicando. ¡Tú puedes! 💪';
+            }
+            
+            document.getElementById('completion-message').textContent = message;
+            document.getElementById('completion-card').classList.add('show');
+            
+            // Scroll to completion
+            document.getElementById('completion-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Reset Quiz
+        function resetQuiz() {
+            score = 0;
+            answered.clear();
+            streak = 0;
+            literalCorrect = 0;
+            inferentialCorrect = 0;
+            criticalCorrect = false;
+            
+            // Reset all question cards in current mode
+            const quizContainer = document.getElementById(`quiz-${currentMode}`);
+            quizContainer.querySelectorAll('.question-card').forEach(card => {
+                card.classList.remove('correct', 'incorrect');
+                card.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('selected-correct', 'selected-wrong', 'show-correct');
+                });
+                card.querySelectorAll('.feedback').forEach(fb => fb.classList.remove('show'));
+            });
+            
+            // Hide completion
+            document.getElementById('completion-card').classList.remove('show');
+            
+            // Reset progress
+            updateProgress();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
