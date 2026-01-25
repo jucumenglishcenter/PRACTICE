@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M6: Future Going to - Fill in the Blanks | Level 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: #F97316;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-info {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* Student Registration */
+        .registration {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .registration h2 {
+            font-family: 'Fredoka', sans-serif;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4b5563;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #F97316;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #F97316 0%, #ea580c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            display: none;
+        }
+
+        .student-banner {
+            background: linear-gradient(135deg, #F97316 0%, #ea580c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .progress-info {
+            text-align: right;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question-number {
+            color: #F97316;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .hint-box {
+            background: #fef3c7;
+            border-left: 4px solid #F97316;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #92400e;
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f9fafb;
+            border: 3px solid #e5e7eb;
+            padding: 18px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .option:hover {
+            background: #fef3c7;
+            border-color: #F97316;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #fef3c7;
+            border-color: #F97316;
+            color: #F97316;
+        }
+
+        .option.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+
+        .option.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            border: 2px solid #16a34a;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+        }
+
+        .feedback-header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .feedback.correct .feedback-header {
+            color: #166534;
+        }
+
+        .feedback.incorrect .feedback-header {
+            color: #991b1b;
+        }
+
+        .formula-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #F97316;
+        }
+
+        .formula-title {
+            font-weight: 700;
+            color: #F97316;
+            margin-bottom: 8px;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #f9fafb;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .error-badge {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #F97316 0%, #ea580c 100%);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-next:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        .results h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        .score-display.excellent { color: #16a34a; }
+        .score-display.good { color: #F97316; }
+        .score-display.needswork { color: #dc2626; }
+
+        .stars {
+            font-size: 3rem;
+            margin: 20px 0;
+        }
+
+        .star {
+            display: inline-block;
+            animation: starPop 0.5s ease;
+        }
+
+        .star:nth-child(2) { animation-delay: 0.2s; }
+        .star:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .results-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-retry {
+            background: #F97316;
+            color: white;
+        }
+
+        .btn-dashboard {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-menu {
+            background: #6b7280;
+            color: white;
+        }
+
+        .results-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .student-banner {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .progress-bar {
+                width: 100%;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .results-actions {
+                flex-direction: column;
+            }
+
+            .score-display {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="level-badge">A1-BEGINNER • MODULE 6</div>
+            <h1>Future: Going to (Plans)</h1>
+            <div class="difficulty-info">🟢 LEVEL 1: Fill in the Blanks</div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quizContainer">
+            <!-- Student Banner -->
+            <div class="student-banner">
+                <div class="student-info">
+                    <div class="student-avatar">👤</div>
+                    <div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">Student</div>
+                        <div style="font-size: 1.2rem; font-weight: 700;" id="displayName"></div>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <div style="font-size: 0.9rem; opacity: 0.9;">Progress</div>
+                    <div style="font-size: 1.1rem; font-weight: 700;"><span id="currentQ">0</span>/10</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions -->
+            <div id="questionsContainer"></div>
+
+            <!-- Results -->
+            <div class="results" id="results">
+                <h2>🎉 Practice Complete!</h2>
+                <div class="stars" id="starsDisplay"></div>
+                <div class="score-display" id="scoreDisplay"></div>
+                <p id="scoreMessage" style="font-size: 1.2rem; color: #6b7280; margin: 20px 0;"></p>
+                <div id="errorSummary" style="margin: 20px 0;"></div>
+                <div class="results-actions">
+                    <button class="results-btn btn-retry" onclick="location.reload()">🔄 Try Again</button>
+                    <a href="../dashboard.html" class="results-btn btn-dashboard">📊 Dashboard</a>
+                    <a href="index.html" class="results-btn btn-menu">📚 Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Sofia ___ (meet) her friends at the lake.",
+                options: ["is going to meet", "are going to meet", "going to meet"],
+                correct: 0,
+                hint: "Use: subject + 'is/are going to' + verb base. Sofia = she (singular)",
+                explanation: "We use 'is going to' + verb base for future plans with singular subjects.",
+                errorType: "Confusión de tiempo"
+            },
+            {
+                question: "It ___ (be) a beautiful day.",
+                options: ["is going to be", "going to be", "are going to be"],
+                correct: 0,
+                hint: "Use: 'It' always takes 'is going to' + verb base",
+                explanation: "'It' is singular, so we use 'is going to be' for future predictions.",
+                errorType: "Forma base incorrecta"
+            },
+            {
+                question: "Marco and Elena ___ (bring) the food.",
+                options: ["is going to bring", "are going to bring", "going to bring"],
+                correct: 1,
+                hint: "Marco and Elena = they (plural). Use 'are going to' + verb base",
+                explanation: "With plural subjects (Marco and Elena = they), we use 'are going to' + verb base.",
+                errorType: "Confusión de tiempo"
+            },
+            {
+                question: "We ___ (swim) in the shallow area.",
+                options: ["are going to swim", "is going to swim", "going to swim"],
+                correct: 0,
+                hint: "'We' is plural, so use 'are going to' + verb base",
+                explanation: "'We' is a plural pronoun, so we use 'are going to swim'.",
+                errorType: "Forma base incorrecta"
+            },
+            {
+                question: "Carlos ___ (start) the barbecue.",
+                options: ["are going to start", "is going to start", "going to start"],
+                correct: 1,
+                hint: "Carlos = he (singular). Use 'is going to' + verb base",
+                explanation: "Carlos is singular (he), so we use 'is going to start'.",
+                errorType: "Confusión de tiempo"
+            },
+            {
+                question: "They ___ (have) lunch together.",
+                options: ["is going to have", "going to have", "are going to have"],
+                correct: 2,
+                hint: "'They' is plural. Use 'are going to' + verb base",
+                explanation: "'They' is plural, so we use 'are going to have'.",
+                errorType: "Forma base incorrecta"
+            },
+            {
+                question: "I ___ (join) Sofia for a run on the beach.",
+                options: ["going to join", "am going to join", "is going to join"],
+                correct: 1,
+                hint: "'I' takes 'am going to' + verb base",
+                explanation: "With 'I', we always use 'am going to' + verb base.",
+                errorType: "Confusión de tiempo"
+            },
+            {
+                question: "Elena ___ (race) with Sofia.",
+                options: ["is going to race", "are going to race", "going to race"],
+                correct: 0,
+                hint: "Elena = she (singular). Use 'is going to' + verb base",
+                explanation: "Elena is singular (she), so we use 'is going to race'.",
+                errorType: "Forma base incorrecta"
+            },
+            {
+                question: "The friends ___ (stay) until sunset.",
+                options: ["is going to stay", "are going to stay", "going to stay"],
+                correct: 1,
+                hint: "'The friends' = they (plural). Use 'are going to' + verb base",
+                explanation: "'The friends' is plural (they), so we use 'are going to stay'.",
+                errorType: "Confusión de tiempo"
+            },
+            {
+                question: "He ___ (plan) another trip soon.",
+                options: ["are going to plan", "is going to plan", "going to plan"],
+                correct: 1,
+                hint: "'He' is singular. Use 'is going to' + verb base",
+                explanation: "'He' is singular, so we use 'is going to plan'.",
+                errorType: "Forma base incorrecta"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+        let studentName = '';
+        let errors = [];
+
+        // Check if user is logged in and start quiz automatically
+        window.addEventListener('DOMContentLoaded', function() {
+            studentName = localStorage.getItem('studentName');
+            
+            if (!studentName || studentName.trim() === '') {
+                // No user logged in, redirect to login
+                alert('Por favor inicia sesión primero / Please login first');
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            // Start quiz automatically
+            document.getElementById('quizContainer').style.display = 'block';
+            document.getElementById('displayName').textContent = studentName;
+            loadQuestion();
+        });
+
+        function loadQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const q = questions[currentQuestion];
+
+            const questionCard = document.createElement('div');
+            questionCard.className = 'question-card active';
+            questionCard.innerHTML = `
+                <div class="question-number">Question ${currentQuestion + 1} of 10</div>
+                <div class="question-text">${q.question}</div>
+                <div class="hint-box">💡 Hint: ${q.hint}</div>
+                <div class="options" id="options">
+                    ${q.options.map((opt, i) => `
+                        <div class="option" onclick="selectOption(${i})" data-option="${i}">
+                            ${opt}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="feedback" id="feedback"></div>
+                <div class="nav-buttons">
+                    <button class="nav-btn btn-next" id="nextBtn" onclick="nextQuestion()" disabled>
+                        ${currentQuestion === 9 ? 'Finish' : 'Next'} →
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = '';
+            container.appendChild(questionCard);
+
+            updateProgress();
+        }
+
+        function selectOption(index) {
+            if (answers[currentQuestion] !== undefined) return;
+
+            const options = document.querySelectorAll('.option');
+            const q = questions[currentQuestion];
+            
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+            options[index].classList.add('selected');
+
+            setTimeout(() => {
+                const isCorrect = index === q.correct;
+                
+                if (isCorrect) {
+                    options[index].classList.remove('selected');
+                    options[index].classList.add('correct');
+                    score += 10;
+                    showFeedback(true, q);
+                } else {
+                    options[index].classList.remove('selected');
+                    options[index].classList.add('incorrect');
+                    options[q.correct].classList.add('correct');
+                    errors.push(q.errorType);
+                    showFeedback(false, q);
+                }
+
+                answers[currentQuestion] = index;
+                document.getElementById('nextBtn').disabled = false;
+            }, 300);
+        }
+
+        function showFeedback(isCorrect, q) {
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+            
+            if (isCorrect) {
+                feedback.innerHTML = `
+                    <div class="feedback-header">✅ ¡Correcto! (Correct!)</div>
+                    <p>${q.explanation}</p>
+                    <div class="formula-box">
+                        <div class="formula-title">📐 Formula:</div>
+                        <div class="formula">subject + am/is/are + going to + verb base</div>
+                    </div>
+                `;
+            } else {
+                feedback.innerHTML = `
+                    <div class="feedback-header">❌ Incorrecto (Incorrect)</div>
+                    <p><strong>Correct answer:</strong> ${q.options[q.correct]}</p>
+                    <p>${q.explanation}</p>
+                    <div class="formula-box">
+                        <div class="formula-title">📐 Formula:</div>
+                        <div class="formula">subject + am/is/are + going to + verb base</div>
+                        <div style="margin-top: 10px; color: #6b7280;">
+                            • I → am going to<br>
+                            • He/She/It → is going to<br>
+                            • You/We/They → are going to
+                        </div>
+                    </div>
+                    <span class="error-badge">Error type: ${q.errorType}</span>
+                `;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.student-banner').style.display = 'none';
+            
+            const results = document.getElementById('results');
+            results.classList.add('show');
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const scoreMessage = document.getElementById('scoreMessage');
+            const starsDisplay = document.getElementById('starsDisplay');
+
+            scoreDisplay.textContent = score + '%';
+
+            if (score === 100) {
+                scoreDisplay.className = 'score-display excellent';
+                scoreMessage.textContent = '¡Perfecto! Perfect score!';
+                starsDisplay.innerHTML = '<span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>';
+            } else if (score >= 80) {
+                scoreDisplay.className = 'score-display good';
+                scoreMessage.textContent = '¡Muy bien! Great job!';
+                starsDisplay.innerHTML = '<span class="star">⭐</span><span class="star">⭐</span><span style="opacity:0.3">⭐</span>';
+            } else if (score >= 60) {
+                scoreDisplay.className = 'score-display good';
+                scoreMessage.textContent = '¡Buen trabajo! Good work!';
+                starsDisplay.innerHTML = '<span class="star">⭐</span><span style="opacity:0.3">⭐⭐</span>';
+            } else {
+                scoreDisplay.className = 'score-display needswork';
+                scoreMessage.textContent = 'Keep practicing! Sigue practicando!';
+                starsDisplay.innerHTML = '<span style="opacity:0.3">⭐⭐⭐</span>';
+            }
+
+            // Error summary
+            if (errors.length > 0) {
+                const errorCounts = {};
+                errors.forEach(err => {
+                    errorCounts[err] = (errorCounts[err] || 0) + 1;
+                });
+
+                const errorHTML = Object.entries(errorCounts)
+                    .map(([type, count]) => `<span class="error-badge">${type}: ${count}</span>`)
+                    .join(' ');
+                
+                document.getElementById('errorSummary').innerHTML = `
+                    <div style="margin-top: 20px;">
+                        <strong>Error patterns detected:</strong><br>
+                        ${errorHTML}
+                    </div>
+                `;
+            }
+
+            // Save to localStorage
+            saveAttempt();
+        }
+
+        function saveAttempt() {
+            const attempt = {
+                date: new Date().toISOString(),
+                level: 'a1i',
+                module: 'Module 6',
+                topic: 'Future: Going to',
+                type: 'Fill in the Blanks',
+                score: score,
+                errors: errors
+            };
+
+            let attempts = JSON.parse(localStorage.getItem('quizAttempts') || '[]');
+            attempts.push(attempt);
+            localStorage.setItem('quizAttempts', JSON.stringify(attempts));
+        }
+    </script>
+</body>
+</html>
