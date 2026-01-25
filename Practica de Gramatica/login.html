@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | JUCUM English Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.2rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            background: #fef3c7;
+            border-left: 4px solid #F59E0B;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .welcome-message h3 {
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .welcome-message p {
+            color: #78350f;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .alert-box {
+            background: #fee2e2;
+            border: 2px solid #dc2626;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .alert-box .alert-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .alert-box p {
+            color: #991b1b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .alert-box .highlight {
+            background: #fef2f2;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #e5e7eb;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .dashboard-link {
+            display: block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .dashboard-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .returning-user {
+            background: #dbeafe;
+            border: 2px solid #3B82F6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .returning-user.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        .returning-user h3 {
+            color: #1e40af;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .returning-user p {
+            color: #1e40af;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .user-name-display {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .btn-continue {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-continue:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-change {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .btn-change:hover {
+            background: #d1d5db;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">📚</div>
+        <h1>Welcome to JUCUM</h1>
+        <p class="subtitle">English Grammar Practice</p>
+
+        <!-- Returning User Section -->
+        <div class="returning-user" id="returningUser">
+            <h3>👋 Welcome back!</h3>
+            <p>We found your account:</p>
+            <div class="user-name-display" id="savedNameDisplay"></div>
+            <div class="action-buttons">
+                <button class="btn btn-continue" onclick="continueAsUser()">
+                    ✅ Continue
+                </button>
+                <button class="btn btn-change" onclick="changeUser()">
+                    🔄 Change Name
+                </button>
+            </div>
+        </div>
+
+        <!-- New User Section -->
+        <div id="newUserSection">
+            <div class="welcome-message">
+                <h3>🎯 First Time Here?</h3>
+                <p>Enter your full name to start practicing grammar. Your progress will be saved automatically!</p>
+            </div>
+
+            <div class="alert-box">
+                <div class="alert-icon">⚠️</div>
+                <p>
+                    <strong>IMPORTANT:</strong> Always use the 
+                    <span class="highlight">SAME NAME</span> 
+                    to track your progress correctly. Example: "Juan Pérez" or "María García"
+                </p>
+            </div>
+
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label for="studentName">📝 Your Full Name:</label>
+                    <input 
+                        type="text" 
+                        id="studentName" 
+                        placeholder="Example: María García"
+                        required
+                        autocomplete="name"
+                        minlength="3"
+                    >
+                </div>
+
+                <button type="submit" class="login-btn">
+                    🚀 Start Practicing
+                </button>
+            </form>
+
+            <a href="dashboard.html" class="dashboard-link">
+                📊 View Progress Dashboard
+            </a>
+        </div>
+
+        <div class="footer">
+            <strong>JUCUM English Center</strong><br>
+            Grammar Practice System 2025
+        </div>
+    </div>
+
+    <script>
+        // Check if user is already registered
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedName = localStorage.getItem('studentName');
+            
+            if (savedName && savedName.trim() !== '') {
+                // Show returning user section
+                document.getElementById('returningUser').classList.add('show');
+                document.getElementById('savedNameDisplay').textContent = savedName;
+                document.getElementById('newUserSection').style.display = 'none';
+            }
+        });
+
+        // Handle login form submission
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('studentName');
+            const studentName = nameInput.value.trim();
+            
+            if (studentName === '') {
+                alert('Por favor ingresa tu nombre completo / Please enter your full name');
+                return;
+            }
+
+            if (studentName.length < 3) {
+                alert('El nombre debe tener al menos 3 caracteres / Name must be at least 3 characters');
+                return;
+            }
+
+            // Save name to localStorage
+            localStorage.setItem('studentName', studentName);
+            
+            // Initialize quiz attempts array if not exists
+            if (!localStorage.getItem('quizAttempts')) {
+                localStorage.setItem('quizAttempts', JSON.stringify([]));
+            }
+
+            // Show success message
+            showSuccessMessage(studentName);
+            
+            // Redirect after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'M6/index.html'; // Or your main menu page
+            }, 2000);
+        }
+
+        // Continue as returning user
+        function continueAsUser() {
+            const savedName = localStorage.getItem('studentName');
+            showSuccessMessage(savedName);
+            
+            setTimeout(() => {
+                window.location.href = 'M6/index.html'; // Or your main menu page
+            }, 1500);
+        }
+
+        // Change user name
+        function changeUser() {
+            if (confirm('¿Estás seguro? Esto cambiará el nombre de la cuenta actual.\n\nAre you sure? This will change the current account name.')) {
+                document.getElementById('returningUser').classList.remove('show');
+                document.getElementById('newUserSection').style.display = 'block';
+                
+                // Clear the input
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentName').focus();
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage(name) {
+            const container = document.querySelector('.login-container');
+            container.innerHTML = `
+                <div style="padding: 40px 20px; animation: slideUp 0.5s ease;">
+                    <div style="font-size: 5rem; margin-bottom: 20px;">✅</div>
+                    <h2 style="font-family: 'Fredoka', sans-serif; color: #16a34a; font-size: 2rem; margin-bottom: 15px;">
+                        ¡Welcome, ${name}!
+                    </h2>
+                    <p style="font-size: 1.1rem; color: #6b7280; margin-bottom: 20px;">
+                        Your account is ready!<br>
+                        Redirecting to practice menu...
+                    </p>
+                    <div style="width: 60px; height: 60px; border: 5px solid #e5e7eb; border-top-color: #16a34a; border-radius: 50%; margin: 30px auto; animation: spin 1s linear infinite;"></div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+        }
+    </script>
+</body>
+</html>
