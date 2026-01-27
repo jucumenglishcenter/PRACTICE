@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | JUCUM English Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-prea1: #F59E0B;
+            --color-a1i: #F97316;
+            --color-a1ii: #3B82F6;
+            --color-a2i: #10B981;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .welcome-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .welcome-text h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .welcome-text p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .student-name {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563eb 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Level Filter */
+        .level-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            color: white;
+            border-color: transparent;
+        }
+
+        .filter-btn[data-level="all"].active {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        }
+
+        .filter-btn[data-level="prea1"].active {
+            background: var(--color-prea1);
+        }
+
+        .filter-btn[data-level="a1i"].active {
+            background: var(--color-a1i);
+        }
+
+        .filter-btn[data-level="a1ii"].active {
+            background: var(--color-a1ii);
+        }
+
+        .filter-btn[data-level="a2i"].active {
+            background: var(--color-a2i);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Recent Activity */
+        .activity-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 12px;
+            border-left: 4px solid #e5e7eb;
+            transition: all 0.3s;
+        }
+
+        .activity-item:hover {
+            background: #f3f4f6;
+            transform: translateX(5px);
+        }
+
+        .activity-item.level-prea1 { border-left-color: var(--color-prea1); }
+        .activity-item.level-a1i { border-left-color: var(--color-a1i); }
+        .activity-item.level-a1ii { border-left-color: var(--color-a1ii); }
+        .activity-item.level-a2i { border-left-color: var(--color-a2i); }
+
+        .activity-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .activity-details {
+            color: #6b7280;
+            font-size: 0.9rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .activity-score {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 3px;
+        }
+
+        .star {
+            font-size: 1.2rem;
+        }
+
+        .star.filled {
+            color: #fbbf24;
+        }
+
+        .star.empty {
+            color: #e5e7eb;
+        }
+
+        .score-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Error Analysis */
+        .error-analysis {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .error-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .error-card {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .error-type {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .error-count {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #dc2626;
+            margin-bottom: 5px;
+        }
+
+        .error-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563eb 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h1>📊 Student Dashboard</h1>
+                    <p>Track your grammar practice progress</p>
+                </div>
+                <div class="student-name" id="studentName">Loading...</div>
+            </div>
+
+            <!-- Level Filter -->
+            <div class="level-filter">
+                <button class="filter-btn active" data-level="all" onclick="filterByLevel('all')">
+                    📚 All Levels
+                </button>
+                <button class="filter-btn" data-level="prea1" onclick="filterByLevel('prea1')">
+                    💛 Pre-A1
+                </button>
+                <button class="filter-btn" data-level="a1i" onclick="filterByLevel('a1i')">
+                    🍑 A1-I
+                </button>
+                <button class="filter-btn" data-level="a1ii" onclick="filterByLevel('a1ii')">
+                    💙 A1-II
+                </button>
+                <button class="filter-btn" data-level="a2i" onclick="filterByLevel('a2i')">
+                    💚 A2-I
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be populated by JS -->
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <h2 class="section-title">🕐 Recent Activity</h2>
+            <div class="activity-list" id="activityList">
+                <!-- Activity items will be populated by JS -->
+            </div>
+        </div>
+
+        <!-- Error Analysis -->
+        <div class="error-analysis">
+            <h2 class="section-title">🔍 Error Analysis</h2>
+            <div class="error-grid" id="errorGrid">
+                <!-- Error cards will be populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Student Data Structure
+        let studentData = {
+            name: '',
+            attempts: [],
+            currentFilter: 'all'
+        };
+
+        // Initialize Dashboard
+        function initDashboard() {
+            loadStudentData();
+            displayStats();
+            displayRecentActivity();
+            displayErrorAnalysis();
+        }
+
+        // Load Student Data from localStorage
+        function loadStudentData() {
+            const storedName = localStorage.getItem('studentName');
+            const storedAttempts = localStorage.getItem('quizAttempts');
+
+            if (storedName) {
+                studentData.name = storedName;
+                document.getElementById('studentName').textContent = storedName;
+            } else {
+                document.getElementById('studentName').textContent = 'Guest Student';
+            }
+
+            if (storedAttempts) {
+                studentData.attempts = JSON.parse(storedAttempts);
+            }
+        }
+
+        // Filter by Level
+        function filterByLevel(level) {
+            studentData.currentFilter = level;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-level="${level}"]`).classList.add('active');
+
+            // Update displays
+            displayStats();
+            displayRecentActivity();
+            displayErrorAnalysis();
+        }
+
+        // Get Filtered Attempts
+        function getFilteredAttempts() {
+            if (studentData.currentFilter === 'all') {
+                return studentData.attempts;
+            }
+            return studentData.attempts.filter(attempt => 
+                attempt.level === studentData.currentFilter
+            );
+        }
+
+        // Display Stats
+        function displayStats() {
+            const filteredAttempts = getFilteredAttempts();
+            const statsGrid = document.getElementById('statsGrid');
+
+            if (filteredAttempts.length === 0) {
+                statsGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">📚</div>
+                        <h3>No Practice Data Yet</h3>
+                        <p>Start practicing to see your statistics here!</p>
+                        <a href="https://jucumenglishcenter.github.io/PRACTICE/" class="cta-button">
+                            Start Practicing
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const totalAttempts = filteredAttempts.length;
+            const averageScore = Math.round(
+                filteredAttempts.reduce((sum, a) => sum + a.score, 0) / totalAttempts
+            );
+            const perfectScores = filteredAttempts.filter(a => a.score === 100).length;
+            const totalErrors = filteredAttempts.reduce((sum, a) => 
+                sum + (a.errors ? a.errors.length : 0), 0
+            );
+
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #3B82F6 0%, #2563eb 100%);">
+                            📝
+                        </div>
+                    </div>
+                    <div class="stat-value">${totalAttempts}</div>
+                    <div class="stat-label">Total Attempts</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                            📊
+                        </div>
+                    </div>
+                    <div class="stat-value">${averageScore}%</div>
+                    <div class="stat-label">Average Score</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #d97706 100%);">
+                            ⭐
+                        </div>
+                    </div>
+                    <div class="stat-value">${perfectScores}</div>
+                    <div class="stat-label">Perfect Scores</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444 0%, #dc2626 100%);">
+                            ❌
+                        </div>
+                    </div>
+                    <div class="stat-value">${totalErrors}</div>
+                    <div class="stat-label">Total Errors</div>
+                </div>
+            `;
+        }
+
+        // Display Recent Activity
+        function displayRecentActivity() {
+            const filteredAttempts = getFilteredAttempts();
+            const activityList = document.getElementById('activityList');
+
+            if (filteredAttempts.length === 0) {
+                activityList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <h3>No Recent Activity</h3>
+                        <p>Your completed exercises will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by date (most recent first)
+            const sortedAttempts = [...filteredAttempts].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            ).slice(0, 10); // Show last 10
+
+            activityList.innerHTML = sortedAttempts.map(attempt => {
+                const stars = getStarRating(attempt.score);
+                const levelColors = {
+                    'prea1': 'background: var(--color-prea1);',
+                    'a1i': 'background: var(--color-a1i);',
+                    'a1ii': 'background: var(--color-a1ii);',
+                    'a2i': 'background: var(--color-a2i);'
+                };
+
+                return `
+                    <div class="activity-item level-${attempt.level}">
+                        <div class="activity-icon" style="${levelColors[attempt.level]}">
+                            ${getExerciseIcon(attempt.type)}
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">${attempt.module} - ${attempt.topic}</div>
+                            <div class="activity-details">
+                                <span>📅 ${formatDate(attempt.date)}</span>
+                                <span>⏱️ ${attempt.type}</span>
+                                <span>🎯 ${attempt.level.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <div class="activity-score">
+                            <div class="stars">${stars}</div>
+                            <span class="score-value">${attempt.score}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Display Error Analysis
+        function displayErrorAnalysis() {
+            const filteredAttempts = getFilteredAttempts();
+            const errorGrid = document.getElementById('errorGrid');
+
+            const errorCounts = {
+                'Sobregeneralización': 0,
+                'Forma base incorrecta': 0,
+                'Confusión de tiempo': 0
+            };
+
+            filteredAttempts.forEach(attempt => {
+                if (attempt.errors) {
+                    attempt.errors.forEach(error => {
+                        if (errorCounts.hasOwnProperty(error)) {
+                            errorCounts[error]++;
+                        }
+                    });
+                }
+            });
+
+            const totalErrors = Object.values(errorCounts).reduce((sum, count) => sum + count, 0);
+
+            if (totalErrors === 0) {
+                errorGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">✅</div>
+                        <h3>Great Job!</h3>
+                        <p>No error patterns detected yet</p>
+                    </div>
+                `;
+                return;
+            }
+
+            errorGrid.innerHTML = Object.entries(errorCounts)
+                .filter(([_, count]) => count > 0)
+                .map(([errorType, count]) => `
+                    <div class="error-card">
+                        <span class="error-type">${errorType}</span>
+                        <div class="error-count">${count}</div>
+                        <div class="error-description">
+                            ${getErrorDescription(errorType)}
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // Helper Functions
+        function getStarRating(score) {
+            let stars = '';
+            if (score >= 100) {
+                stars = '⭐⭐⭐';
+            } else if (score >= 80) {
+                stars = '⭐⭐<span class="star empty">⭐</span>';
+            } else if (score >= 60) {
+                stars = '⭐<span class="star empty">⭐⭐</span>';
+            } else {
+                stars = '<span class="star empty">⭐⭐⭐</span>';
+            }
+            return stars;
+        }
+
+        function getExerciseIcon(type) {
+            const icons = {
+                'Fill in the Blanks': '✍️',
+                'Identification': '🔍',
+                'Transform': '🔄'
+            };
+            return icons[type] || '📝';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        function getErrorDescription(errorType) {
+            const descriptions = {
+                'Sobregeneralización': 'Aplicar regla regular a verbo irregular (ej: "goed" en vez de "went")',
+                'Forma base incorrecta': 'Usar forma base cuando se necesita conjugación',
+                'Confusión de tiempo': 'Mezclar tiempos verbales incorrectamente'
+            };
+            return descriptions[errorType] || 'Error común detectado';
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initDashboard);
+
+        // Demo Data (for testing - remove in production)
+        if (studentData.attempts.length === 0) {
+            // Add some demo data for visualization
+            const demoAttempts = [
+                {
+                    date: new Date().toISOString(),
+                    level: 'a1i',
+                    module: 'Module 6',
+                    topic: 'Future: Going to',
+                    type: 'Fill in the Blanks',
+                    score: 90,
+                    errors: ['Forma base incorrecta']
+                },
+                {
+                    date: new Date(Date.now() - 86400000).toISOString(),
+                    level: 'a1i',
+                    module: 'Module 6',
+                    topic: 'Future: Will',
+                    type: 'Identification',
+                    score: 80,
+                    errors: ['Confusión de tiempo']
+                },
+                {
+                    date: new Date(Date.now() - 172800000).toISOString(),
+                    level: 'prea1',
+                    module: 'Module 7',
+                    topic: 'Past Simple',
+                    type: 'Transform',
+                    score: 100,
+                    errors: []
+                }
+            ];
+            
+            // Uncomment to show demo data
+            // studentData.attempts = demoAttempts;
+            // localStorage.setItem('quizAttempts', JSON.stringify(demoAttempts));
+            // initDashboard();
+        }
+    </script>
+</body>
+</html>
