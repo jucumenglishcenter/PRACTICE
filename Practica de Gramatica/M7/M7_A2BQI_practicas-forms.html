@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prácticas en Forms | JUCUM English Center</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0fff4;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        .container { max-width: 680px; margin: 0 auto; }
+
+        /* ── back link ── */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #27ae60; }
+
+        /* ── level headers ── */
+        .level-header {
+            text-align: center;
+            padding: 28px 20px 22px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        /* A1 bq I — rosa */
+        .level-header.rosa {
+            background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+            box-shadow: 0 5px 20px rgba(238, 156, 167, 0.3);
+        }
+        /* A2 bq I — verde */
+        .level-header.verde {
+            background: linear-gradient(135deg, #6abf69 0%, #c8e6c9 100%);
+            box-shadow: 0 5px 20px rgba(106, 191, 105, 0.3);
+        }
+        .level-header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .level-header h1 {
+            color: white;
+            font-size: 1.6rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.12);
+        }
+        .level-header .subtitle {
+            color: rgba(255,255,255,0.88);
+            font-size: 0.82rem;
+            margin-top: 4px;
+        }
+
+        /* ── topic group ── */
+        .topic-group { margin-bottom: 28px; }
+        .topic-group-title {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            color: #5a8a5a;
+            margin-bottom: 10px;
+            padding-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topic-group-title .line {
+            flex: 1;
+            height: 1px;
+            background: #c8e6c9;
+        }
+
+        /* ── card ── */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid #6abf69;
+        }
+        .card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(106, 191, 105, 0.22);
+        }
+        /* rosa variant */
+        .card.rosa {
+            border-left-color: #ee9ca7;
+        }
+        .card.rosa:hover {
+            box-shadow: 0 4px 16px rgba(238, 156, 167, 0.22);
+        }
+
+        /* difficulty badge */
+        .diff {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.82rem;
+            flex-shrink: 0;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .diff.verde { background: linear-gradient(135deg, #6abf69 0%, #4caf50 100%); }
+        .diff.rosa  { background: linear-gradient(135deg, #ee9ca7 0%, #e57373 100%); }
+
+        /* content */
+        .card-content { flex: 1; min-width: 0; }
+        .card-content h3 {
+            color: #2c3e50;
+            font-size: 0.92rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-content p {
+            color: #7f8c8d;
+            font-size: 0.76rem;
+        }
+
+        /* status pill */
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .status.disponible {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* ── footer ── */
+        .footer {
+            text-align: center;
+            padding: 24px 10px 10px;
+            color: #95a5a6;
+            font-size: 0.78rem;
+        }
+
+        /* ── separator between levels ── */
+        .level-sep {
+            height: 32px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <a href="#" class="back-link">← Volver al inicio</a>
+
+    <!-- ══════════════════════════════════════════
+         A2 bq I — Módulo 6 — VERDE
+         ══════════════════════════════════════════ -->
+    <header class="level-header verde">
+        <span class="badge">📗 A2 Bloque I</span>
+        <h1>Módulo 6 — Prácticas</h1>
+        <p class="subtitle">Present Perfect · Been vs Gone · PP vs PS</p>
+    </header>
+
+    <!-- Tema 1: Present Perfect (ever/never/just/already/yet) -->
+    <div class="topic-group">
+        <div class="topic-group-title">
+            <span>Tema 1</span><span class="line"></span>
+            <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#4a7a4a;font-size:0.78rem;">Present Perfect (ever / never / just / already / yet)</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/1szx1clXx0cUIdkEAYD8yVCBbo8GmDahiaZziDfiTiO0/viewform" target="_blank" class="card">
+            <div class="diff verde">L1</div>
+            <div class="card-content">
+                <h3>Fill — Present Perfect (ever/never/just/already/yet)</h3>
+                <p>Nivel básico · Completa las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/10UTEFWtFPtNGhyDtJ78FhYXc7m21YKVtRHFEFnk13M0/viewform" target="_blank" class="card">
+            <div class="diff verde">L2</div>
+            <div class="card-content">
+                <h3>Identification — Present Perfect (ever/never/just/already/yet)</h3>
+                <p>Nivel intermedio · Identifica la oración correcta</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1wUASODxSZ806fBpxT7DRTc_MhiZe25WQN7wdnj2zLr4/viewform" target="_blank" class="card">
+            <div class="diff verde">L3</div>
+            <div class="card-content">
+                <h3>Transform — Present Perfect (ever/never/just/already/yet)</h3>
+                <p>Nivel avanzado · Transforma las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+    </div>
+
+    <!-- Tema 2: Present Perfect (since/for) -->
+    <div class="topic-group">
+        <div class="topic-group-title">
+            <span>Tema 2</span><span class="line"></span>
+            <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#4a7a4a;font-size:0.78rem;">Present Perfect (since / for)</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/19P7DSrjvby9mKP_rybEdlcEl3ipg-serj1yTY-4j9AA/viewform" target="_blank" class="card">
+            <div class="diff verde">L1</div>
+            <div class="card-content">
+                <h3>Fill — Present Perfect (since/for)</h3>
+                <p>Nivel básico · Completa las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1YsRwk97L1pdTb4QM9GiFnwkJtL8GULiujaX6G8zS_Qw/viewform" target="_blank" class="card">
+            <div class="diff verde">L2</div>
+            <div class="card-content">
+                <h3>Identification — Present Perfect (since/for)</h3>
+                <p>Nivel intermedio · Identifica la oración correcta</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1TotPFq9001pYHtKGl3L6kC1L7h7knm5Tzyt9EOwjrS0/viewform" target="_blank" class="card">
+            <div class="diff verde">L3</div>
+            <div class="card-content">
+                <h3>Transform — Present Perfect (since/for)</h3>
+                <p>Nivel avanzado · Transforma las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+    </div>
+
+    <!-- Tema 3: Been vs Gone -->
+    <div class="topic-group">
+        <div class="topic-group-title">
+            <span>Tema 3</span><span class="line"></span>
+            <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#4a7a4a;font-size:0.78rem;">Been vs Gone</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/1M5Kbdw-yobz692Q2-YZIBSwCJxAOgCrXrTrjfCBHVzI/viewform" target="_blank" class="card">
+            <div class="diff verde">L1</div>
+            <div class="card-content">
+                <h3>Fill — Been vs Gone</h3>
+                <p>Nivel básico · Completa las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1DmHOD10z7J9Fq0DHRyQT72oy5Rt5z51LXoxEKW54qyU/viewform" target="_blank" class="card">
+            <div class="diff verde">L2</div>
+            <div class="card-content">
+                <h3>Identification — Been vs Gone</h3>
+                <p>Nivel intermedio · Identifica la oración correcta</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1Boec8ItWLVgQDaPGmsa2O7ZY-a4B6yB2EHw9twNIIDs/viewform" target="_blank" class="card">
+            <div class="diff verde">L3</div>
+            <div class="card-content">
+                <h3>Transform — Been vs Gone</h3>
+                <p>Nivel avanzado · Transforma las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+    </div>
+
+    <!-- Tema 4: Present Perfect vs Past Simple -->
+    <div class="topic-group">
+        <div class="topic-group-title">
+            <span>Tema 4</span><span class="line"></span>
+            <span style="text-transform:none;letter-spacing:0;font-weight:400;color:#4a7a4a;font-size:0.78rem;">Present Perfect vs Past Simple</span>
+        </div>
+
+        <a href="https://docs.google.com/forms/d/1bKaoTzX8PXihJpHWyzaaPFsd0NRAWuNFfg5EVsAhHfg/viewform" target="_blank" class="card">
+            <div class="diff verde">L1</div>
+            <div class="card-content">
+                <h3>Fill — Present Perfect vs Past Simple</h3>
+                <p>Nivel básico · Completa las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1Zj0rtQKi2DT9FHVAeLsjjascOOWSFJ_snnbFvAcc6_8/viewform" target="_blank" class="card">
+            <div class="diff verde">L2</div>
+            <div class="card-content">
+                <h3>Identification — Present Perfect vs Past Simple</h3>
+                <p>Nivel intermedio · Identifica la oración correcta</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+
+        <a href="https://docs.google.com/forms/d/1fSy1Klvx9kUNfGIik7LkmhANMiGCrMeLHkKJuqLdXF4/viewform" target="_blank" class="card">
+            <div class="diff verde">L3</div>
+            <div class="card-content">
+                <h3>Transform — Present Perfect vs Past Simple</h3>
+                <p>Nivel avanzado · Transforma las oraciones</p>
+            </div>
+            <span class="status disponible">✓ Disponible</span>
+        </a>
+    </div>
+
+    <footer class="footer">
+        <p>JUCUM English Center — Prácticas en Google Forms</p>
+    </footer>
+</div>
+</body>
+</html>
