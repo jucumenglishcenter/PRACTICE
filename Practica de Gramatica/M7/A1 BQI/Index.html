@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Beginner - Module 7 | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899;
+            --primary-light: #F9A8D4;
+            --primary-dark: #DB2777;
+            --accent: #F472B6;
+            --bg-gradient-start: #FDF2F8;
+            --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843;
+            --text-medium: #9D174D;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --info: #3B82F6;
+            --info-light: #DBEAFE;
+            --purple: #8B5CF6;
+            --purple-light: #EDE9FE;
+            --orange: #F97316;
+            --orange-light: #FFEDD5;
+            --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+            --shadow-strong: 0 8px 30px rgba(236, 72, 153, 0.25);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-strong);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: shimmer 8s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .logo-text {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .logo-subtitle {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.95);
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--white);
+            color: var(--primary-dark);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+        }
+        
+        .level-badge .emoji {
+            font-size: 1.5rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        
+        .module-header {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+        }
+        
+        .module-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .module-description {
+            font-size: 1rem;
+            color: var(--text-medium);
+            line-height: 1.8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .bilingual-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .text-es {
+            font-weight: 600;
+        }
+        
+        .text-en {
+            font-style: italic;
+            opacity: 0.85;
+        }
+        
+        /* Topics Grid */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .topic-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+        }
+        
+        .topic-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 50%;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .topic-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .topic-description {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+        
+        /* Exercise Buttons */
+        .exercises-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .exercise-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .exercise-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(5px);
+        }
+        
+        .exercise-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .exercise-btn.fill .exercise-icon {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .exercise-btn.identify .exercise-icon {
+            background: linear-gradient(135deg, var(--info) 0%, #2563EB 100%);
+        }
+        
+        .exercise-btn.transform .exercise-icon {
+            background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%);
+        }
+        
+        .exercise-info {
+            flex: 1;
+        }
+        
+        .exercise-name {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+            line-height: 1.3;
+        }
+        
+        .exercise-desc {
+            font-size: 0.75rem;
+            color: var(--text-medium);
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        
+        .exercise-arrow {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        /* Progress Indicators */
+        .progress-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        /* Tips Section */
+        .tips-section {
+            background: var(--info-light);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--info);
+        }
+        
+        .tips-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.2rem;
+            color: var(--info);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .tips-list {
+            list-style: none;
+            font-size: 0.9rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .tips-list li {
+            padding: 0.5rem;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .tips-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0.5rem;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .tip-bilingual {
+            display: block;
+        }
+        
+        .tip-es {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .tip-en {
+            font-style: italic;
+            opacity: 0.85;
+            font-size: 0.85rem;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .logo-text { font-size: 1.5rem; }
+            .module-title { font-size: 1.5rem; }
+            .topics-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 1.5rem 1rem; }
+            .module-description { font-size: 0.9rem; }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .topic-card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .topic-card:nth-child(1) { animation-delay: 0.1s; opacity: 0; }
+        .topic-card:nth-child(2) { animation-delay: 0.2s; opacity: 0; }
+        .topic-card:nth-child(3) { animation-delay: 0.3s; opacity: 0; }
+        .topic-card:nth-child(4) { animation-delay: 0.4s; opacity: 0; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-text">🎓 JUCUM English</div>
+            <div class="logo-subtitle">Centro de Práctica de Gramática Interactiva / Interactive Grammar Practice Center</div>
+            <div class="level-badge">
+                <span class="emoji">🩷</span>
+                <span>A1 Beginner - Module 7</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Module Header -->
+        <div class="module-header">
+            <h1 class="module-title">📚 Módulo 7: Pasado Simple y Puntuación<br>Module 7: Past Simple & Punctuation</h1>
+            <div class="module-description">
+                <div class="bilingual-text">
+                    <p class="text-es">
+                        Domina el tiempo pasado con verbos regulares e irregulares, además de las reglas esenciales de puntuación. 
+                        ¡Completa todos los ejercicios para construir bases sólidas en gramática inglesa!
+                    </p>
+                    <p class="text-en">
+                        Master the past tense with regular and irregular verbs, plus learn essential punctuation rules. 
+                        Complete all exercises to build strong foundations in English grammar!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Topics Grid -->
+        <div class="topics-grid">
+            <!-- Topic 1: Past Simple - Irregulars -->
+            <div class="topic-card">
+                <div class="topic-number">1</div>
+                <h2 class="topic-title">
+                    Pasado Simple - Irregulares<br>
+                    <span style="font-size: 0.9rem; font-weight: 500;">Past Simple - Irregulars</span>
+                </h2>
+                <div class="topic-description">
+                    <div class="bilingual-text">
+                        <p class="text-es">Practica verbos irregulares comunes en pasado simple: went, saw, had, made, y más verbos de alta frecuencia.</p>
+                        <p class="text-en">Practice common irregular verbs in past simple: went, saw, had, made, and more high-frequency verbs.</p>
+                    </div>
+                </div>
+                <div class="exercises-list">
+                    <a href="a1i-m7-fill.html" class="exercise-btn fill">
+                        <div class="exercise-icon">✏️</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Completar / Fill in the Blanks</div>
+                            <div class="exercise-desc">Completa oraciones con verbos irregulares / Complete sentences with irregular verbs</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-identify.html" class="exercise-btn identify">
+                        <div class="exercise-icon">🔍</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Identificar / Identify</div>
+                            <div class="exercise-desc">Elige la forma irregular correcta / Choose the correct irregular form</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-transform.html" class="exercise-btn transform">
+                        <div class="exercise-icon">🔄</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Transformar / Transform</div>
+                            <div class="exercise-desc">Presente → Pasado irregular / Present → Past irregular forms</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Topic 2: Past Simple - Regular -->
+            <div class="topic-card">
+                <div class="topic-number">2</div>
+                <h2 class="topic-title">
+                    Pasado Simple - Regulares<br>
+                    <span style="font-size: 0.9rem; font-weight: 500;">Past Simple - Regular</span>
+                </h2>
+                <div class="topic-description">
+                    <div class="bilingual-text">
+                        <p class="text-es">Aprende verbos regulares terminados en -ed: worked, played, studied. Domina las reglas de ortografía y patrones.</p>
+                        <p class="text-en">Learn regular verbs ending in -ed: worked, played, studied. Master the spelling rules and patterns.</p>
+                    </div>
+                </div>
+                <div class="exercises-list">
+                    <a href="a1i-m7-tema2-fill.html" class="exercise-btn fill">
+                        <div class="exercise-icon">✏️</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Completar / Fill in the Blanks</div>
+                            <div class="exercise-desc">Completa con verbos -ed / Complete with -ed verbs</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema2-identify.html" class="exercise-btn identify">
+                        <div class="exercise-icon">🔍</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Identificar / Identify</div>
+                            <div class="exercise-desc">Encuentra formas correctas regulares / Find correct regular past forms</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema2-transform.html" class="exercise-btn transform">
+                        <div class="exercise-icon">🔄</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Transformar / Transform</div>
+                            <div class="exercise-desc">Agrega -ed correctamente / Add -ed correctly</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Topic 3: Past Simple of "to be" -->
+            <div class="topic-card">
+                <div class="topic-number">3</div>
+                <h2 class="topic-title">
+                    Pasado Simple - "To Be"<br>
+                    <span style="font-size: 0.9rem; font-weight: 500;">Past Simple - "To Be"</span>
+                </h2>
+                <div class="topic-description">
+                    <div class="bilingual-text">
+                        <p class="text-es">Repasa las formas was/were. Entiende la concordancia sujeto-verbo en pasado con el verbo "to be".</p>
+                        <p class="text-en">Review was/were forms. Understand subject-verb agreement in past tense with the verb "to be".</p>
+                    </div>
+                </div>
+                <div class="exercises-list">
+                    <a href="a1i-m7-tema3-fill.html" class="exercise-btn fill">
+                        <div class="exercise-icon">✏️</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Completar / Fill in the Blanks</div>
+                            <div class="exercise-desc">Elige was o were / Choose was or were</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema3-identify.html" class="exercise-btn identify">
+                        <div class="exercise-icon">🔍</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Identificar / Identify</div>
+                            <div class="exercise-desc">Detecta uso correcto de was/were / Spot correct was/were usage</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema3-transform.html" class="exercise-btn transform">
+                        <div class="exercise-icon">🔄</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Transformar / Transform</div>
+                            <div class="exercise-desc">am/is/are → was/were</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Topic 4: Punctuation Basics -->
+            <div class="topic-card">
+                <div class="topic-number">4</div>
+                <h2 class="topic-title">
+                    Puntuación Básica<br>
+                    <span style="font-size: 0.9rem; font-weight: 500;">Punctuation Basics</span>
+                </h2>
+                <div class="topic-description">
+                    <div class="bilingual-text">
+                        <p class="text-es">Domina puntos, comas en listas y signos de interrogación. Puntuación esencial para escribir con claridad.</p>
+                        <p class="text-en">Master periods, commas in lists, and question marks. Essential punctuation for clear writing.</p>
+                    </div>
+                </div>
+                <div class="exercises-list">
+                    <a href="a1i-m7-tema4-fill.html" class="exercise-btn fill">
+                        <div class="exercise-icon">✏️</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Completar / Fill in the Blanks</div>
+                            <div class="exercise-desc">Agrega signos de puntuación correctos / Add correct punctuation marks</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema4-identify.html" class="exercise-btn identify">
+                        <div class="exercise-icon">🔍</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Identificar / Identify</div>
+                            <div class="exercise-desc">Elige oraciones bien puntuadas / Choose correctly punctuated sentences</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                    <a href="a1i-m7-tema4-transform.html" class="exercise-btn transform">
+                        <div class="exercise-icon">🔄</div>
+                        <div class="exercise-info">
+                            <div class="exercise-name">Transformar / Transform</div>
+                            <div class="exercise-desc">Agrega puntuación a oraciones / Add punctuation to sentences</div>
+                        </div>
+                        <span class="exercise-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h3 class="tips-title">
+                <span>💡</span> Consejos de Estudio / Study Tips
+            </h3>
+            <ul class="tips-list">
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Comienza con ejercicios de <strong>Completar</strong> para practicar cada punto gramatical</span>
+                        <span class="tip-en">Start with <strong>Fill in the Blanks</strong> exercises to practice each grammar point</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Usa ejercicios de <strong>Identificar</strong> para reconocer formas correctas vs incorrectas</span>
+                        <span class="tip-en">Use <strong>Identify</strong> exercises to recognize correct vs. incorrect forms</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Desafíate con ejercicios de <strong>Transformar</strong> para aplicar lo que aprendiste</span>
+                        <span class="tip-en">Challenge yourself with <strong>Transform</strong> exercises to apply what you learned</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Completa los 3 tipos de ejercicios para cada tema para dominar el contenido</span>
+                        <span class="tip-en">Complete all 3 exercise types for each topic to master the content</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Los verbos irregulares requieren memorización - practícalos frecuentemente</span>
+                        <span class="tip-en">Irregular verbs require memorization - practice them frequently</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">Los verbos regulares siguen patrones - aprende las reglas de ortografía con -ed</span>
+                        <span class="tip-en">Regular verbs follow patterns - learn the -ed spelling rules</span>
+                    </span>
+                </li>
+                <li>
+                    <span class="tip-bilingual">
+                        <span class="tip-es">La puntuación hace tu escritura clara - practica hasta que sea automático</span>
+                        <span class="tip-en">Punctuation makes your writing clear - practice until it's automatic</span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>JUCUM English Center</strong> © 2025</p>
+        <p>Práctica Interactiva de Gramática • Nivel A1 Beginner</p>
+        <p>Interactive Grammar Practice • A1 Beginner Level</p>
+        <p>Hecho con ❤️ para nuestros estudiantes / Made with ❤️ for our students</p>
+    </footer>
+
+    <script>
+        // Load progress from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const progress = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            
+            // Add checkmarks to completed exercises
+            document.querySelectorAll('.exercise-btn').forEach(btn => {
+                const href = btn.getAttribute('href');
+                const exerciseKey = href.replace('.html', '');
+                
+                if (progress[exerciseKey] && progress[exerciseKey] >= 60) {
+                    const badge = document.createElement('div');
+                    badge.className = 'progress-badge';
+                    badge.textContent = '✓';
+                    badge.title = `Completado / Completed: ${progress[exerciseKey]}%`;
+                    btn.style.position = 'relative';
+                    btn.appendChild(badge);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
