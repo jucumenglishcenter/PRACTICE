@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fill - A2-I M7 Indirect Questions | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#10B981;--primary-light:#6EE7B7;--primary-dark:#059669;--accent:#34D399;--bg-gradient-start:#ECFDF5;--bg-gradient-end:#D1FAE5;--text-dark:#064E3B;--text-medium:#065F46;--success:#10B981;--success-light:#D1FAE5;--error:#EF4444;--error-light:#FEE2E2;--info:#3B82F6;--info-light:#DBEAFE;--white:#FFF;--shadow-soft:0 4px 20px rgba(16,185,129,0.15);--border-radius:20px}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--bg-gradient-start) 0%,var(--bg-gradient-end) 100%);min-height:100vh;color:var(--text-dark)}
+        .header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-soft)}
+        .back-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.5rem;text-decoration:none;color:white}
+        .header-info{flex:1}.header-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600;color:white}.header-subtitle{font-size:0.85rem;color:rgba(255,255,255,0.9)}
+        .progress-indicator{background:rgba(255,255,255,0.3);padding:0.5rem 1rem;border-radius:50px;font-weight:700;color:white}
+        .progress-container{padding:0 1.5rem;margin-top:-8px}.progress-bar{height:8px;background:rgba(255,255,255,0.5);border-radius:4px;overflow:hidden}
+        .progress-fill{height:100%;background:var(--accent);transition:width 0.5s ease}
+        .main-content{padding:1.5rem;max-width:650px;margin:0 auto}
+        .question-card{background:var(--white);border-radius:var(--border-radius);box-shadow:var(--shadow-soft);padding:1.5rem;margin-bottom:1rem;animation:slideIn 0.5s ease}
+        .question-card.hidden{display:none}@keyframes slideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+        .question-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--primary);color:white;border-radius:50%;font-family:'Fredoka',sans-serif;font-weight:700;font-size:0.9rem;margin-bottom:1rem}
+        .question-text{font-size:1.15rem;line-height:1.6;margin-bottom:0.75rem}
+        .question-text .blank{display:inline-block;min-width:120px;padding:0.25rem 0.5rem;background:var(--primary-light);border:2px dashed var(--primary-dark);border-radius:8px;text-align:center;font-weight:700;color:var(--primary-dark);transition:all 0.3s}
+        .question-text .blank.filled{background:var(--primary);border-style:solid;color:white}
+        .question-text .blank.correct{background:var(--success-light);border-color:var(--success);color:var(--success)}
+        .question-text .blank.incorrect{background:var(--error-light);border-color:var(--error);color:var(--error)}
+        .hint-box{background:#FFF9C4;border-left:4px solid var(--primary);padding:0.75rem 1rem;border-radius:0 8px 8px 0;margin-bottom:1rem;font-size:0.9rem}
+        .hint-label{font-weight:700;color:var(--primary);display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem}
+        .translation{color:var(--text-medium);font-style:italic;font-size:0.9rem;margin-top:0.5rem}
+        .options-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem;margin-top:1rem}
+        .option-btn{padding:1rem;border:3px solid #E5E7EB;border-radius:12px;background:var(--white);font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--text-dark)}
+        .option-btn:hover:not(:disabled){border-color:var(--primary);background:var(--primary-light);transform:translateY(-2px)}
+        .option-btn:disabled{cursor:not-allowed;opacity:0.7}
+        .option-btn.correct{border-color:var(--success);background:var(--success-light);color:var(--success)}
+        .option-btn.incorrect{border-color:var(--error);background:var(--error-light);color:var(--error)}
+        .feedback{margin-top:1.5rem;padding:0;border-radius:var(--border-radius);display:none;overflow:hidden}
+        .feedback.show{display:block;animation:fadeInUp 0.4s ease}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .feedback-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem}
+        .feedback.correct .feedback-header{background:var(--success);color:white}
+        .feedback.incorrect .feedback-header{background:var(--error);color:white}
+        .feedback-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600}
+        .feedback-body{padding:1.25rem;background:white;border:2px solid;border-top:none;border-radius:0 0 var(--border-radius) var(--border-radius)}
+        .feedback.correct .feedback-body{border-color:var(--success)}
+        .feedback.incorrect .feedback-body{border-color:var(--error)}
+        .error-analysis{background:var(--error-light);border-radius:12px;padding:1rem;margin-bottom:1rem}
+        .error-analysis-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--error);margin-bottom:0.75rem;font-size:0.9rem}
+        .error-type-badge{padding:0.2rem 0.5rem;background:var(--error);color:white;border-radius:6px;font-size:0.7rem;margin-left:auto}
+        .error-explanation{font-size:0.9rem;color:var(--text-dark);line-height:1.5}
+        .grammar-rule-box{background:var(--info-light);border-radius:12px;padding:1rem;margin-bottom:1rem;border-left:4px solid var(--info)}
+        .grammar-rule-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--info);margin-bottom:0.75rem;font-size:0.9rem}
+        .grammar-formula{background:white;padding:0.75rem 1rem;border-radius:8px;text-align:center;font-family:'Fredoka',sans-serif;font-size:0.95rem;color:var(--text-dark)}
+        .success-box{background:var(--success-light);border-radius:12px;padding:1rem;border-left:4px solid var(--success)}
+        .success-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--success);margin-bottom:0.5rem}
+        .success-text{font-size:0.9rem;color:var(--text-dark);line-height:1.5}
+        .nav-buttons{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1rem;border-top:1px solid #E5E7EB}
+        .nav-btn{flex:1;padding:1rem;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+        .nav-btn.primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white}
+        .nav-btn.secondary{background:#F3F4F6;color:var(--text-medium)}
+        .nav-btn:disabled{opacity:0.5;cursor:not-allowed}.nav-btn:not(:disabled):hover{transform:translateY(-2px)}
+        .results-screen{display:none;text-align:center;padding:2rem 1.5rem}
+        .results-screen.show{display:block}.results-emoji{font-size:4rem;margin-bottom:1rem}
+        .results-title{font-family:'Fredoka',sans-serif;font-size:2rem}
+        .results-score{font-size:3rem;font-weight:800;color:var(--primary);margin:1rem 0}
+        .stars-container{display:flex;justify-content:center;gap:0.5rem;margin:1.5rem 0}
+        .star{font-size:2.5rem;opacity:0.3}.star.earned{opacity:1;animation:starPop 0.5s ease}
+        @keyframes starPop{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+        .results-buttons{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+        .result-btn{padding:1rem 2rem;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+        .result-btn.primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:white}
+        .result-btn.secondary{background:#F3F4F6;color:var(--text-dark)}
+        @media (max-width:500px){.options-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">✏️ Fill in the Blanks</div>
+            <div class="header-subtitle">💚 A2 BLOQUE I • M7 • Indirect Questions</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+    <main class="main-content">
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container"><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span></div>
+            <div style="font-size:1.1rem;margin-bottom:1.5rem" id="resultsMessage"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        const quizData=[
+            {id:1,sentence:"Could you tell me _____ the boat leaves?",translation:"¿Podrías decirme cuándo sale el bote?",hint:"Pregunta indirecta con 'when'. No uses inversión.",options:["when","when does","if when"],correct:"when",feedback:{"when does":{errorType:"Inversión incorrecta",explanation:"En preguntas indirectas NO hay inversión. Usa orden normal: when + subject + verb.",rule:"Indirect: when/where/what + S + V"},"if when":{errorType:"Estructura incorrecta",explanation:"'If' se usa para yes/no questions. Para 'when' usa directamente la question word.",rule:"When/where → direct | If/whether → yes/no"}},correctReason:"Pregunta indirecta: when + normal word order (no inversion)",examples:["...where the boat is","...what time it arrives","...how much it costs"]},
+            
+            {id:2,sentence:"Do you know _____ there is a museum on the island?",translation:"¿Sabes si hay un museo en la isla?",hint:"Yes/no question indirecta. Usa 'if' o 'whether'.",options:["if","what","where"],correct:"if",feedback:{what:{errorType:"Question word incorrecta",explanation:"'What' se usa para preguntar 'qué'. Para yes/no questions usa 'if' o 'whether'.",rule:"Yes/no question → if/whether"},where:{errorType:"Question word incorrecta",explanation:"'Where' pregunta 'dónde'. Esta es una yes/no question, usa 'if' o 'whether'.",rule:"Yes/no → if/whether | Where → location"}},correctReason:"Yes/no question indirecta usa IF o WHETHER",examples:["...if they have tickets","...whether it's open","...if we can swim"]},
+            
+            {id:3,sentence:"I'm not sure _____ the tour guide can speak English.",translation:"No estoy seguro si el guía puede hablar inglés.",hint:"Yes/no question indirecta. No hay inversión.",options:["if","does if","if does"],correct:"if",feedback:{"does if":{errorType:"Auxiliar innecesario",explanation:"En pregunta indirecta NO se usa auxiliar 'does'. Solo: if + subject + verb.",rule:"Indirect: if + S + V (no auxiliary)"},"if does":{errorType:"Orden incorrecto",explanation:"Después de 'if' va directamente el sujeto, no 'does'. Orden: if + subject + can.",rule:"If + subject + modal"}},correctReason:"Yes/no indirecta: if + subject + modal (no 'does')",examples:["...if she can swim","...if they might come","...if we should wait"]},
+            
+            {id:4,sentence:"Can you tell me _____ the Science Center is?",translation:"¿Puedes decirme dónde está el Centro de Ciencias?",hint:"Pregunta 'dónde'. Sin inversión en indirecta.",options:["where","where is","if where"],correct:"where",feedback:{"where is":{errorType:"Inversión incorrecta",explanation:"En pregunta indirecta NO hay inversión. Usa orden: where + subject + verb.",rule:"Indirect: where + S + V"},"if where":{errorType:"Estructura incorrecta",explanation:"'Where' se usa solo (no con 'if'). 'If' es solo para yes/no questions.",rule:"Where → location (no 'if')"}},correctReason:"Pregunta indirecta de ubicación: where + S + V",examples:["...where they live","...where we can eat","...where it starts"]},
+            
+            {id:5,sentence:"I wonder _____ Sofia lost her phone.",translation:"Me pregunto si Sofía perdió su teléfono.",hint:"Yes/no question. Usa 'if' o 'whether'. Pasado.",options:["if","if did","did"],correct:"if",feedback:{"if did":{errorType:"Auxiliar innecesario",explanation:"En indirecta NO uses 'did'. Ya tienes el verbo en pasado: if + subject + past verb.",rule:"Indirect past: if + S + past verb"},"did":{errorType:"Falta 'if/whether'",explanation:"Yes/no question indirecta necesita 'if' o 'whether' al inicio.",rule:"Yes/no → if/whether + S + V"}},correctReason:"Yes/no indirecta en pasado: if + subject + past verb",examples:["...if they arrived","...if she saw it","...whether he went"]},
+            
+            {id:6,sentence:"Could you explain _____ this symbol means?",translation:"¿Podrías explicar qué significa este símbolo?",hint:"Pregunta 'qué'. Sin inversión.",options:["what","what does","if what"],correct:"what",feedback:{"what does":{errorType:"Inversión incorrecta",explanation:"En indirecta NO hay inversión. Usa: what + subject + verb.",rule:"Indirect: what + S + V"},"if what":{errorType:"Estructura incorrecta",explanation:"'What' se usa solo. 'If' es solo para yes/no questions.",rule:"What → direct (no 'if')"}},correctReason:"Pregunta indirecta con 'what': what + S + V (no inversion)",examples:["...what it means","...what they want","...what we need"]},
+            
+            {id:7,sentence:"Do you have any idea _____ much the tickets cost?",translation:"¿Tienes idea de cuánto cuestan los boletos?",hint:"'How much' en indirecta. Sin inversión.",options:["how","how do","if how"],correct:"how",feedback:{"how do":{errorType:"Inversión incorrecta",explanation:"En pregunta indirecta NO uses 'do'. Orden: how + subject + verb.",rule:"Indirect: how + S + V"},"if how":{errorType:"Estructura incorrecta",explanation:"'How' se usa solo (no con 'if'). 'If' es solo para yes/no.",rule:"How → direct (no 'if')"}},correctReason:"'How much' indirecta: how + S + V (no auxiliary)",examples:["...how it works","...how long it takes","...how far it is"]},
+            
+            {id:8,sentence:"I'm not certain _____ they accept credit cards.",translation:"No estoy seguro si aceptan tarjetas de crédito.",hint:"Yes/no question. Usa 'if' o 'whether'.",options:["whether","what","where whether"],correct:"whether",feedback:{what:{errorType:"Question word incorrecta",explanation:"'What' es para 'qué'. Esta es yes/no question, usa 'whether' o 'if'.",rule:"Yes/no → whether/if"},{"where whether":{errorType:"Estructura incorrecta",explanation:"'Whether' se usa solo, no con 'where'. 'Where' es para ubicación.",rule:"Whether → yes/no (no 'where')"}}},correctReason:"Yes/no indirecta: whether (o if) + S + V",examples:["...whether it's open","...whether they have room","...if we can board"]},
+            
+            {id:9,sentence:"Can you remember _____ time the agent said to arrive?",translation:"¿Puedes recordar a qué hora dijo el agente que llegaras?",hint:"'What time' en indirecta. Sin inversión.",options:["what","what did","if what"],correct:"what",feedback:{"what did":{errorType:"Inversión incorrecta",explanation:"En indirecta NO uses 'did'. Orden: what + subject + past verb.",rule:"Indirect: what + S + past V"},"if what":{errorType:"Estructura incorrecta",explanation:"'What' se usa directamente. 'If' es solo para yes/no questions.",rule:"What time → direct (no 'if')"}},correctReason:"'What time' indirecta: what + S + V (no inversion)",examples:["...what time we leave","...what day it starts","...what hour they open"]},
+            
+            {id:10,sentence:"Could you let me know _____ there are dolphins around the island?",translation:"¿Podrías avisarme si hay delfines alrededor de la isla?",hint:"Yes/no question con 'there is/are'. Usa 'if'.",options:["if","if are there","where"],correct:"if",feedback:{"if are there":{errorType:"Inversión incorrecta",explanation:"En indirecta NO hay inversión. Ya usaste 'if', ahora va: if + there + verb.",rule:"Indirect: if + there + is/are"},"where":{errorType:"Question word incorrecta",explanation:"'Where' es para ubicación. Esta es yes/no question sobre existencia, usa 'if'.",rule:"Existence (yes/no) → if | Location → where"}},correctReason:"Yes/no con 'there': if + there + is/are (no inversion)",examples:["...if there's time","...if there are seats","...whether there's food"]}
+        ];
+
+        let currentQuestion=0,score=0,answered=new Array(quizData.length).fill(false);
+
+        function initQuiz(){
+            const container=document.getElementById('questionsContainer');
+            quizData.forEach((q,index)=>{container.appendChild(createQuestionCard(q,index));});
+            showQuestion(0);updateProgress();
+        }
+
+        function createQuestionCard(q,index){
+            const card=document.createElement('div');
+            card.className=`question-card ${index!==0?'hidden':''}`;
+            card.id=`question-${index}`;
+            const shuffled=[...q.options].sort(()=>Math.random()-0.5);
+            card.innerHTML=`
+                <div class="question-number">${index+1}</div>
+                <div class="hint-box"><div class="hint-label">💡 Pista:</div>${q.hint}</div>
+                <p class="question-text">${q.sentence.replace('_____',`<span class="blank" id="blank-${index}">?</span>`)}</p>
+                <p class="translation">${q.translation}</p>
+                <div class="options-grid" id="options-${index}">
+                    ${shuffled.map(opt=>`<button class="option-btn" data-option="${opt}" onclick="selectOption(${index},'${opt}')">${opt}</button>`).join('')}
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index===0?'disabled':''}>← Anterior</button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>${index===quizData.length-1?'Ver Resultados →':'Siguiente →'}</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(questionIndex,option){
+            if(answered[questionIndex])return;
+            const q=quizData[questionIndex];
+            const isCorrect=option===q.correct;
+            answered[questionIndex]=true;
+            if(isCorrect)score++;
+
+            const blank=document.getElementById(`blank-${questionIndex}`);
+            blank.textContent=option;
+            blank.classList.add('filled',isCorrect?'correct':'incorrect');
+
+            const buttons=document.querySelectorAll(`#options-${questionIndex} .option-btn`);
+            buttons.forEach(btn=>{
+                btn.disabled=true;
+                if(btn.dataset.option===option)btn.classList.add(isCorrect?'correct':'incorrect');
+                if(btn.dataset.option===q.correct&&!isCorrect)btn.classList.add('correct');
+            });
+
+            const feedback=document.getElementById(`feedback-${questionIndex}`);
+            let feedbackHTML='';
+            if(isCorrect){
+                feedbackHTML=`
+                    <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente! Respuesta correcta</span></div>
+                    <div class="feedback-body">
+                        <div class="success-box">
+                            <div class="success-header"><span>📚</span> ¿Por qué "${q.correct}" es correcto?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>💡</span> Ejemplos similares</div>
+                            <div class="grammar-formula">${q.examples.join(' • ')}</div>
+                        </div>
+                    </div>
+                `;
+            }else{
+                const errorFeedback=q.feedback[option];
+                feedbackHTML=`
+                    <div class="feedback-header"><span>❌</span><span class="feedback-title">Respuesta incorrecta</span></div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis<span class="error-type-badge">${errorFeedback.errorType}</span></div>
+                            <div class="error-explanation">${errorFeedback.explanation}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${errorFeedback.rule}</div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>✓</span> Correcta: "${q.correct}"</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            feedback.innerHTML=feedbackHTML;
+            feedback.className=`feedback show ${isCorrect?'correct':'incorrect'}`;
+            document.getElementById(`nextBtn-${questionIndex}`).disabled=false;
+        }
+
+        function showQuestion(index){
+            document.querySelectorAll('.question-card').forEach((card,i)=>card.classList.toggle('hidden',i!==index));
+            currentQuestion=index;
+            document.getElementById('currentQ').textContent=index+1;
+            updateProgress();
+        }
+        function nextQuestion(){if(currentQuestion<quizData.length-1)showQuestion(currentQuestion+1);else showResults();}
+        function prevQuestion(){if(currentQuestion>0)showQuestion(currentQuestion-1);}
+        function updateProgress(){document.getElementById('progressFill').style.width=`${((currentQuestion+1)/quizData.length)*100}%`;}
+
+        function showResults(){
+            document.getElementById('questionsContainer').style.display='none';
+            const resultsScreen=document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+            document.getElementById('finalScore').textContent=`${score}/${quizData.length}`;
+            const percentage=(score/quizData.length)*100;
+            const stars=document.querySelectorAll('.star');
+            setTimeout(()=>{if(percentage>=60)stars[0].classList.add('earned');},300);
+            setTimeout(()=>{if(percentage>=80)stars[1].classList.add('earned');},600);
+            setTimeout(()=>{if(percentage>=100)stars[2].classList.add('earned');},900);
+            let message=percentage===100?'¡Perfecto! 🎉 ¡Dominas las indirect questions!':percentage>=80?'¡Excelente! 🌟 ¡Casi perfecto!':percentage>=60?'¡Buen trabajo! 👍 Sigue practicando.':'¡No te rindas! 💪 Repasa e intenta de nuevo.';
+            document.getElementById('resultsMessage').textContent=message;
+            const progressData=JSON.parse(localStorage.getItem('jucumProgress')||'{}');
+            progressData['a2i-M7-indirect-fill']=percentage;
+            localStorage.setItem('jucumProgress',JSON.stringify(progressData));
+        }
+        document.addEventListener('DOMContentLoaded',initQuiz);
+    </script>
+</body>
+</html>

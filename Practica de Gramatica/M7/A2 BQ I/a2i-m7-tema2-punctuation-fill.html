@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fill in the Blanks - A2-I M7 | JUCUM English</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* === NIVEL A2 BLOQUE I: VERDE === */
+            --primary: #10B981;
+            --primary-light: #6EE7B7;
+            --primary-dark: #059669;
+            --accent: #34D399;
+            --bg-gradient-start: #ECFDF5;
+            --bg-gradient-end: #D1FAE5;
+            --text-dark: #064E3B;
+            --text-medium: #065F46;
+            --text-light: #047857;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --success-dark: #059669;
+            --error: #EF4444;
+            --error-light: #FEE2E2;
+            --error-dark: #DC2626;
+            --info: #3B82F6;
+            --info-light: #DBEAFE;
+            --purple: #8B5CF6;
+            --purple-light: #EDE9FE;
+            --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(16, 185, 129, 0.15);
+            --shadow-strong: 0 8px 30px rgba(16, 185, 129, 0.25);
+            --border-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .progress-indicator {
+            background: rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            padding: 0 1.5rem;
+            margin-top: -8px;
+            position: relative;
+            z-index: 99;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.5s ease;
+        }
+
+        .question-card.hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-text .blank {
+            display: inline-block;
+            min-width: 80px;
+            padding: 0.25rem 0.5rem;
+            background: var(--primary-light);
+            border: 2px dashed var(--primary-dark);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+            transition: all 0.3s;
+        }
+
+        .question-text .blank.filled {
+            background: var(--primary);
+            border-style: solid;
+            color: white;
+        }
+
+        .question-text .blank.correct {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: var(--success-dark);
+        }
+
+        .question-text .blank.incorrect {
+            background: var(--error-light);
+            border-color: var(--error);
+            color: var(--error-dark);
+        }
+
+        .hint-box {
+            background: #FFF9C4;
+            border-left: 4px solid var(--primary);
+            padding: 0.75rem 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .hint-label {
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .translation {
+            color: var(--text-medium);
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            border: 3px solid #E5E7EB;
+            border-radius: 12px;
+            background: var(--white);
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dark);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-btn.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+            color: var(--success-dark);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--error);
+            background: var(--error-light);
+            color: var(--error-dark);
+        }
+
+        /* Enhanced Feedback Section */
+        .feedback {
+            margin-top: 1.5rem;
+            padding: 0;
+            border-radius: var(--border-radius);
+            display: none;
+            overflow: hidden;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Feedback Header */
+        .feedback-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feedback.correct .feedback-header {
+            background: var(--success);
+            color: white;
+        }
+
+        .feedback.incorrect .feedback-header {
+            background: var(--error);
+            color: white;
+        }
+
+        .feedback-icon {
+            font-size: 1.5rem;
+        }
+
+        .feedback-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* Feedback Body */
+        .feedback-body {
+            padding: 1.25rem;
+            background: white;
+            border: 2px solid;
+            border-top: none;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .feedback.correct .feedback-body {
+            border-color: var(--success);
+        }
+
+        .feedback.incorrect .feedback-body {
+            border-color: var(--error);
+        }
+
+        /* Error Analysis Box */
+        .error-analysis {
+            background: var(--error-light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--error-dark);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .error-type-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: var(--error);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        .error-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0.75rem 0;
+        }
+
+        .error-word {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .error-word.wrong {
+            background: white;
+            color: var(--error);
+            text-decoration: line-through;
+            border: 2px solid var(--error);
+        }
+
+        .error-word.right {
+            background: var(--success);
+            color: white;
+            border: 2px solid var(--success-dark);
+        }
+
+        .error-arrow {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+        }
+
+        .error-explanation {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Grammar Rule Box */
+        .grammar-rule-box {
+            background: var(--info-light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--info);
+        }
+
+        .grammar-rule-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--info);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .grammar-formula {
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .grammar-formula .highlight {
+            color: var(--info);
+            font-weight: 700;
+        }
+
+        .grammar-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .grammar-example {
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+        }
+
+        /* Correct Answer Box */
+        .correct-answer-box {
+            background: var(--success-light);
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+
+        .correct-answer-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--success-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .correct-answer-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--success-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .correct-answer-reason {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Success Box (for correct answers) */
+        .success-explanation {
+            background: var(--success-light);
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+
+        .success-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--success-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-text {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: #F3F4F6;
+            color: var(--text-medium);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .results-screen.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .results-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 1rem 0;
+        }
+
+        .results-message {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .star {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+
+        .star.earned {
+            opacity: 1;
+            animation: starPop 0.5s ease;
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .results-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .result-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .result-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .result-btn.secondary {
+            background: #F3F4F6;
+            color: var(--text-dark);
+        }
+
+        .result-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .error-comparison {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .error-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">✏️ Fill in the Blanks</div>
+            <div class="header-subtitle">💚 A2 BLOQUE I • Módulo 7 • Punctuation</div>
+        </div>
+        <div class="progress-indicator">
+            <span id="currentQ">1</span>/10
+        </div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div id="questionsContainer"></div>
+
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Quiz Data - Punctuation: Commas, Periods, Apostrophes - Based on Island Learning Story
+        const quizData = [
+            {
+                id: 1,
+                sentence: "Sofia and Tomás _____ planning the trip for months.",
+                translation: "Sofía y Tomás habían estado planeando el viaje por meses.",
+                hint: "Elige entre: pasado sin apostrophe, contracción 'we are', o número.",
+                options: ["were", "we're", "where"],
+                correct: "were",
+                feedback: {
+                    "we're": {
+                        errorType: "Apostrophe incorrecto",
+                        explanation: "'We're' = we are (contracción con apostrophe). Aquí necesitamos 'were' (pasado simple sin apostrophe).",
+                        rule: "were (past) ≠ we're (we are)"
+                    },
+                    "where": {
+                        errorType: "Homófono incorrecto",
+                        explanation: "'Where' es adverbio de lugar (¿dónde?). 'Were' es pasado del verbo 'to be'.",
+                        rule: "where (lugar) ≠ were (pasado)"
+                    }
+                },
+                correctReason: "'Were' es pasado simple sin apostrophe. Nunca lleva apostrophe porque no es contracción.",
+                examples: ["They were happy", "We were ready", "You were right"]
+            },
+            {
+                id: 2,
+                sentence: "They bought tickets_____ food_____ and souvenirs.",
+                translation: "Compraron boletos, comida y souvenirs.",
+                hint: "Lista de 3 elementos necesita comas separadoras.",
+                options: [", ,", " , ", ",,"],
+                correct: ", ,",
+                feedback: {
+                    " , ": {
+                        errorType: "Coma incompleta",
+                        explanation: "Falta la segunda coma. En listas de 3+ elementos, CADA elemento necesita coma: item, item, and item.",
+                        rule: "Lista: comma después de CADA elemento"
+                    },
+                    ",,": {
+                        errorType: "Sin espacios",
+                        explanation: "Las comas necesitan un espacio DESPUÉS, no ANTES: 'tickets, food'.",
+                        rule: "Comma format: word, word"
+                    }
+                },
+                correctReason: "En listas de 3+ elementos, usamos comas con espacio después: tickets, food, and souvenirs.",
+                examples: ["I swim, eat, and rest", "She saw boats, fish, and birds", "They visited Monday, Tuesday, and Wednesday"]
+            },
+            {
+                id: 3,
+                sentence: "The boat_____ color was beautiful blue.",
+                translation: "El color del bote era azul hermoso.",
+                hint: "Para mostrar posesión (color DEL bote), necesitamos apostrophe.",
+                options: ["'s", "s", "s'"],
+                correct: "'s",
+                feedback: {
+                    "s": {
+                        errorType: "Apostrophe faltante",
+                        explanation: "Sin apostrophe, 'boats' sería plural. Para posesión singular, necesitamos apostrophe + s.",
+                        rule: "Singular possessive: noun's"
+                    },
+                    "s'": {
+                        errorType: "Orden incorrecto",
+                        explanation: "'S' después del apostrophe es para posesivos PLURALES (boats'). Singular usa 's (boat's).",
+                        rule: "Singular: boat's | Plural: boats'"
+                    }
+                },
+                correctReason: "Posesivo singular: noun + apostrophe + s. 'Boat's' = del bote (singular).",
+                examples: ["The agent's advice", "Sofia's plan", "The museum's exhibits"]
+            },
+            {
+                id: 4,
+                sentence: "_____ important to know if the weather is good.",
+                translation: "Es importante saber si el clima está bueno.",
+                hint: "Elige entre: contracción 'it is', posesivo 'su', o pasado de 'be'.",
+                options: ["It's", "Its", "It was"],
+                correct: "It's",
+                feedback: {
+                    "Its": {
+                        errorType: "Apostrophe faltante",
+                        explanation: "'Its' (sin apostrophe) es posesivo. Necesitamos 'It's' = it is (contracción con apostrophe).",
+                        rule: "It's = it is (apostrophe) | its = possessive (no apostrophe)"
+                    },
+                    "It was": {
+                        errorType: "Tiempo incorrecto",
+                        explanation: "El contexto es presente general. 'It's' (present) es correcto, no 'It was' (past).",
+                        rule: "Present: It's important | Past: It was important"
+                    }
+                },
+                correctReason: "'It's' = it is (contracción con apostrophe). Siempre que significa 'it is', lleva apostrophe.",
+                examples: ["It's sunny today", "It's a great day", "It's important to know"]
+            },
+            {
+                id: 5,
+                sentence: "Tomorrow we might visit the Science Center_____ the harbor_____ and the beaches.",
+                translation: "Mañana podríamos visitar el Centro de Ciencias, el puerto y las playas.",
+                hint: "Lista de 3 lugares necesita comas.",
+                options: [", ,", "; ;", ": :"],
+                correct: ", ,",
+                feedback: {
+                    "; ;": {
+                        errorType: "Punto y coma incorrecto",
+                        explanation: "Punto y coma (;) se usa para separar oraciones completas. Para listas simples, usamos comas.",
+                        rule: "Simple lists use commas, not semicolons"
+                    },
+                    ": :": {
+                        errorType: "Dos puntos incorrecto",
+                        explanation: "Dos puntos (:) introducen listas después de frase completa. Aquí la lista es parte directa de 'visit'.",
+                        rule: "Colon for introduction | comma for list items"
+                    }
+                },
+                correctReason: "Listas simples usan comas: Center, harbor, and beaches. Es la puntuación estándar para listas de 3+ items.",
+                examples: ["We swam, ate, and rested", "She needs food, water, and rest", "They saw fish, boats, and birds"]
+            },
+            {
+                id: 6,
+                sentence: "The children_____ favorite activities were swimming and exploring.",
+                translation: "Las actividades favoritas de los niños eran nadar y explorar.",
+                hint: "'Children' es plural irregular. ¿Cómo se forma el posesivo?",
+                options: ["'s", "s'", "s"],
+                correct: "'s",
+                feedback: {
+                    "s'": {
+                        errorType: "Regla mal aplicada",
+                        explanation: "'S' después del apostrophe es para plurales regulares (students'). 'Children' es irregular, usa 's.",
+                        rule: "Irregular plural possessive: children's"
+                    },
+                    "s": {
+                        errorType: "Apostrophe faltante",
+                        explanation: "Sin apostrophe no hay posesión. 'Children' es plural irregular, necesita apostrophe + s.",
+                        rule: "children's = de los niños (possessive)"
+                    }
+                },
+                correctReason: "'Children' es plural irregular. Para posesivo: children + apostrophe + s = children's.",
+                examples: ["The women's boats", "The men's plans", "The children's surprise"]
+            },
+            {
+                id: 7,
+                sentence: "_____ a beautiful clear blue sky over the island.",
+                translation: "Había un hermoso cielo azul claro sobre la isla.",
+                hint: "Observa: no hay comas innecesarias en 'beautiful clear blue'.",
+                options: ["There was", "Their was", "They're was"],
+                correct: "There was",
+                feedback: {
+                    "Their was": {
+                        errorType: "Confusión homófona",
+                        explanation: "'Their' es posesivo (su/sus). Necesitamos 'There' para existencia (había).",
+                        rule: "There (existence) ≠ Their (possessive) ≠ They're (they are)"
+                    },
+                    "They're was": {
+                        errorType: "Contracción incorrecta + gramática",
+                        explanation: "'They're' = they are. No se combina con 'was'. Necesitamos 'There was'.",
+                        rule: "They're = they are | There was = existía"
+                    }
+                },
+                correctReason: "'There was' indica existencia. No confundir con 'Their' (posesivo) o 'They're' (contracción).",
+                examples: ["There was a boat", "There were fish around", "There is a museum"]
+            },
+            {
+                id: 8,
+                sentence: "Sofia said_____ _____ so happy we made it here_____ ",
+                translation: "Sofía dijo: 'Estoy tan feliz de que llegamos aquí.'",
+                hint: "Diálogo necesita: comillas de apertura, contracción I am, y comillas de cierre.",
+                options: ["\"I'm\"", "\"Im\"", "I'm"],
+                correct: "\"I'm\"",
+                feedback: {
+                    "\"Im\"": {
+                        errorType: "Apostrophe faltante",
+                        explanation: "'Im' no existe. La contracción de 'I am' es 'I'm' (con apostrophe).",
+                        rule: "I'm = I am (contraction needs apostrophe)"
+                    },
+                    "I'm": {
+                        errorType: "Comillas faltantes",
+                        explanation: "El diálogo directo necesita comillas (\" \"). 'I'm' solo no indica que es diálogo.",
+                        rule: "Direct speech: \"Quote\""
+                    }
+                },
+                correctReason: "Diálogo directo: comillas + contracción I'm (con apostrophe) + comillas de cierre.",
+                examples: ["She said \"I'm ready\"", "\"We're sure,\" they replied", "\"Don't worry,\" he said"]
+            },
+            {
+                id: 9,
+                sentence: "We arrived early_____ We were excited to explore.",
+                translation: "Llegamos temprano. Estábamos emocionados de explorar.",
+                hint: "Dos oraciones completas e independientes necesitan...",
+                options: [".", ",", ";"],
+                correct: ".",
+                feedback: {
+                    ",": {
+                        errorType: "Comma splice",
+                        explanation: "Dos oraciones completas no pueden unirse solo con coma. Necesitan punto o punto y coma.",
+                        rule: "Two sentences: sentence. Sentence."
+                    },
+                    ";": {
+                        errorType: "Punto y coma aceptable pero menos común",
+                        explanation: "Punto y coma (;) es técnicamente correcto pero menos común. El punto (.) es más natural.",
+                        rule: "Period is more common than semicolon"
+                    }
+                },
+                correctReason: "Dos oraciones completas se separan con punto. La segunda empieza con mayúscula.",
+                examples: ["They swam. We rested.", "She arrived. He left.", "It's sunny. Let's go."]
+            },
+            {
+                id: 10,
+                sentence: "The agent_____ advice was helpful_____ They suggested the blue lagoon tour.",
+                translation: "El consejo del agente fue útil. Sugirieron el tour de la laguna azul.",
+                hint: "Posesivo singular + separar dos oraciones completas.",
+                options: ["'s .", "'s,", "s ."],
+                correct: "'s .",
+                feedback: {
+                    "'s,": {
+                        errorType: "Comma splice",
+                        explanation: "Dos oraciones completas no pueden unirse con coma. Necesitan un punto.",
+                        rule: "Two sentences: sentence. Sentence. (not comma)"
+                    },
+                    "s .": {
+                        errorType: "Apostrophe faltante",
+                        explanation: "Para posesión singular, necesitamos apostrophe + s (agent's), no solo 's'.",
+                        rule: "Singular possessive: noun's"
+                    }
+                },
+                correctReason: "Posesivo singular: agent's (apostrophe + s). Dos oraciones: punto + mayúscula.",
+                examples: ["Sofia's plan. They agreed.", "The boat's color. It was blue.", "The museum's hours. We checked."]
+            }
+        ];
+
+        // State
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = new Array(quizData.length).fill(false);
+        let answers = new Array(quizData.length).fill(null);
+
+        // Initialize Quiz
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const card = createQuestionCard(q, index);
+                container.appendChild(card);
+            });
+
+            showQuestion(0);
+            updateProgress();
+        }
+
+        // Create Question Card
+        function createQuestionCard(q, index) {
+            const card = document.createElement('div');
+            card.className = `question-card ${index !== 0 ? 'hidden' : ''}`;
+            card.id = `question-${index}`;
+
+            // Shuffle options
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+            card.innerHTML = `
+                <div class="question-number">${index + 1}</div>
+                
+                <div class="hint-box">
+                    <div class="hint-label">💡 Pista:</div>
+                    ${q.hint}
+                </div>
+
+                <p class="question-text">
+                    ${q.sentence.replace('_____', `<span class="blank" id="blank-${index}">?</span>`)}
+                </p>
+                <p class="translation">${q.translation}</p>
+
+                <div class="options-grid" id="options-${index}">
+                    ${shuffledOptions.map((opt, i) => `
+                        <button class="option-btn" data-option="${opt.replace(/"/g, '&quot;')}" onclick="selectOption(${index}, '${opt.replace(/'/g, "\\'")}')">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+
+                <div class="feedback" id="feedback-${index}"></div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
+                        ← Anterior
+                    </button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>
+                        ${index === quizData.length - 1 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Select Option with enhanced feedback
+        function selectOption(questionIndex, option) {
+            if (answered[questionIndex]) return;
+
+            const q = quizData[questionIndex];
+            const isCorrect = option === q.correct;
+            const optionsContainer = document.getElementById(`options-${questionIndex}`);
+            const buttons = optionsContainer.querySelectorAll('.option-btn');
+            const blank = document.getElementById(`blank-${questionIndex}`);
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+            const nextBtn = document.getElementById(`nextBtn-${questionIndex}`);
+
+            // Mark as answered
+            answered[questionIndex] = true;
+            answers[questionIndex] = option;
+
+            // Update blank
+            blank.textContent = option;
+            blank.classList.add('filled');
+
+            // Update buttons
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                const btnOption = btn.dataset.option.replace(/&quot;/g, '"');
+                if (btnOption === option) {
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+                if (btnOption === q.correct && !isCorrect) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            // Update blank style
+            blank.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+            // Build enhanced feedback
+            let feedbackHTML = '';
+            
+            if (isCorrect) {
+                score++;
+                feedbackHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-icon">✅</span>
+                        <span class="feedback-title">¡Excelente! Respuesta correcta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <div class="success-explanation">
+                            <div class="success-header">
+                                <span>📚</span> ¿Por qué "${q.correct}" es correcto?
+                            </div>
+                            <div class="success-text">
+                                ${q.correctReason}
+                            </div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header">
+                                <span>📖</span> Ejemplos similares
+                            </div>
+                            <div class="grammar-examples">
+                                ${q.examples.map(ex => `<span class="grammar-example">${ex}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const errorFeedback = q.feedback[option];
+                feedbackHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-icon">❌</span>
+                        <span class="feedback-title">Respuesta incorrecta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <!-- Error Analysis -->
+                        <div class="error-analysis">
+                            <div class="error-analysis-header">
+                                <span>🔍</span> Análisis del error
+                                <span class="error-type-badge">${errorFeedback.errorType}</span>
+                            </div>
+                            <div class="error-comparison">
+                                <span class="error-word wrong">${option}</span>
+                                <span class="error-arrow">→</span>
+                                <span class="error-word right">${q.correct}</span>
+                            </div>
+                            <div class="error-explanation">
+                                ${errorFeedback.explanation}
+                            </div>
+                        </div>
+
+                        <!-- Grammar Rule -->
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header">
+                                <span>📖</span> Regla de puntuación
+                            </div>
+                            <div class="grammar-formula">
+                                <span class="highlight">${errorFeedback.rule}</span>
+                            </div>
+                        </div>
+
+                        <!-- Correct Answer Box -->
+                        <div class="correct-answer-box">
+                            <div class="correct-answer-header">
+                                <span>✓</span> La respuesta correcta es:
+                            </div>
+                            <div class="correct-answer-text">"${q.correct}"</div>
+                            <div class="correct-answer-reason">
+                                ${q.correctReason}
+                            </div>
+                        </div>
+
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header">
+                                <span>💡</span> Ejemplos correctos
+                            </div>
+                            <div class="grammar-examples">
+                                ${q.examples.map(ex => `<span class="grammar-example">${ex}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+
+            // Enable next button
+            nextBtn.disabled = false;
+        }
+
+        // Navigation
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => {
+                card.classList.toggle('hidden', i !== index);
+            });
+            currentQuestion = index;
+            document.getElementById('currentQ').textContent = index + 1;
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        // Show Results
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+
+            document.getElementById('finalScore').textContent = `${score}/${quizData.length}`;
+
+            const percentage = (score / quizData.length) * 100;
+            const stars = document.querySelectorAll('.star');
+            
+            setTimeout(() => {
+                if (percentage >= 60) stars[0].classList.add('earned');
+            }, 300);
+            setTimeout(() => {
+                if (percentage >= 80) stars[1].classList.add('earned');
+            }, 600);
+            setTimeout(() => {
+                if (percentage >= 100) stars[2].classList.add('earned');
+            }, 900);
+
+            let message = '';
+            if (percentage === 100) {
+                message = '¡Perfecto! 🎉 ¡Dominas la puntuación!';
+            } else if (percentage >= 80) {
+                message = '¡Excelente trabajo! 🌟 ¡Casi perfecto!';
+            } else if (percentage >= 60) {
+                message = '¡Buen trabajo! 👍 Sigue practicando.';
+            } else {
+                message = '¡No te rindas! 💪 Repasa las explicaciones e intenta de nuevo.';
+            }
+            document.getElementById('resultsMessage').textContent = message;
+
+            saveProgress(percentage);
+        }
+
+        // Save Progress
+        function saveProgress(percentage) {
+            const progressData = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            progressData['a2i-M7-fill'] = percentage;
+            localStorage.setItem('jucumProgress', JSON.stringify(progressData));
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

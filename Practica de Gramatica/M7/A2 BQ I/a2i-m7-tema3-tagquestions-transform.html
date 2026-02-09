@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform - A2-I M7 Tag Questions | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#10B981;--primary-light:#6EE7B7;--primary-dark:#059669;--accent:#34D399;--bg-gradient-start:#ECFDF5;--bg-gradient-end:#D1FAE5;--text-dark:#064E3B;--text-medium:#065F46;--success:#10B981;--success-light:#D1FAE5;--error:#EF4444;--error-light:#FEE2E2;--info:#3B82F6;--info-light:#DBEAFE;--purple:#8B5CF6;--purple-light:#EDE9FE;--orange:#F97316;--orange-light:#FFEDD5;--white:#FFF;--shadow-soft:0 4px 20px rgba(16,185,129,0.15);--border-radius:20px}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,var(--bg-gradient-start) 0%,var(--bg-gradient-end) 100%);min-height:100vh;color:var(--text-dark)}
+        .header{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-soft)}
+        .back-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.3);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.5rem;text-decoration:none;color:white}
+        .header-info{flex:1}.header-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600;color:white}.header-subtitle{font-size:0.85rem;color:rgba(255,255,255,0.9)}
+        .progress-indicator{background:rgba(255,255,255,0.3);padding:0.5rem 1rem;border-radius:50px;font-weight:700;color:white}
+        .progress-container{padding:0 1.5rem;margin-top:-8px}.progress-bar{height:8px;background:rgba(255,255,255,0.5);border-radius:4px;overflow:hidden}
+        .progress-fill{height:100%;background:var(--accent);transition:width 0.5s ease}
+        .main-content{padding:1.5rem;max-width:650px;margin:0 auto}
+        .instructions{background:var(--purple-light);border:2px solid var(--purple);padding:1rem;border-radius:var(--border-radius);margin-bottom:1.5rem;text-align:center}
+        .instructions-icon{font-size:2rem}.instructions-title{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--purple)}
+        .question-card{background:var(--white);border-radius:var(--border-radius);box-shadow:var(--shadow-soft);overflow:hidden;animation:slideIn 0.5s ease}
+        .question-card.hidden{display:none}@keyframes slideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .question-header{background:linear-gradient(135deg,var(--purple-light),#E0D4FC);padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem}
+        .question-number{width:36px;height:36px;background:var(--purple);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700}
+        .question-label{font-weight:600;color:var(--purple)}.question-body{padding:1.5rem}
+        .transform-visual{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem}
+        .transform-box{padding:1rem 1.25rem;border-radius:12px;position:relative}
+        .transform-box.base{background:var(--orange-light);border:2px solid var(--orange)}
+        .transform-box.goal{background:var(--purple-light);border:2px solid var(--purple)}
+        .transform-label{position:absolute;top:-10px;left:12px;background:var(--white);padding:0 8px;font-size:0.75rem;font-weight:700;text-transform:uppercase}
+        .transform-box.base .transform-label{color:var(--orange)}
+        .transform-box.goal .transform-label{color:var(--purple)}
+        .transform-sentence{font-size:1.05rem;font-weight:600;line-height:1.5}
+        .transform-arrow{text-align:center;font-size:1.5rem;color:var(--text-medium)}
+        .options-container{display:flex;flex-direction:column;gap:0.75rem}
+        .option-btn{display:flex;align-items:center;gap:0.75rem;padding:1rem;border:3px solid #E5E7EB;border-radius:12px;background:var(--white);cursor:pointer;transition:all 0.2s;text-align:left}
+        .option-btn:hover:not(.disabled){border-color:var(--purple);background:var(--purple-light)}
+        .option-btn.disabled{cursor:not-allowed}.option-btn.correct{border-color:var(--success);background:var(--success-light)}
+        .option-btn.incorrect{border-color:var(--error);background:var(--error-light)}
+        .option-letter{width:28px;height:28px;background:#E5E7EB;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0}
+        .option-btn.correct .option-letter{background:var(--success);color:white}
+        .option-btn.incorrect .option-letter{background:var(--error);color:white}
+        .option-text{flex:1;font-size:1rem}.option-icon{font-size:1.2rem;display:none}
+        .option-btn.correct .option-icon,.option-btn.incorrect .option-icon{display:block}
+        .feedback-section{margin-top:1.5rem;display:none;border-radius:var(--border-radius);overflow:hidden}
+        .feedback-section.show{display:block;animation:fadeInUp 0.4s ease}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        .feedback-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem}
+        .feedback-section.correct .feedback-header{background:var(--success);color:white}
+        .feedback-section.incorrect .feedback-header{background:var(--error);color:white}
+        .feedback-title{font-family:'Fredoka',sans-serif;font-size:1.1rem;font-weight:600}
+        .feedback-body{padding:1.25rem;background:white;border:2px solid;border-top:none;border-radius:0 0 var(--border-radius) var(--border-radius)}
+        .feedback-section.correct .feedback-body{border-color:var(--success)}
+        .feedback-section.incorrect .feedback-body{border-color:var(--error)}
+        .error-analysis{background:var(--error-light);border-radius:12px;padding:1rem;margin-bottom:1rem}
+        .error-analysis-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--error);margin-bottom:0.75rem;font-size:0.9rem}
+        .error-type-badge{padding:0.2rem 0.5rem;background:var(--error);color:white;border-radius:6px;font-size:0.7rem;margin-left:auto}
+        .error-explanation{font-size:0.9rem;color:var(--text-dark);line-height:1.5}
+        .grammar-rule-box{background:var(--info-light);border-radius:12px;padding:1rem;margin-bottom:1rem;border-left:4px solid var(--info)}
+        .grammar-rule-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--info);margin-bottom:0.75rem;font-size:0.9rem}
+        .grammar-formula{background:white;padding:0.75rem 1rem;border-radius:8px;text-align:center;font-family:'Fredoka',sans-serif;font-size:1rem;color:var(--text-dark)}
+        .success-box{background:var(--success-light);border-radius:12px;padding:1rem;border-left:4px solid var(--success)}
+        .success-header{display:flex;align-items:center;gap:0.5rem;font-weight:700;color:var(--success);margin-bottom:0.5rem}
+        .success-text{font-size:0.9rem;color:var(--text-dark);line-height:1.5}
+        .nav-buttons{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1rem;border-top:1px solid #E5E7EB}
+        .nav-btn{flex:1;padding:1rem;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s}
+        .nav-btn.primary{background:linear-gradient(135deg,var(--purple) 0%,#7C3AED 100%);color:white}
+        .nav-btn.secondary{background:#F3F4F6;color:var(--text-medium)}
+        .nav-btn:disabled{opacity:0.5;cursor:not-allowed}.nav-btn:not(:disabled):hover{transform:translateY(-2px)}
+        .results-screen{display:none;text-align:center;padding:2rem 1.5rem}
+        .results-screen.show{display:block}.results-emoji{font-size:4rem;margin-bottom:1rem}
+        .results-title{font-family:'Fredoka',sans-serif;font-size:2rem}
+        .results-score{font-size:3rem;font-weight:800;color:var(--purple);margin:1rem 0}
+        .stars-container{display:flex;justify-content:center;gap:0.5rem;margin:1.5rem 0}
+        .star{font-size:2.5rem;opacity:0.3}.star.earned{opacity:1;animation:starPop 0.5s ease}
+        @keyframes starPop{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+        .results-buttons{display:flex;flex-direction:column;gap:1rem;margin-top:2rem}
+        .result-btn{padding:1rem 2rem;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+        .result-btn.primary{background:linear-gradient(135deg,var(--purple) 0%,#7C3AED 100%);color:white}
+        .result-btn.secondary{background:#F3F4F6;color:var(--text-dark)}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔄 Transform</div>
+            <div class="header-subtitle">💚 A2 BLOQUE I • M7 • Tag Questions</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔄</div>
+            <div class="instructions-title">Agrega el Tag Question Correcto</div>
+            <div style="font-size:0.9rem;color:var(--text-medium)">Observa la oración y elige el tag question correcto.</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container"><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span></div>
+            <div style="font-size:1.1rem;margin-bottom:1.5rem" id="resultsMessage"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        const quizData=[
+            {id:1,base:"The boat tour starts at 9 AM",goal:"Agregar tag question",options:[
+                {text:"The boat tour starts at 9 AM, doesn't it?",correct:true},
+                {text:"The boat tour starts at 9 AM, does it?",correct:false,errorType:"Polaridad incorrecta",explanation:"Positivo → tag negativo."},
+                {text:"The boat tour starts at 9 AM, isn't it?",correct:false,errorType:"Auxiliar incorrecto",explanation:"'Starts' usa does/doesn't."}
+            ],correctReason:"Positivo → tag negativo: doesn't it",rule:"Positive statement → negative tag",examples:["She swims, doesn't she?","It works, doesn't it?"]},
+            
+            {id:2,base:"Sofia and Tomás aren't lost",goal:"Agregar tag question",options:[
+                {text:"Sofia and Tomás aren't lost, are they?",correct:true},
+                {text:"Sofia and Tomás aren't lost, aren't they?",correct:false,errorType:"Polaridad incorrecta",explanation:"Negativo → tag positivo."},
+                {text:"Sofia and Tomás aren't lost, do they?",correct:false,errorType:"Auxiliar incorrecto",explanation:"'Be' en oración → 'be' en tag."}
+            ],correctReason:"Negativo → tag positivo: are they",rule:"Negative → positive tag",examples:["They aren't ready, are they?","It isn't blue, is it?"]},
+            
+            {id:3,base:"You can swim well",goal:"Agregar tag question",options:[
+                {text:"You can swim well, can't you?",correct:true},
+                {text:"You can swim well, can you?",correct:false,errorType:"Polaridad incorrecta",explanation:"Modal positivo → tag negativo."},
+                {text:"You can swim well, don't you?",correct:false,errorType:"Auxiliar incorrecto",explanation:"Modal 'can' se repite en tag."}
+            ],correctReason:"Modal positivo → tag negativo: can't you",rule:"Modal → negative tag",examples:["She can help, can't she?","They can go, can't they?"]},
+            
+            {id:4,base:"The agent didn't arrange the tour",goal:"Agregar tag question",options:[
+                {text:"The agent didn't arrange the tour, did he?",correct:true},
+                {text:"The agent didn't arrange the tour, didn't he?",correct:false,errorType:"Polaridad incorrecta",explanation:"Negativo → tag positivo."},
+                {text:"The agent didn't arrange the tour, doesn't he?",correct:false,errorType:"Tiempo incorrecto",explanation:"Pasado (didn't) → 'did' en tag."}
+            ],correctReason:"Pasado negativo → tag positivo: did he",rule:"Past negative → positive tag",examples:["She didn't call, did she?","They didn't swim, did they?"]},
+            
+            {id:5,base:"We should assess the weather",goal:"Agregar tag question",options:[
+                {text:"We should assess the weather, shouldn't we?",correct:true},
+                {text:"We should assess the weather, should we?",correct:false,errorType:"Polaridad incorrecta",explanation:"Modal positivo → tag negativo."},
+                {text:"We should assess the weather, don't we?",correct:false,errorType:"Auxiliar incorrecto",explanation:"Modal 'should' se repite."}
+            ],correctReason:"Modal positivo → tag negativo: shouldn't we",rule:"Modal → negative tag",examples:["They should wait, shouldn't they?","She should know, shouldn't she?"]},
+            
+            {id:6,base:"There was a surprise party",goal:"Agregar tag question",options:[
+                {text:"There was a surprise party, wasn't there?",correct:true},
+                {text:"There was a surprise party, was there?",correct:false,errorType:"Polaridad incorrecta",explanation:"Positivo → tag negativo."},
+                {text:"There was a surprise party, didn't it?",correct:false,errorType:"Auxiliar/pronombre incorrecto",explanation:"'There was' → wasn't there."}
+            ],correctReason:"'There was' positivo → wasn't there",rule:"There was → wasn't there",examples:["There were fish, weren't there?","There is time, isn't there?"]},
+            
+            {id:7,base:"They might visit the museum",goal:"Agregar tag question",options:[
+                {text:"They might visit the museum, mightn't they?",correct:true},
+                {text:"They might visit the museum, might they?",correct:false,errorType:"Polaridad incorrecta",explanation:"Modal positivo → tag negativo."},
+                {text:"They might visit the museum, don't they?",correct:false,errorType:"Auxiliar incorrecto",explanation:"Modal 'might' se repite."}
+            ],correctReason:"Modal positivo → tag negativo: mightn't they",rule:"Modal → negative tag",examples:["She might come, mightn't she?","It might work, mightn't it?"]},
+            
+            {id:8,base:"The children love swimming",goal:"Agregar tag question",options:[
+                {text:"The children love swimming, don't they?",correct:true},
+                {text:"The children love swimming, doesn't it?",correct:false,errorType:"Pronombre incorrecto",explanation:"Plural (they) no singular (it)."},
+                {text:"The children love swimming, aren't they?",correct:false,errorType:"Auxiliar incorrecto",explanation:"'Love' usa do/does, no 'be'."}
+            ],correctReason:"Plural positivo → don't they",rule:"Plural → don't they",examples:["They like fish, don't they?","People swim, don't they?"]},
+            
+            {id:9,base:"Sofia is ready to board",goal:"Agregar tag question",options:[
+                {text:"Sofia is ready to board, isn't she?",correct:true},
+                {text:"Sofia is ready to board, is she?",correct:false,errorType:"Polaridad incorrecta",explanation:"Positivo → tag negativo."},
+                {text:"Sofia is ready to board, doesn't she?",correct:false,errorType:"Auxiliar incorrecto",explanation:"'Be' (is) → tag con 'be'."}
+            ],correctReason:"'Be' positivo → tag negativo: isn't she",rule:"Verb be → tag with be",examples:["He is ready, isn't he?","It is blue, isn't it?"]},
+            
+            {id:10,base:"You haven't been to the island before",goal:"Agregar tag question",options:[
+                {text:"You haven't been to the island before, have you?",correct:true},
+                {text:"You haven't been to the island before, haven't you?",correct:false,errorType:"Polaridad incorrecta",explanation:"Negativo → tag positivo."},
+                {text:"You haven't been to the island before, did you?",correct:false,errorType:"Auxiliar incorrecto",explanation:"Present Perfect usa 'have', no 'did'."}
+            ],correctReason:"Present Perfect negativo → have you",rule:"Negative → positive tag",examples:["She hasn't arrived, has she?","They haven't seen it, have they?"]}
+        ];
+
+        let currentQuestion=0,score=0,answered=new Array(quizData.length).fill(false);
+
+        function initQuiz(){
+            const container=document.getElementById('questionsContainer');
+            quizData.forEach((q,index)=>{
+                const shuffled=[...q.options].sort(()=>Math.random()-0.5);
+                q.shuffledOptions=shuffled;
+                container.appendChild(createQuestionCard(q,index));
+            });
+            showQuestion(0);updateProgress();
+        }
+
+        function createQuestionCard(q,index){
+            const card=document.createElement('div');
+            card.className=`question-card ${index!==0?'hidden':''}`;
+            card.id=`question-${index}`;
+            const letters=['A','B','C'];
+            card.innerHTML=`
+                <div class="question-header">
+                    <div class="question-number">${index+1}</div>
+                    <div class="question-label">Agrega el tag question:</div>
+                </div>
+                <div class="question-body">
+                    <div class="transform-visual">
+                        <div class="transform-box base">
+                            <span class="transform-label">📝 Oración base</span>
+                            <div class="transform-sentence">${q.base}</div>
+                        </div>
+                        <div class="transform-arrow">⬇️ Agrega el tag...</div>
+                        <div class="transform-box goal">
+                            <span class="transform-label">🎯 Objetivo</span>
+                            <div class="transform-sentence">${q.goal}</div>
+                        </div>
+                    </div>
+                    <div class="options-container" id="options-${index}">
+                        ${q.shuffledOptions.map((opt,i)=>`
+                            <button class="option-btn" data-index="${i}" onclick="selectOption(${index},${i})">
+                                <span class="option-letter">${letters[i]}</span>
+                                <span class="option-text">${opt.text}</span>
+                                <span class="option-icon">${opt.correct?'✅':'❌'}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="feedback-${index}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index===0?'disabled':''}>← Anterior</button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>${index===quizData.length-1?'Ver Resultados →':'Siguiente →'}</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(questionIndex,optionIndex){
+            if(answered[questionIndex])return;
+            const q=quizData[questionIndex];
+            const selected=q.shuffledOptions[optionIndex];
+            const isCorrect=selected.correct;
+            const correctOption=q.shuffledOptions.find(o=>o.correct);
+            answered[questionIndex]=true;
+            if(isCorrect)score++;
+
+            const buttons=document.querySelectorAll(`#options-${questionIndex} .option-btn`);
+            buttons.forEach((btn,i)=>{
+                btn.classList.add('disabled');
+                if(q.shuffledOptions[i].correct)btn.classList.add('correct');
+                else if(i===optionIndex)btn.classList.add('incorrect');
+            });
+
+            const feedback=document.getElementById(`feedback-${questionIndex}`);
+            let feedbackHTML='';
+            if(isCorrect){
+                feedbackHTML=`
+                    <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente! Tag correcto</span></div>
+                    <div class="feedback-body">
+                        <div class="success-box">
+                            <div class="success-header"><span>📚</span> ¿Por qué es correcto?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                    </div>
+                `;
+            }else{
+                feedbackHTML=`
+                    <div class="feedback-header"><span>❌</span><span class="feedback-title">Tag incorrecto</span></div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis<span class="error-type-badge">${selected.errorType}</span></div>
+                            <div class="error-explanation">${selected.explanation}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>✓</span> Correcta:</div>
+                            <div class="success-text"><strong>${correctOption.text}</strong><br><br>${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            feedback.innerHTML=feedbackHTML;
+            feedback.className=`feedback-section show ${isCorrect?'correct':'incorrect'}`;
+            document.getElementById(`nextBtn-${questionIndex}`).disabled=false;
+        }
+
+        function showQuestion(index){
+            document.querySelectorAll('.question-card').forEach((card,i)=>card.classList.toggle('hidden',i!==index));
+            currentQuestion=index;
+            document.getElementById('currentQ').textContent=index+1;
+            updateProgress();
+        }
+        function nextQuestion(){if(currentQuestion<quizData.length-1)showQuestion(currentQuestion+1);else showResults();}
+        function prevQuestion(){if(currentQuestion>0)showQuestion(currentQuestion-1);}
+        function updateProgress(){document.getElementById('progressFill').style.width=`${((currentQuestion+1)/quizData.length)*100}%`;}
+
+        function showResults(){
+            document.getElementById('questionsContainer').style.display='none';
+            document.querySelector('.instructions').style.display='none';
+            const resultsScreen=document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+            document.getElementById('finalScore').textContent=`${score}/${quizData.length}`;
+            const percentage=(score/quizData.length)*100;
+            const stars=document.querySelectorAll('.star');
+            setTimeout(()=>{if(percentage>=60)stars[0].classList.add('earned');},300);
+            setTimeout(()=>{if(percentage>=80)stars[1].classList.add('earned');},600);
+            setTimeout(()=>{if(percentage>=100)stars[2].classList.add('earned');},900);
+            let message=percentage===100?'¡Perfecto! 🎉 ¡Dominas los tag questions!':percentage>=80?'¡Excelente! 🌟 ¡Casi perfecto!':percentage>=60?'¡Buen trabajo! 👍 Sigue practicando.':'¡No te rindas! 💪 Repasa e intenta de nuevo.';
+            document.getElementById('resultsMessage').textContent=message;
+            const progressData=JSON.parse(localStorage.getItem('jucumProgress')||'{}');
+            progressData['a2i-M7-tagquestions-transform']=percentage;
+            localStorage.setItem('jucumProgress',JSON.stringify(progressData));
+        }
+        document.addEventListener('DOMContentLoaded',initQuiz);
+    </script>
+</body>
+</html>

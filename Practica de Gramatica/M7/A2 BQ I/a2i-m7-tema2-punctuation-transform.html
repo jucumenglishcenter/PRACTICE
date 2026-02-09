@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform - A2-I M7 Punctuation | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10B981; --primary-light: #6EE7B7; --primary-dark: #059669;
+            --accent: #34D399; --bg-gradient-start: #ECFDF5; --bg-gradient-end: #D1FAE5;
+            --text-dark: #064E3B; --text-medium: #065F46; --success: #10B981;
+            --success-light: #D1FAE5; --error: #EF4444; --error-light: #FEE2E2;
+            --info: #3B82F6; --info-light: #DBEAFE; --purple: #8B5CF6; --purple-light: #EDE9FE;
+            --orange: #F97316; --orange-light: #FFEDD5; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(16, 185, 129, 0.15); --border-radius: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); min-height: 100vh; color: var(--text-dark); }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft); }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.3); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; text-decoration: none; color: white; }
+        .header-info { flex: 1; } .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; color: white; }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; color: white; }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .instructions { background: var(--purple-light); border: 2px solid var(--purple); padding: 1rem; border-radius: var(--border-radius); margin-bottom: 1.5rem; text-align: center; }
+        .instructions-icon { font-size: 2rem; } .instructions-title { font-family: 'Fredoka', sans-serif; font-weight: 600; color: var(--purple); }
+        .instructions-text { font-size: 0.9rem; color: var(--text-medium); }
+        .question-card { background: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow-soft); overflow: hidden; animation: slideIn 0.5s ease; }
+        .question-card.hidden { display: none; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .question-header { background: linear-gradient(135deg, var(--purple-light), #E0D4FC); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .question-number { width: 36px; height: 36px; background: var(--purple); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka', sans-serif; font-weight: 700; }
+        .question-label { font-weight: 600; color: var(--purple); }
+        .question-body { padding: 1.5rem; }
+        .transform-visual { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .transform-box { padding: 1rem 1.25rem; border-radius: 12px; position: relative; }
+        .transform-box.base { background: var(--orange-light); border: 2px solid var(--orange); }
+        .transform-box.goal { background: var(--purple-light); border: 2px solid var(--purple); }
+        .transform-label { position: absolute; top: -10px; left: 12px; background: var(--white); padding: 0 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .transform-box.base .transform-label { color: var(--orange); }
+        .transform-box.goal .transform-label { color: var(--purple); }
+        .transform-sentence { font-size: 1.05rem; font-weight: 600; line-height: 1.5; }
+        .transform-arrow { text-align: center; font-size: 1.5rem; color: var(--text-medium); }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option-btn { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 3px solid #E5E7EB; border-radius: 12px; background: var(--white); cursor: pointer; transition: all 0.2s; text-align: left; }
+        .option-btn:hover:not(.disabled) { border-color: var(--purple); background: var(--purple-light); }
+        .option-btn.disabled { cursor: not-allowed; }
+        .option-btn.correct { border-color: var(--success); background: var(--success-light); }
+        .option-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+        .option-letter { width: 28px; height: 28px; background: #E5E7EB; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0; }
+        .option-btn.correct .option-letter { background: var(--success); color: white; }
+        .option-btn.incorrect .option-letter { background: var(--error); color: white; }
+        .option-text { flex: 1; font-size: 1rem; }
+        .option-icon { font-size: 1.2rem; display: none; }
+        .option-btn.correct .option-icon, .option-btn.incorrect .option-icon { display: block; }
+        .feedback-section { margin-top: 1.5rem; display: none; border-radius: var(--border-radius); overflow: hidden; }
+        .feedback-section.show { display: block; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback-section.correct .feedback-header { background: var(--success); color: white; }
+        .feedback-section.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none; border-radius: 0 0 var(--border-radius) var(--border-radius); }
+        .feedback-section.correct .feedback-body { border-color: var(--success); }
+        .feedback-section.incorrect .feedback-body { border-color: var(--error); }
+        .error-analysis { background: var(--error-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .error-analysis-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--error); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .error-type-badge { padding: 0.2rem 0.5rem; background: var(--error); color: white; border-radius: 6px; font-size: 0.7rem; margin-left: auto; }
+        .error-explanation { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .grammar-rule-box { background: var(--info-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid var(--info); }
+        .grammar-rule-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--info); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .grammar-formula { background: white; padding: 0.75rem 1rem; border-radius: 8px; text-align: center; font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--text-dark); }
+        .success-box { background: var(--success-light); border-radius: 12px; padding: 1rem; border-left: 4px solid var(--success); }
+        .success-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem; }
+        .success-text { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .nav-btn:not(:disabled):hover { transform: translateY(-2px); }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--purple); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; }
+        .star.earned { opacity: 1; animation: starPop 0.5s ease; }
+        @keyframes starPop { 0% { transform: scale(0); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .results-buttons { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .result-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔄 Transform</div>
+            <div class="header-subtitle">💚 A2 BLOQUE I • M7 • Punctuation</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔄</div>
+            <div class="instructions-title">Corrige la Puntuación</div>
+            <div class="instructions-text">Observa la oración incorrecta y elige la versión con la puntuación correcta.</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container"><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span></div>
+            <div class="results-message" id="resultsMessage" style="font-size: 1.1rem; margin-bottom: 1.5rem;"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {id: 1, base: "Sofia and Tomas we're planning they're trip for months", goal: "Corregir apostrophes (contracciones y posesivos)", options: [
+                {text: "Sofia and Tomás were planning their trip for months.", correct: true},
+                {text: "Sofia and Tomas we're planning they're trip for months.", correct: false, errorType: "Apostrophe incorrecto", explanation: "'We're' = we are. Necesitamos 'were' (pasado). 'They're' = they are. Necesitamos 'their' (posesivo)."},
+                {text: "Sofia and Tomás were planning there trip for months.", correct: false, errorType: "Confusión homófona", explanation: "'There' indica lugar. 'Their' es posesivo."}
+            ], correctReason: "'Were' es pasado sin apostrophe. 'Their' es posesivo.", rule: "were ≠ we're | their ≠ they're", examples: ["They were happy", "Their boat was blue"]},
+            
+            {id: 2, base: "They arrived early but Sofia wanted to swim eat and explore", goal: "Agregar comas en listas", options: [
+                {text: "They arrived early, but Sofia wanted to swim, eat, and explore.", correct: true},
+                {text: "They arrived early but Sofia wanted to swim, eat, and explore.", correct: false, errorType: "Coma faltante antes de conjunción", explanation: "Cuando 'but' une dos oraciones completas, necesita coma ANTES."},
+                {text: "They arrived early, but Sofia wanted to swim eat and explore.", correct: false, errorType: "Comas faltantes en lista", explanation: "Lista de 3 elementos necesita comas: swim, eat, and explore."}
+            ], correctReason: "Coma antes de 'but'. Comas en lista: swim, eat, and explore.", rule: "Conjunction: sentence, but sentence | List: item, item, and item", examples: ["We swam, but he didn't", "She saw fish, boats, and birds"]},
+            
+            {id: 3, base: "The agents advice was helpful they suggested the blue lagoon tour", goal: "Corregir apostrophes (posesivos) y separar oraciones", options: [
+                {text: "The agent's advice was helpful. They suggested the blue lagoon tour.", correct: true},
+                {text: "The agents advice was helpful they suggested the blue lagoon tour.", correct: false, errorType: "Apostrophe y punto faltantes", explanation: "Posesión necesita apostrophe + s. Dos oraciones necesitan punto."},
+                {text: "The agent's advice was helpful, they suggested the blue lagoon tour.", correct: false, errorType: "Comma splice", explanation: "Dos oraciones completas necesitan punto, no coma."}
+            ], correctReason: "Posesivo: agent's. Dos oraciones: punto.", rule: "Singular possessive: noun's | Two sentences: period", examples: ["Sofia's plan. They agreed.", "The boat's color. It was blue."]},
+            
+            {id: 4, base: "Tomorrow we might visit the Science Center the harbor and the beaches", goal: "Agregar comas en listas y punto final", options: [
+                {text: "Tomorrow we might visit the Science Center, the harbor, and the beaches.", correct: true},
+                {text: "Tomorrow we might visit the Science Center the harbor and the beaches.", correct: false, errorType: "Comas y punto faltantes", explanation: "Lista de 3 necesita comas. Oración necesita punto final."},
+                {text: "Tomorrow, we might visit the Science Center, the harbor and the beaches.", correct: false, errorType: "Oxford comma y punto faltantes", explanation: "Falta coma antes de 'and' y punto al final."}
+            ], correctReason: "Lista: Center, harbor, and beaches. Punto final.", rule: "List: item, item, and item. End with period.", examples: ["We swam, ate, and rested.", "She visited Monday, Tuesday, and Wednesday."]},
+            
+            {id: 5, base: "Dont worry the guide said well assess the weather every morning", goal: "Agregar apostrophes (contracciones) y comillas", options: [
+                {text: "\"Don't worry,\" the guide said. \"We'll assess the weather every morning.\"", correct: true},
+                {text: "Dont worry the guide said well assess the weather every morning.", correct: false, errorType: "Apostrophes y comillas faltantes", explanation: "Don't = Do not. We'll = We will. Diálogo necesita comillas."},
+                {text: "\"Don't worry\" the guide said \"We'll assess the weather every morning.\"", correct: false, errorType: "Coma faltante en diálogo", explanation: "Coma necesaria DENTRO de comillas antes de 'said'."}
+            ], correctReason: "Contracciones: Don't, We'll. Diálogo: comillas + coma.", rule: "Contraction: don't, we'll | \"Quote,\" speaker said.", examples: ["\"I can't swim,\" she said.", "\"We're ready,\" they replied."]},
+            
+            {id: 6, base: "The childrens favorite activities were swimming exploring and eating", goal: "Corregir apostrophe (posesivo plural) y comas", options: [
+                {text: "The children's favorite activities were swimming, exploring, and eating.", correct: true},
+                {text: "The childrens favorite activities were swimming exploring and eating.", correct: false, errorType: "Apostrophe y comas faltantes", explanation: "'Children' (plural irregular) necesita apostrophe + s. Lista necesita comas."},
+                {text: "The children's favorite activities were: swimming, exploring, and eating.", correct: false, errorType: "Dos puntos innecesarios", explanation: "No se necesitan dos puntos después de 'were' en lista simple."}
+            ], correctReason: "Plural irregular: children's. Lista: swimming, exploring, and eating.", rule: "Irregular plural: children's | women's | men's", examples: ["The women's boats", "The men's plans"]},
+            
+            {id: 7, base: "Its important to know if the boats engine works properly", goal: "Corregir apostrophes (contracción vs posesivo)", options: [
+                {text: "It's important to know if the boat's engine works properly.", correct: true},
+                {text: "Its important to know if the boats engine works properly.", correct: false, errorType: "Apostrophes faltantes", explanation: "'It's' = it is. 'Boat's' = del bote (posesivo)."},
+                {text: "Its important to know if the boat's engine works properly.", correct: false, errorType: "Apostrophe faltante en contracción", explanation: "'Its' es posesivo. 'It's' = it is (contracción)."}
+            ], correctReason: "It's = it is (contracción). Boat's = posesivo.", rule: "It's = it is | its = possessive | boat's = possessive", examples: ["It's sunny", "Its color (posesivo)", "The boat's deck"]},
+            
+            {id: 8, base: "We bought tickets food and souvenirs we spent around $100", goal: "Agregar comas y separar oraciones", options: [
+                {text: "We bought tickets, food, and souvenirs. We spent around $100.", correct: true},
+                {text: "We bought tickets food and souvenirs, we spent around $100.", correct: false, errorType: "Comas faltantes y comma splice", explanation: "Lista necesita comas. Dos oraciones necesitan punto."},
+                {text: "We bought tickets, food, and souvenirs, we spent around $100.", correct: false, errorType: "Comma splice", explanation: "Dos oraciones completas no pueden unirse solo con coma."}
+            ], correctReason: "Lista: tickets, food, and souvenirs. Dos oraciones: punto.", rule: "List: item, item, and item | Two sentences: period", examples: ["They saw fish, birds, and boats.", "We swam. They walked."]},
+            
+            {id: 9, base: "The museums exhibits included atoms blood cells and chemical symbols", goal: "Corregir apostrophe (posesivo) y comas", options: [
+                {text: "The museum's exhibits included atoms, blood cells, and chemical symbols.", correct: true},
+                {text: "The museums exhibits included atoms blood cells and chemical symbols.", correct: false, errorType: "Apostrophe y comas faltantes", explanation: "Posesivo singular: museum's. Lista necesita comas."},
+                {text: "The museum's exhibits included atoms, blood cells and chemical symbols.", correct: false, errorType: "Oxford comma faltante", explanation: "Coma antes de 'and' en listas de 3+."}
+            ], correctReason: "Posesivo: museum's. Lista completa con comas.", rule: "Singular possessive: noun's | List: item, item, and item", examples: ["The center's information", "We saw stars, planets, and moons"]},
+            
+            {id: 10, base: "Im sure well remember this trip forever Sofia said softly", goal: "Agregar apostrophes, comillas y comas", options: [
+                {text: "\"I'm sure we'll remember this trip forever,\" Sofia said softly.", correct: true},
+                {text: "Im sure well remember this trip forever Sofia said softly.", correct: false, errorType: "Apostrophes, comillas y comas faltantes", explanation: "I'm = I am. We'll = we will. Diálogo necesita comillas y coma."},
+                {text: "\"I'm sure we'll remember this trip forever\" Sofia said softly.", correct: false, errorType: "Coma faltante", explanation: "Coma necesaria DENTRO de comillas antes de 'said'."}
+            ], correctReason: "Contracciones: I'm, we'll. Diálogo: comillas + coma + punto.", rule: "I'm, we'll | \"Quote,\" speaker said.", examples: ["\"I can't wait,\" he said.", "\"We're ready,\" she replied."]}
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(quizData.length).fill(false);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, index) => {
+                const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+                q.shuffledOptions = shuffled;
+                container.appendChild(createQuestionCard(q, index));
+            });
+            showQuestion(0); updateProgress();
+        }
+
+        function createQuestionCard(q, index) {
+            const card = document.createElement('div');
+            card.className = `question-card ${index !== 0 ? 'hidden' : ''}`;
+            card.id = `question-${index}`;
+            const letters = ['A', 'B', 'C'];
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${index + 1}</div>
+                    <div class="question-label">Corrige la puntuación:</div>
+                </div>
+                <div class="question-body">
+                    <div class="transform-visual">
+                        <div class="transform-box base">
+                            <span class="transform-label">❌ Incorrecta</span>
+                            <div class="transform-sentence">${q.base}</div>
+                        </div>
+                        <div class="transform-arrow">⬇️ Selecciona la correcta...</div>
+                        <div class="transform-box goal">
+                            <span class="transform-label">🎯 Objetivo</span>
+                            <div class="transform-sentence">${q.goal}</div>
+                        </div>
+                    </div>
+                    <div class="options-container" id="options-${index}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <button class="option-btn" data-index="${i}" onclick="selectOption(${index}, ${i})">
+                                <span class="option-letter">${letters[i]}</span>
+                                <span class="option-text">${opt.text}</span>
+                                <span class="option-icon">${opt.correct ? '✅' : '❌'}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="feedback-${index}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>${index === quizData.length - 1 ? 'Ver Resultados →' : 'Siguiente →'}</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            if (answered[questionIndex]) return;
+            const q = quizData[questionIndex];
+            const selected = q.shuffledOptions[optionIndex];
+            const isCorrect = selected.correct;
+            const correctOption = q.shuffledOptions.find(o => o.correct);
+            answered[questionIndex] = true;
+            if (isCorrect) score++;
+
+            const buttons = document.querySelectorAll(`#options-${questionIndex} .option-btn`);
+            buttons.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (q.shuffledOptions[i].correct) btn.classList.add('correct');
+                else if (i === optionIndex) btn.classList.add('incorrect');
+            });
+
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+            let feedbackHTML = '';
+            if (isCorrect) {
+                feedbackHTML = `
+                    <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente! Puntuación correcta</span></div>
+                    <div class="feedback-body">
+                        <div class="success-box">
+                            <div class="success-header"><span>📚</span> ¿Por qué es correcta?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackHTML = `
+                    <div class="feedback-header"><span>❌</span><span class="feedback-title">Puntuación incorrecta</span></div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis<span class="error-type-badge">${selected.errorType}</span></div>
+                            <div class="error-explanation">${selected.explanation}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>✓</span> Correcta:</div>
+                            <div class="success-text"><strong>${correctOption.text}</strong><br><br>${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+            document.getElementById(`nextBtn-${questionIndex}`).disabled = false;
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => card.classList.toggle('hidden', i !== index));
+            currentQuestion = index;
+            document.getElementById('currentQ').textContent = index + 1;
+            updateProgress();
+        }
+        function nextQuestion() { if (currentQuestion < quizData.length - 1) showQuestion(currentQuestion + 1); else showResults(); }
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function updateProgress() { document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`; }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/${quizData.length}`;
+            const percentage = (score / quizData.length) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (percentage >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (percentage >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (percentage >= 100) stars[2].classList.add('earned'); }, 900);
+            let message = percentage === 100 ? '¡Perfecto! 🎉 ¡Dominas la puntuación!' : percentage >= 80 ? '¡Excelente! 🌟 ¡Casi perfecto!' : percentage >= 60 ? '¡Buen trabajo! 👍 Sigue practicando.' : '¡No te rindas! 💪 Repasa e intenta de nuevo.';
+            document.getElementById('resultsMessage').textContent = message;
+            const progressData = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            progressData['a2i-M7-transform'] = percentage;
+            localStorage.setItem('jucumProgress', JSON.stringify(progressData));
+        }
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identification - A2-I M7 Punctuation | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10B981; --primary-light: #6EE7B7; --primary-dark: #059669;
+            --accent: #34D399; --bg-gradient-start: #ECFDF5; --bg-gradient-end: #D1FAE5;
+            --text-dark: #064E3B; --text-medium: #065F46; --success: #10B981;
+            --success-light: #D1FAE5; --error: #EF4444; --error-light: #FEE2E2;
+            --info: #3B82F6; --info-light: #DBEAFE; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(16, 185, 129, 0.15); --border-radius: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%); min-height: 100vh; color: var(--text-dark); }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft); }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.3); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; text-decoration: none; color: white; }
+        .header-info { flex: 1; } .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; color: white; }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 700; color: white; }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .instructions { background: var(--white); padding: 1rem 1.25rem; border-radius: var(--border-radius); margin-bottom: 1.5rem; text-align: center; border: 2px solid var(--info); }
+        .instructions-icon { font-size: 2rem; } .instructions-title { font-family: 'Fredoka', sans-serif; font-weight: 600; color: var(--info); }
+        .question-card { background: var(--white); border-radius: var(--border-radius); box-shadow: var(--shadow-soft); overflow: hidden; animation: slideIn 0.5s ease; }
+        .question-card.hidden { display: none; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .question-header { background: var(--primary-light); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .question-number { width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka', sans-serif; font-weight: 700; }
+        .question-label { font-weight: 600; color: var(--text-dark); }
+        .question-body { padding: 1.5rem; }
+        .sentence-options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .sentence-option { padding: 1rem 1.25rem; border: 3px solid #E5E7EB; border-radius: 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 0.75rem; background: var(--white); }
+        .sentence-option:hover:not(.disabled) { border-color: var(--primary); background: var(--primary-light); }
+        .sentence-option.disabled { cursor: not-allowed; }
+        .sentence-option.correct { border-color: var(--success); background: var(--success-light); }
+        .sentence-option.incorrect { border-color: var(--error); background: var(--error-light); }
+        .option-letter { width: 28px; height: 28px; background: #E5E7EB; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+        .sentence-option.correct .option-letter { background: var(--success); color: white; }
+        .sentence-option.incorrect .option-letter { background: var(--error); color: white; }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.5; }
+        .option-icon { font-size: 1.2rem; display: none; }
+        .sentence-option.correct .option-icon, .sentence-option.incorrect .option-icon { display: block; }
+        .feedback-section { margin-top: 1.5rem; display: none; border-radius: var(--border-radius); overflow: hidden; }
+        .feedback-section.show { display: block; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback-section.correct .feedback-header { background: var(--success); color: white; }
+        .feedback-section.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none; border-radius: 0 0 var(--border-radius) var(--border-radius); }
+        .feedback-section.correct .feedback-body { border-color: var(--success); }
+        .feedback-section.incorrect .feedback-body { border-color: var(--error); }
+        .error-analysis { background: var(--error-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .error-analysis-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--error); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .error-type-badge { padding: 0.2rem 0.5rem; background: var(--error); color: white; border-radius: 6px; font-size: 0.7rem; margin-left: auto; }
+        .error-explanation-text { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .grammar-rule-box { background: var(--info-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid var(--info); }
+        .grammar-rule-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--info); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .grammar-formula { background: white; padding: 0.75rem 1rem; border-radius: 8px; text-align: center; font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--text-dark); }
+        .success-box { background: var(--success-light); border-radius: 12px; padding: 1rem; border-left: 4px solid var(--success); }
+        .success-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--success); margin-bottom: 0.5rem; }
+        .success-text { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .nav-btn:not(:disabled):hover { transform: translateY(-2px); }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--primary); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; }
+        .star.earned { opacity: 1; animation: starPop 0.5s ease; }
+        @keyframes starPop { 0% { transform: scale(0); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .results-buttons { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .result-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔍 Identification</div>
+            <div class="header-subtitle">💚 A2 BLOQUE I • M7 • Punctuation</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔍</div>
+            <div class="instructions-title">Identifica la oración correcta</div>
+            <div class="instructions-text" style="font-size: 0.9rem; color: var(--text-medium);">Lee las tres opciones y elige la que tenga la puntuación correcta.</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container"><span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span></div>
+            <div class="results-message" id="resultsMessage" style="font-size: 1.1rem; margin-bottom: 1.5rem;"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {id: 1, options: [
+                {text: "Sofia and Tomás were planning their trip for months.", correct: true},
+                {text: "Sofia and Tomas we're planning they're trip for months.", correct: false, errorWord: "we're / they're", correctWord: "were / their", errorType: "Apostrophes incorrectos", explanation: "'We're' = we are. Necesitamos 'were' (pasado). 'They're' = they are. Necesitamos 'their' (posesivo)."},
+                {text: "Sofia and Tomás were planning there trip for months.", correct: false, errorWord: "there", correctWord: "their", errorType: "Homófono incorrecto", explanation: "'There' indica lugar. 'Their' es posesivo."}
+            ], correctReason: "'Were' es pasado sin apostrophe. 'Their' es posesivo.", rule: "were ≠ we're | their ≠ they're", examples: ["They were happy", "Their boat was blue"]},
+            
+            {id: 2, options: [
+                {text: "They bought tickets, food, and souvenirs.", correct: true},
+                {text: "They bought tickets food and souvenirs.", correct: false, errorWord: "tickets food", correctWord: "tickets, food,", errorType: "Comas faltantes", explanation: "Listas de 3+ elementos necesitan comas."},
+                {text: "They bought tickets, food and souvenirs.", correct: false, errorWord: "food and", correctWord: "food, and", errorType: "Oxford comma faltante", explanation: "Se recomienda coma antes de 'and' en listas."}
+            ], correctReason: "Lista completa: tickets, food, and souvenirs.", rule: "List: item, item, and item", examples: ["We swam, ate, and rested", "She saw fish, boats, and birds"]},
+            
+            {id: 3, options: [
+                {text: "The boat's color was beautiful blue.", correct: true},
+                {text: "The boats color was beautiful blue.", correct: false, errorWord: "boats", correctWord: "boat's", errorType: "Apostrophe faltante", explanation: "Posesión singular necesita apostrophe + s."},
+                {text: "The boats' color was beautiful blue.", correct: false, errorWord: "boats'", correctWord: "boat's", errorType: "Posesivo plural incorrecto", explanation: "Un solo bote = singular 'boat's', no plural 'boats'."}
+            ], correctReason: "Singular possessive: boat's color.", rule: "Singular: boat's | Plural: boats'", examples: ["The agent's advice", "Sofia's plan"]},
+            
+            {id: 4, options: [
+                {text: "It's important to know if the weather is good.", correct: true},
+                {text: "Its important to know if the weather is good.", correct: false, errorWord: "Its", correctWord: "It's", errorType: "Apostrophe faltante", explanation: "'Its' es posesivo. Necesitamos 'It's' = it is."},
+                {text: "It is important to know if the weather is good.", correct: false, errorWord: "It is", correctWord: "It's", errorType: "Sin contracción", explanation: "Aunque correcto, 'It's' es más natural en contexto informal."}
+            ], correctReason: "It's = it is (contracción con apostrophe).", rule: "It's = it is | its = possessive", examples: ["It's sunny", "It's ready"]},
+            
+            {id: 5, options: [
+                {text: "The children's favorite activities were swimming and exploring.", correct: true},
+                {text: "The childrens favorite activities were swimming and exploring.", correct: false, errorWord: "childrens", correctWord: "children's", errorType: "Apostrophe faltante", explanation: "Plural irregular necesita apostrophe + s."},
+                {text: "The children's favorite activities were: swimming and exploring.", correct: false, errorWord: "were:", correctWord: "were", errorType: "Dos puntos innecesarios", explanation: "No se necesitan dos puntos en lista simple después de 'were'."}
+            ], correctReason: "Irregular plural possessive: children's.", rule: "children's | women's | men's", examples: ["The women's boats", "The men's plans"]},
+            
+            {id: 6, options: [
+                {text: "We arrived early. We were excited to explore.", correct: true},
+                {text: "We arrived early, we were excited to explore.", correct: false, errorWord: ", we", correctWord: ". We", errorType: "Comma splice", explanation: "Dos oraciones completas necesitan punto, no coma."},
+                {text: "We arrived early we were excited to explore.", correct: false, errorWord: "early we", correctWord: "early. We", errorType: "Punto faltante", explanation: "Dos oraciones necesitan separación con punto."}
+            ], correctReason: "Dos oraciones independientes: punto + mayúscula.", rule: "Two sentences: sentence. Sentence.", examples: ["They swam. We rested.", "She arrived. He left."]},
+            
+            {id: 7, options: [
+                {text: "\"I'm so happy we made it here,\" Sofia said.", correct: true},
+                {text: "Im so happy we made it here Sofia said.", correct: false, errorWord: "Im", correctWord: "\"I'm\"", errorType: "Apostrophe y comillas faltantes", explanation: "Contracción necesita apostrophe. Diálogo necesita comillas."},
+                {text: "\"Im so happy we made it here,\" Sofia said.", correct: false, errorWord: "Im", correctWord: "I'm", errorType: "Apostrophe faltante", explanation: "La contracción de 'I am' es 'I'm' (con apostrophe)."}
+            ], correctReason: "Diálogo: comillas + I'm (apostrophe) + coma dentro.", rule: "\"Quote,\" speaker said. | I'm = I am", examples: ["\"We're ready,\" she said.", "\"Don't worry,\" he replied."]},
+            
+            {id: 8, options: [
+                {text: "There was a beautiful clear blue sky over the island.", correct: true},
+                {text: "Their was a beautiful clear blue sky over the island.", correct: false, errorWord: "Their", correctWord: "There", errorType: "Homófono incorrecto", explanation: "'Their' es posesivo. 'There' indica existencia."},
+                {text: "They're was a beautiful clear blue sky over the island.", correct: false, errorWord: "They're", correctWord: "There", errorType: "Contracción incorrecta", explanation: "'They're' = they are. No combina con 'was'."}
+            ], correctReason: "There (existencia) ≠ Their (posesivo) ≠ They're (they are).", rule: "There = existence | Their = possessive", examples: ["There was a boat", "There were fish"]},
+            
+            {id: 9, options: [
+                {text: "Tomorrow we might visit the Science Center, the harbor, and the beaches.", correct: true},
+                {text: "Tomorrow we might visit the Science Center the harbor and the beaches.", correct: false, errorWord: "Center the", correctWord: "Center, the", errorType: "Comas faltantes", explanation: "Listas de 3 elementos necesitan comas."},
+                {text: "Tomorrow we might visit the Science Center, the harbor and the beaches.", correct: false, errorWord: "harbor and", correctWord: "harbor, and", errorType: "Oxford comma faltante", explanation: "Coma antes de 'and' en listas de 3+."}
+            ], correctReason: "Lista de 3 lugares con comas completas.", rule: "3+ items: item, item, and item", examples: ["We saw boats, fish, and birds", "They need food, water, and rest"]},
+            
+            {id: 10, options: [
+                {text: "The agent's advice was helpful. They suggested the blue lagoon tour.", correct: true},
+                {text: "The agents advice was helpful. They suggested the blue lagoon tour.", correct: false, errorWord: "agents", correctWord: "agent's", errorType: "Apostrophe faltante", explanation: "Posesivo singular necesita apostrophe + s."},
+                {text: "The agent's advice was helpful, they suggested the blue lagoon tour.", correct: false, errorWord: ", they", correctWord: ". They", errorType: "Comma splice", explanation: "Dos oraciones completas necesitan punto."}
+            ], correctReason: "Posesivo: agent's. Dos oraciones: punto.", rule: "Singular possessive: noun's | Two sentences: period", examples: ["Sofia's plan. They agreed.", "The boat's color. It was blue."]}
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(quizData.length).fill(false);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, index) => {
+                const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+                q.shuffledOptions = shuffled;
+                container.appendChild(createQuestionCard(q, index));
+            });
+            showQuestion(0); updateProgress();
+        }
+
+        function createQuestionCard(q, index) {
+            const card = document.createElement('div');
+            card.className = `question-card ${index !== 0 ? 'hidden' : ''}`;
+            card.id = `question-${index}`;
+            const letters = ['A', 'B', 'C'];
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${index + 1}</div>
+                    <div class="question-label">Elige la oración con puntuación correcta:</div>
+                </div>
+                <div class="question-body">
+                    <div class="sentence-options" id="options-${index}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <div class="sentence-option" data-index="${i}" onclick="selectOption(${index}, ${i})">
+                                <div class="option-letter">${letters[i]}</div>
+                                <div class="option-text">${opt.text}</div>
+                                <div class="option-icon">${opt.correct ? '✅' : '❌'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="feedback-${index}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>${index === quizData.length - 1 ? 'Ver Resultados →' : 'Siguiente →'}</button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            if (answered[questionIndex]) return;
+            const q = quizData[questionIndex];
+            const selected = q.shuffledOptions[optionIndex];
+            const isCorrect = selected.correct;
+            const correctOption = q.shuffledOptions.find(o => o.correct);
+            answered[questionIndex] = true;
+            if (isCorrect) score++;
+
+            const options = document.querySelectorAll(`#options-${questionIndex} .sentence-option`);
+            options.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                if (q.shuffledOptions[i].correct) opt.classList.add('correct');
+                else if (i === optionIndex) opt.classList.add('incorrect');
+            });
+
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+            let feedbackHTML = '';
+            if (isCorrect) {
+                feedbackHTML = `
+                    <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente! Respuesta correcta</span></div>
+                    <div class="feedback-body">
+                        <div class="success-box">
+                            <div class="success-header"><span>📚</span> ¿Por qué es correcta?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackHTML = `
+                    <div class="feedback-header"><span>❌</span><span class="feedback-title">Respuesta incorrecta</span></div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis del error<span class="error-type-badge">${selected.errorType}</span></div>
+                            <div class="error-explanation-text">${selected.explanation}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla</div>
+                            <div class="grammar-formula">${q.rule}</div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>✓</span> Correcta:</div>
+                            <div class="success-text"><strong>${correctOption.text}</strong><br><br>${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+            document.getElementById(`nextBtn-${questionIndex}`).disabled = false;
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => card.classList.toggle('hidden', i !== index));
+            currentQuestion = index;
+            document.getElementById('currentQ').textContent = index + 1;
+            updateProgress();
+        }
+        function nextQuestion() { if (currentQuestion < quizData.length - 1) showQuestion(currentQuestion + 1); else showResults(); }
+        function prevQuestion() { if (currentQuestion > 0) showQuestion(currentQuestion - 1); }
+        function updateProgress() { document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`; }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/${quizData.length}`;
+            const percentage = (score / quizData.length) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (percentage >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (percentage >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (percentage >= 100) stars[2].classList.add('earned'); }, 900);
+            let message = percentage === 100 ? '¡Perfecto! 🎉 ¡Dominas la puntuación!' : percentage >= 80 ? '¡Excelente! 🌟 ¡Muy buen ojo!' : percentage >= 60 ? '¡Buen trabajo! 👍 Sigue practicando.' : '¡No te rindas! 💪 Repasa e intenta de nuevo.';
+            document.getElementById('resultsMessage').textContent = message;
+            const progressData = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            progressData['a2i-M7-identify'] = percentage;
+            localStorage.setItem('jucumProgress', JSON.stringify(progressData));
+        }
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
