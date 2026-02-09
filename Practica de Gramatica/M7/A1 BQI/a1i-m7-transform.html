@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform - A1 Beginner M7 | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899; --primary-light: #F9A8D4; --primary-dark: #DB2777;
+            --accent: #F472B6; --bg-gradient-start: #FDF2F8; --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843; --text-medium: #9D174D; --success: #10B981;
+            --success-light: #D1FAE5; --success-dark: #059669; --error: #EF4444;
+            --error-light: #FEE2E2; --info: #3B82F6; --info-light: #DBEAFE;
+            --purple: #8B5CF6; --orange: #F97316; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh; color: var(--text-dark);
+        }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; 
+            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft);
+        }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%; 
+            background: rgba(255,255,255,0.3); border: none; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1.5rem; text-decoration: none; color: white;
+        }
+        .header-info { flex: 1; }
+        .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; 
+            font-weight: 600; color: white;
+        }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem;
+            border-radius: 50px; font-weight: 700; color: white;
+        }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5); 
+            border-radius: 4px; overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .instructions { background: var(--white); padding: 1rem 1.25rem; 
+            border-radius: 20px; margin-bottom: 1.5rem; text-align: center;
+            border: 2px solid var(--purple);
+        }
+        .instructions-icon { font-size: 2rem; }
+        .instructions-title { font-family: 'Fredoka', sans-serif; font-weight: 600; 
+            color: var(--purple);
+        }
+        .question-card { background: var(--white); border-radius: 20px; 
+            box-shadow: var(--shadow-soft); overflow: hidden; margin-bottom: 1rem;
+        }
+        .question-card.hidden { display: none; }
+        .question-header { background: linear-gradient(135deg, #EDE9FE, #E0D4FC);
+            padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .question-number { width: 36px; height: 36px; background: var(--purple);
+            color: white; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-family: 'Fredoka', sans-serif; font-weight: 700;
+        }
+        .question-body { padding: 1.5rem; }
+        .transform-visual { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .transform-box { padding: 1rem 1.25rem; border-radius: 12px; position: relative; }
+        .transform-box.base { background: #FFEDD5; border: 2px solid var(--orange); }
+        .transform-box.goal { background: #EDE9FE; border: 2px solid var(--purple); }
+        .transform-label { position: absolute; top: -10px; left: 12px; background: white;
+            padding: 0 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        }
+        .transform-sentence { font-size: 1.05rem; font-weight: 600; line-height: 1.5; }
+        .verb-present { background: var(--orange); color: white; padding: 0.1rem 0.4rem; border-radius: 4px; }
+        .transform-arrow { text-align: center; font-size: 1.5rem; color: var(--text-medium); }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option-btn { display: flex; align-items: center; gap: 0.75rem; padding: 1rem;
+            border: 3px solid #E5E7EB; border-radius: 12px; background: white;
+            cursor: pointer; transition: all 0.2s; text-align: left;
+        }
+        .option-btn:hover:not(.disabled) { border-color: var(--purple); background: #EDE9FE; }
+        .option-btn.disabled { cursor: not-allowed; }
+        .option-btn.correct { border-color: var(--success); background: var(--success-light); }
+        .option-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+        .option-letter { width: 28px; height: 28px; background: #E5E7EB; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 700;
+        }
+        .option-btn.correct .option-letter { background: var(--success); color: white; }
+        .option-btn.incorrect .option-letter { background: var(--error); color: white; }
+        .option-text { flex: 1; font-size: 1rem; }
+        .feedback-section { margin-top: 1.5rem; display: none; border-radius: 20px; overflow: hidden; }
+        .feedback-section.show { display: block; }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback-section.correct .feedback-header { background: var(--success); color: white; }
+        .feedback-section.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none; }
+        .feedback-section.correct .feedback-body { border-color: var(--success); }
+        .feedback-section.incorrect .feedback-body { border-color: var(--error); }
+        .success-box, .error-box { border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .success-box { background: var(--success-light); border-left: 4px solid var(--success); }
+        .error-box { background: var(--error-light); border-left: 4px solid var(--error); }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--purple); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; transition: all 0.5s ease; }
+        .star.earned { opacity: 1; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        .result-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔄 Transform</div>
+            <div class="header-subtitle">🩷 A1 Beginner • Módulo 7 • Nivel 3</div>
+        </div>
+        <div class="progress-indicator">
+            <span id="currentQ">1</span>/10
+        </div>
+    </header>
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔄</div>
+            <div class="instructions-title">Transforma al Past Simple</div>
+            <div class="instructions-text">Observa la oración en presente y elige la transformación correcta al pasado.</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+            <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {id: 1, base: "It is a busy day at the store.", presentVerb: "is", goal: "Past Simple",
+             options: [{text: "It was a busy day at the store.", correct: true, pastVerb: "was"},
+                      {text: "It were a busy day at the store.", correct: false, pastVerb: "were", errorType: "Verbo incorrecto", explanation: "'Were' se usa con you/we/they. 'It' usa 'was'."},
+                      {text: "It is a busy day at the store.", correct: false, pastVerb: "is", errorType: "Sin transformar", explanation: "'Is' es presente. Necesitas 'was' para pasado."}],
+             correctReason: "El sujeto es 'it' y necesitamos pasado. 'It' siempre usa 'was'."},
+            {id: 2, base: "Ana, Carlos, and Diego work together.", presentVerb: "work", goal: "Past Simple",
+             options: [{text: "Ana, Carlos, and Diego worked together.", correct: true, pastVerb: "worked"},
+                      {text: "Ana, Carlos, and Diego work together.", correct: false, pastVerb: "work", errorType: "Sin transformar", explanation: "'Work' es presente. Necesitas 'worked' para pasado."},
+                      {text: "Ana, Carlos, and Diego workt together.", correct: false, pastVerb: "workt", errorType: "Error ortográfico", explanation: "Los verbos regulares terminan en '-ed', no '-t'."}],
+             correctReason: "'Work' es regular. Agregamos '-ed': worked."},
+            {id: 3, base: "A science teacher appears at the door.", presentVerb: "appears", goal: "Past Simple",
+             options: [{text: "A science teacher appeared at the door.", correct: true, pastVerb: "appeared"},
+                      {text: "A science teacher appear at the door.", correct: false, pastVerb: "appear", errorType: "Forma base", explanation: "'Appear' es forma base. Necesitas 'appeared' para pasado."},
+                      {text: "A science teacher appears at the door.", correct: false, pastVerb: "appears", errorType: "Sin transformar", explanation: "'Appears' es presente. Necesitas 'appeared'."}],
+             correctReason: "'Appear' es regular. Agregamos '-ed': appeared."},
+            {id: 4, base: "Diego smiles and walks toward the shelf.", presentVerb: "smiles, walks", goal: "Past Simple",
+             options: [{text: "Diego smiled and walked toward the shelf.", correct: true, pastVerb: "smiled, walked"},
+                      {text: "Diego smile and walk toward the shelf.", correct: false, pastVerb: "smile, walk", errorType: "Sin transformar", explanation: "Ambos verbos están en forma base. Necesitas pasado."},
+                      {text: "Diego smileed and walkt toward the shelf.", correct: false, pastVerb: "smileed, walkt", errorType: "Errores ortográficos", explanation: "'Smile' termina en 'e', solo agrega '-d'. 'Walk' no termina en '-t'."}],
+             correctReason: "'Smile' termina en 'e', agrega solo '-d'. 'Walk' es regular, agrega '-ed'."},
+            {id: 5, base: "The teacher looks at the products.", presentVerb: "looks", goal: "Past Simple",
+             options: [{text: "The teacher looked at the products.", correct: true, pastVerb: "looked"},
+                      {text: "The teacher look at the products.", correct: false, pastVerb: "look", errorType: "Sin transformar", explanation: "'Look' es forma base. Necesitas 'looked' para pasado."},
+                      {text: "The teacher looks at the products.", correct: false, pastVerb: "looks", errorType: "Presente", explanation: "'Looks' es presente (tercera persona). Necesitas 'looked'."}],
+             correctReason: "'Look' es regular. Agregamos '-ed': looked."},
+            {id: 6, base: "Ana decides to check on him.", presentVerb: "decides", goal: "Past Simple",
+             options: [{text: "Ana decided to check on him.", correct: true, pastVerb: "decided"},
+                      {text: "Ana decide to check on him.", correct: false, pastVerb: "decide", errorType: "Sin transformar", explanation: "'Decide' es forma base. Necesitas 'decided' para pasado."},
+                      {text: "Ana decideed to check on him.", correct: false, pastVerb: "decideed", errorType: "Doble 'e'", explanation: "'Decide' termina en 'e', solo agrega '-d', no '-ed'."}],
+             correctReason: "'Decide' termina en 'e', solo agregamos '-d': decided."},
+            {id: 7, base: "Diego helps the teacher carry purchases.", presentVerb: "helps", goal: "Past Simple",
+             options: [{text: "Diego helped the teacher carry purchases.", correct: true, pastVerb: "helped"},
+                      {text: "Diego help the teacher carry purchases.", correct: false, pastVerb: "help", errorType: "Sin transformar", explanation: "'Help' es forma base. Necesitas 'helped' para pasado."},
+                      {text: "Diego helpt the teacher carry purchases.", correct: false, pastVerb: "helpt", errorType: "Error ortográfico", explanation: "Los verbos regulares terminan en '-ed', no '-t'."}],
+             correctReason: "'Help' es regular. Agregamos '-ed': helped."},
+            {id: 8, base: "Ana has an idea to create a sale.", presentVerb: "has", goal: "Past Simple",
+             options: [{text: "Ana had an idea to create a sale.", correct: true, pastVerb: "had"},
+                      {text: "Ana haved an idea to create a sale.", correct: false, pastVerb: "haved", errorType: "Sobregeneralización", explanation: "'Have' es IRREGULAR. No existe 'haved'. El pasado es 'had'."},
+                      {text: "Ana has an idea to create a sale.", correct: false, pastVerb: "has", errorType: "Sin transformar", explanation: "'Has' es presente. Necesitas 'had' para pasado."}],
+             correctReason: "'Have' es IRREGULAR. El pasado es 'had' (no sigue reglas)."},
+            {id: 9, base: "They have two similar promotions.", presentVerb: "have", goal: "Past Simple",
+             options: [{text: "They had two similar promotions.", correct: true, pastVerb: "had"},
+                      {text: "They have two similar promotions.", correct: false, pastVerb: "have", errorType: "Sin transformar", explanation: "'Have' es presente. Necesitas 'had' para pasado."},
+                      {text: "They haved two similar promotions.", correct: false, pastVerb: "haved", errorType: "Sobregeneralización", explanation: "'Have' es irregular. No existe 'haved'. El pasado es 'had'."}],
+             correctReason: "'Have' es IRREGULAR. El pasado es 'had' para todas las personas."},
+            {id: 10, base: "The day ends well.", presentVerb: "ends", goal: "Past Simple",
+             options: [{text: "The day ended well.", correct: true, pastVerb: "ended"},
+                      {text: "The day ends well.", correct: false, pastVerb: "ends", errorType: "Sin transformar", explanation: "'Ends' es presente. Necesitas 'ended' para pasado."},
+                      {text: "The day endt well.", correct: false, pastVerb: "endt", errorType: "Error ortográfico", explanation: "Los verbos regulares terminan en '-ed', no '-t'."}],
+             correctReason: "'End' es regular. Agregamos '-ed': ended."}
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(10).fill(false);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, idx) => {
+                q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                container.appendChild(createCard(q, idx));
+            });
+            showQuestion(0);
+        }
+
+        function createCard(q, idx) {
+            const card = document.createElement('div');
+            card.className = `question-card ${idx !== 0 ? 'hidden' : ''}`;
+            card.id = `q-${idx}`;
+            const letters = ['A', 'B', 'C'];
+            const baseHighlight = q.base.replace(q.presentVerb, `<span class="verb-present">${q.presentVerb}</span>`);
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${idx + 1}</div>
+                    <div>Transforma esta oración:</div>
+                </div>
+                <div class="question-body">
+                    <div class="transform-visual">
+                        <div class="transform-box base">
+                            <span class="transform-label">🔶 Presente</span>
+                            <div class="transform-sentence">${baseHighlight}</div>
+                        </div>
+                        <div class="transform-arrow">⬇️</div>
+                        <div class="transform-box goal">
+                            <span class="transform-label">🎯 Objetivo</span>
+                            <div class="transform-sentence">${q.goal}</div>
+                        </div>
+                    </div>
+                    <div class="options-container" id="opts-${idx}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <button class="option-btn" onclick="selectOption(${idx}, ${i})">
+                                <span class="option-letter">${letters[i]}</span>
+                                <span class="option-text">${opt.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="fb-${idx}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQ()" ${idx === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="next-${idx}" onclick="nextQ()" disabled>
+                        ${idx === 9 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(qIdx, optIdx) {
+            if (answered[qIdx]) return;
+            const q = quizData[qIdx];
+            const selected = q.shuffledOptions[optIdx];
+            const isCorrect = selected.correct;
+            answered[qIdx] = true;
+            if (isCorrect) score++;
+
+            const btns = document.querySelectorAll(`#opts-${qIdx} .option-btn`);
+            btns.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (q.shuffledOptions[i].correct) btn.classList.add('correct');
+                else if (i === optIdx) btn.classList.add('incorrect');
+            });
+
+            const fb = document.getElementById(`fb-${qIdx}`);
+            fb.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+            fb.innerHTML = isCorrect ? `
+                <div class="feedback-header"><span>✅</span> ¡Excelente! Transformación correcta</div>
+                <div class="feedback-body">
+                    <div class="success-box"><strong>📚 Explicación:</strong><br>${q.correctReason}</div>
+                </div>
+            ` : `
+                <div class="feedback-header"><span>❌</span> Transformación incorrecta</div>
+                <div class="feedback-body">
+                    <div class="error-box">
+                        <strong>🔍 Error: ${selected.errorType}</strong><br>${selected.explanation}
+                    </div>
+                    <div class="success-box"><strong>✓ Correcto:</strong><br>${q.correctReason}</div>
+                </div>
+            `;
+            document.getElementById(`next-${qIdx}`).disabled = false;
+        }
+
+        function showQuestion(idx) {
+            document.querySelectorAll('.question-card').forEach((c, i) => c.classList.toggle('hidden', i !== idx));
+            currentQuestion = idx;
+            document.getElementById('currentQ').textContent = idx + 1;
+            document.getElementById('progressFill').style.width = `${((idx + 1) / 10) * 100}%`;
+        }
+
+        function nextQ() {
+            if (currentQuestion < 9) showQuestion(currentQuestion + 1);
+            else showResults();
+        }
+
+        function prevQ() {
+            if (currentQuestion > 0) showQuestion(currentQuestion - 1);
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            const rs = document.getElementById('resultsScreen');
+            rs.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/10`;
+            const pct = (score / 10) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (pct >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (pct >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (pct >= 100) stars[2].classList.add('earned'); }, 900);
+            let msg = pct === 100 ? '¡Perfecto! 🎉 ¡Transformas oraciones como un experto!' :
+                      pct >= 80 ? '¡Excelente! 🌟 ¡Dominas las transformaciones!' :
+                      pct >= 60 ? '¡Buen trabajo! 👍 Sigue practicando.' :
+                      '¡No te rindas! 💪 Repasa las explicaciones.';
+            document.getElementById('resultsMessage').textContent = msg;
+            const prog = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            prog['a1i-M7-transform'] = pct;
+            localStorage.setItem('jucumProgress', JSON.stringify(prog));
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

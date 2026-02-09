@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Identification - A1 Beginner M7 | JUCUM English</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* === NIVEL A1 BLOQUE I: ROSA === */
+            --primary: #EC4899;
+            --primary-light: #F9A8D4;
+            --primary-dark: #DB2777;
+            --accent: #F472B6;
+            --bg-gradient-start: #FDF2F8;
+            --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843;
+            --text-medium: #9D174D;
+            --text-light: #BE185D;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --success-dark: #059669;
+            --error: #EF4444;
+            --error-light: #FEE2E2;
+            --error-dark: #DC2626;
+            --info: #3B82F6;
+            --info-light: #DBEAFE;
+            --purple: #8B5CF6;
+            --purple-light: #EDE9FE;
+            --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+            --shadow-strong: 0 8px 30px rgba(236, 72, 153, 0.25);
+            --border-radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            text-decoration: none;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .header-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .progress-indicator {
+            background: rgba(255,255,255,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            padding: 0 1.5rem;
+            margin-top: -8px;
+            position: relative;
+            z-index: 99;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.5s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: var(--white);
+            padding: 1rem 1.25rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            border: 2px solid var(--info);
+        }
+
+        .instructions-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: var(--info);
+            margin-bottom: 0.25rem;
+        }
+
+        .instructions-text {
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        /* Question Card */
+        .question-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            animation: slideIn 0.5s ease;
+        }
+
+        .question-card.hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-header {
+            background: var(--primary-light);
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .question-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+        }
+
+        .question-label {
+            font-weight: 600;
+        }
+
+        .question-body {
+            padding: 1.5rem;
+        }
+
+        /* Sentence Options */
+        .sentence-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .sentence-option {
+            padding: 1rem 1.25rem;
+            border: 3px solid #E5E7EB;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            background: var(--white);
+        }
+
+        .sentence-option:hover:not(.disabled) {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .sentence-option.disabled {
+            cursor: not-allowed;
+        }
+
+        .sentence-option.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .sentence-option.incorrect {
+            border-color: var(--error);
+            background: var(--error-light);
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            background: #E5E7EB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .sentence-option.correct .option-letter {
+            background: var(--success);
+            color: white;
+        }
+
+        .sentence-option.incorrect .option-letter {
+            background: var(--error);
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .option-icon {
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .sentence-option.correct .option-icon,
+        .sentence-option.incorrect .option-icon {
+            display: block;
+        }
+
+        /* Error highlight in text */
+        .error-in-text {
+            background: var(--error-light);
+            color: var(--error-dark);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            text-decoration: line-through;
+            font-weight: 700;
+        }
+
+        .correct-in-text {
+            background: var(--success-light);
+            color: var(--success-dark);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        /* Feedback Section */
+        .feedback-section {
+            margin-top: 1.5rem;
+            display: none;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .feedback-section.show {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feedback-section.correct .feedback-header {
+            background: var(--success);
+            color: white;
+        }
+
+        .feedback-section.incorrect .feedback-header {
+            background: var(--error);
+            color: white;
+        }
+
+        .feedback-icon {
+            font-size: 1.5rem;
+        }
+
+        .feedback-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .feedback-body {
+            padding: 1.25rem;
+            background: white;
+            border: 2px solid;
+            border-top: none;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+
+        .feedback-section.correct .feedback-body {
+            border-color: var(--success);
+        }
+
+        .feedback-section.incorrect .feedback-body {
+            border-color: var(--error);
+        }
+
+        /* Sentence Comparison Box */
+        .sentence-comparison {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-header {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .comparison-row:not(:last-child) {
+            border-bottom: 1px dashed #E5E7EB;
+        }
+
+        .comparison-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+
+        .comparison-label.wrong {
+            background: var(--error-light);
+            color: var(--error-dark);
+        }
+
+        .comparison-label.right {
+            background: var(--success-light);
+            color: var(--success-dark);
+        }
+
+        .comparison-sentence {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Error Analysis */
+        .error-analysis {
+            background: var(--error-light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--error-dark);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .error-type-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: var(--error);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-left: auto;
+        }
+
+        .error-visual {
+            background: white;
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .error-word-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .word-wrong {
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border: 2px solid var(--error);
+            border-radius: 8px;
+            color: var(--error);
+            font-weight: 700;
+            text-decoration: line-through;
+        }
+
+        .word-arrow {
+            font-size: 1.5rem;
+            color: var(--text-medium);
+        }
+
+        .word-correct {
+            padding: 0.4rem 0.8rem;
+            background: var(--success);
+            border: 2px solid var(--success-dark);
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .error-explanation-text {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Grammar Rule Box */
+        .grammar-rule-box {
+            background: var(--info-light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--info);
+        }
+
+        .grammar-rule-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--info);
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .grammar-formula {
+            background: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .grammar-formula .highlight {
+            color: var(--info);
+            font-weight: 700;
+        }
+
+        .grammar-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .grammar-example {
+            background: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .grammar-example .base {
+            color: var(--text-medium);
+        }
+
+        .grammar-example .arrow {
+            color: var(--info);
+            margin: 0 0.3rem;
+        }
+
+        .grammar-example .past {
+            color: var(--success-dark);
+            font-weight: 700;
+        }
+
+        /* Success Box */
+        .success-box {
+            background: var(--success-light);
+            border-radius: 12px;
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+
+        .success-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--success-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-text {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #E5E7EB;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .nav-btn.secondary {
+            background: #F3F4F6;
+            color: var(--text-medium);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .results-screen.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .results-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 1rem 0;
+        }
+
+        .results-message {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .star {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+
+        .star.earned {
+            opacity: 1;
+            animation: starPop 0.5s ease;
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .results-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .result-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .result-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+
+        .result-btn.secondary {
+            background: #F3F4F6;
+            color: var(--text-dark);
+        }
+
+        .result-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔍 Identification</div>
+            <div class="header-subtitle">🩷 A1 Beginner • Módulo 7 • Nivel 2</div>
+        </div>
+        <div class="progress-indicator">
+            <span id="currentQ">1</span>/10
+        </div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔍</div>
+            <div class="instructions-title">Identifica la oración correcta</div>
+            <div class="instructions-text">Lee las tres opciones y elige la que esté gramaticalmente correcta en Past Simple.</div>
+        </div>
+
+        <div id="questionsContainer"></div>
+
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <div class="results-buttons">
+                <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+                <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Quiz Data with detailed feedback - Based on Teamwork Story
+        const quizData = [
+            {
+                id: 1,
+                options: [
+                    { 
+                        text: "It was a busy day at the electronics store.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "It were a busy day at the electronics store.", 
+                        correct: false, 
+                        errorWord: "were", 
+                        correctWord: "was",
+                        errorType: "Verbo to be incorrecto",
+                        explanation: "'Were' se usa con 'you, we, they'. El sujeto es 'it', así que usamos 'was'."
+                    },
+                    { 
+                        text: "It is a busy day at the electronics store.", 
+                        correct: false, 
+                        errorWord: "is", 
+                        correctWord: "was",
+                        errorType: "Tiempo presente",
+                        explanation: "'Is' es presente. La historia cuenta eventos del pasado, necesitamos 'was'."
+                    }
+                ],
+                verbType: "irregular",
+                baseVerb: "be",
+                correctForm: "was",
+                rule: "it + was (Past Simple de 'to be')",
+                examples: ["it was → fue/era", "he was → él fue", "she was → ella fue"],
+                correctReason: "El sujeto es 'it' y hablamos del pasado. 'It' siempre usa 'was' en Past Simple."
+            },
+            {
+                id: 2,
+                options: [
+                    { 
+                        text: "Ana, Carlos, and Diego work together as a team.", 
+                        correct: false, 
+                        errorWord: "work", 
+                        correctWord: "worked",
+                        errorType: "Tiempo presente",
+                        explanation: "La historia está en pasado. 'Work' es presente, necesitamos 'worked'."
+                    },
+                    { 
+                        text: "Ana, Carlos, and Diego worked together as a team.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "Ana, Carlos, and Diego workt together as a team.", 
+                        correct: false, 
+                        errorWord: "workt", 
+                        correctWord: "worked",
+                        errorType: "Error ortográfico",
+                        explanation: "Los verbos regulares NUNCA terminan en '-t' en pasado. Siempre '-ed'."
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "work",
+                correctForm: "worked",
+                rule: "work + ed = worked",
+                examples: ["work → worked", "talk → talked", "walk → walked"],
+                correctReason: "'Work' es un verbo REGULAR. Para el pasado, agregamos '-ed': worked."
+            },
+            {
+                id: 3,
+                options: [
+                    { 
+                        text: "A science teacher appear at the door.", 
+                        correct: false, 
+                        errorWord: "appear", 
+                        correctWord: "appeared",
+                        errorType: "Sin transformación",
+                        explanation: "'Appear' es la forma base. La historia está en pasado, necesitamos 'appeared'."
+                    },
+                    { 
+                        text: "A science teacher appeared at the door.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "A science teacher appears at the door.", 
+                        correct: false, 
+                        errorWord: "appears", 
+                        correctWord: "appeared",
+                        errorType: "Tiempo presente",
+                        explanation: "'Appears' es presente (tercera persona). Necesitamos pasado: appeared."
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "appear",
+                correctForm: "appeared",
+                rule: "appear + ed = appeared",
+                examples: ["appear → appeared", "happen → happened", "open → opened"],
+                correctReason: "'Appear' es REGULAR. Agregamos '-ed' para el pasado: appeared."
+            },
+            {
+                id: 4,
+                options: [
+                    { 
+                        text: "Diego smiled and walked toward the back shelf.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "Diego smile and walk toward the back shelf.", 
+                        correct: false, 
+                        errorWord: "smile, walk", 
+                        correctWord: "smiled, walked",
+                        errorType: "Verbos en presente",
+                        explanation: "Ambos verbos están en forma base (presente). La historia está en pasado."
+                    },
+                    { 
+                        text: "Diego smileed and walkt toward the back shelf.", 
+                        correct: false, 
+                        errorWord: "smileed, walkt", 
+                        correctWord: "smiled, walked",
+                        errorType: "Errores ortográficos",
+                        explanation: "'Smile' termina en 'e', solo agrega '-d'. 'Walk' no termina en '-t', usa '-ed'."
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "smile, walk",
+                correctForm: "smiled, walked",
+                rule: "smile + d = smiled / walk + ed = walked",
+                examples: ["smile → smiled", "walk → walked", "live → lived"],
+                correctReason: "'Smile' termina en 'e', solo agrega '-d'. 'Walk' es regular, agrega '-ed'."
+            },
+            {
+                id: 5,
+                options: [
+                    { 
+                        text: "The teacher looks at the products along the display.", 
+                        correct: false, 
+                        errorWord: "looks", 
+                        correctWord: "looked",
+                        errorType: "Tiempo presente",
+                        explanation: "'Looks' es presente (tercera persona). La historia está en pasado: looked."
+                    },
+                    { 
+                        text: "The teacher looked at the products along the display.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "The teacher look at the products along the display.", 
+                        correct: false, 
+                        errorWord: "look", 
+                        correctWord: "looked",
+                        errorType: "Sin transformación",
+                        explanation: "'Look' es la forma base. La historia está en pasado, necesitamos 'looked'."
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "look",
+                correctForm: "looked",
+                rule: "look + ed = looked",
+                examples: ["look → looked", "cook → cooked", "book → booked"],
+                correctReason: "'Look' es REGULAR. Agregamos '-ed' para el pasado: looked."
+            },
+            {
+                id: 6,
+                options: [
+                    { 
+                        text: "Ana decide to check on him more often.", 
+                        correct: false, 
+                        errorWord: "decide", 
+                        correctWord: "decided",
+                        errorType: "Sin transformación",
+                        explanation: "'Decide' es presente. La historia está en pasado, necesitamos 'decided'."
+                    },
+                    { 
+                        text: "Ana decideed to check on him more often.", 
+                        correct: false, 
+                        errorWord: "decideed", 
+                        correctWord: "decided",
+                        errorType: "Doble 'e' innecesaria",
+                        explanation: "'Decide' termina en 'e', solo agregamos '-d', no '-ed'."
+                    },
+                    { 
+                        text: "Ana decided to check on him more often.", 
+                        correct: true 
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "decide",
+                correctForm: "decided",
+                rule: "decide + d = decided",
+                examples: ["decide → decided", "arrive → arrived", "move → moved"],
+                correctReason: "'Decide' termina en 'e', entonces solo agregamos '-d': decided."
+            },
+            {
+                id: 7,
+                options: [
+                    { 
+                        text: "Diego helped the teacher carry her purchases.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "Diego help the teacher carry her purchases.", 
+                        correct: false, 
+                        errorWord: "help", 
+                        correctWord: "helped",
+                        errorType: "Sin transformación",
+                        explanation: "'Help' es la forma base. La historia está en pasado, necesitamos 'helped'."
+                    },
+                    { 
+                        text: "Diego helpt the teacher carry her purchases.", 
+                        correct: false, 
+                        errorWord: "helpt", 
+                        correctWord: "helped",
+                        errorType: "Error ortográfico",
+                        explanation: "Los verbos regulares NUNCA terminan en '-t'. Siempre usan '-ed'."
+                    }
+                ],
+                verbType: "regular",
+                baseVerb: "help",
+                correctForm: "helped",
+                rule: "help + ed = helped",
+                examples: ["help → helped", "watch → watched", "wash → washed"],
+                correctReason: "'Help' es REGULAR. Agregamos '-ed' al final: helped."
+            },
+            {
+                id: 8,
+                options: [
+                    { 
+                        text: "Ana haved an idea to create a special sale.", 
+                        correct: false, 
+                        errorWord: "haved", 
+                        correctWord: "had",
+                        errorType: "Sobregeneralización",
+                        explanation: "'Have' es IRREGULAR. No existe 'haved'. El pasado correcto es 'had'."
+                    },
+                    { 
+                        text: "Ana had an idea to create a special sale.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "Ana has an idea to create a special sale.", 
+                        correct: false, 
+                        errorWord: "has", 
+                        correctWord: "had",
+                        errorType: "Tiempo presente",
+                        explanation: "'Has' es presente. La historia está en pasado, necesitamos 'had'."
+                    }
+                ],
+                verbType: "irregular",
+                baseVerb: "have",
+                correctForm: "had",
+                rule: "have/has → had (irregular)",
+                examples: ["have → had", "has → had", "I had → yo tuve"],
+                correctReason: "'Have' es IRREGULAR. El pasado es 'had' para todas las personas."
+            },
+            {
+                id: 9,
+                options: [
+                    { 
+                        text: "They already have two similar promotions before.", 
+                        correct: false, 
+                        errorWord: "have", 
+                        correctWord: "had",
+                        errorType: "Tiempo presente",
+                        explanation: "'Have' es presente. 'Before' indica pasado, necesitamos 'had'."
+                    },
+                    { 
+                        text: "They already had two similar promotions before.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "They already haved two similar promotions before.", 
+                        correct: false, 
+                        errorWord: "haved", 
+                        correctWord: "had",
+                        errorType: "Sobregeneralización",
+                        explanation: "'Have' es IRREGULAR. No existe 'haved'. El pasado es 'had'."
+                    }
+                ],
+                verbType: "irregular",
+                baseVerb: "have",
+                correctForm: "had",
+                rule: "have → had (irregular)",
+                examples: ["they had → ellos tuvieron", "we had → nosotros tuvimos"],
+                correctReason: "'Have' es IRREGULAR. El pasado es 'had' para todas las personas."
+            },
+            {
+                id: 10,
+                options: [
+                    { 
+                        text: "The day ended well, and everyone felt proud.", 
+                        correct: true 
+                    },
+                    { 
+                        text: "The day ends well, and everyone feels proud.", 
+                        correct: false, 
+                        errorWord: "ends, feels", 
+                        correctWord: "ended, felt",
+                        errorType: "Tiempo presente",
+                        explanation: "Ambos verbos están en presente. La historia está en pasado."
+                    },
+                    { 
+                        text: "The day endt well, and everyone felt proud.", 
+                        correct: false, 
+                        errorWord: "endt", 
+                        correctWord: "ended",
+                        errorType: "Error ortográfico",
+                        explanation: "'End' es regular. Los verbos regulares terminan en '-ed', no '-t'."
+                    }
+                ],
+                verbType: "regular/irregular",
+                baseVerb: "end, feel",
+                correctForm: "ended, felt",
+                rule: "end + ed = ended / feel → felt (irregular)",
+                examples: ["end → ended", "feel → felt", "start → started"],
+                correctReason: "'End' es regular (ended). 'Feel' es irregular (felt)."
+            }
+        ];
+
+        // State
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = new Array(quizData.length).fill(false);
+
+        // Initialize
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+                q.shuffledOptions = shuffled;
+                
+                const card = createQuestionCard(q, index);
+                container.appendChild(card);
+            });
+
+            showQuestion(0);
+            updateProgress();
+        }
+
+        function createQuestionCard(q, index) {
+            const card = document.createElement('div');
+            card.className = `question-card ${index !== 0 ? 'hidden' : ''}`;
+            card.id = `question-${index}`;
+
+            const letters = ['A', 'B', 'C'];
+
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${index + 1}</div>
+                    <div class="question-label">Elige la oración gramaticalmente correcta:</div>
+                </div>
+
+                <div class="question-body">
+                    <div class="sentence-options" id="options-${index}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <div class="sentence-option" data-index="${i}" onclick="selectOption(${index}, ${i})">
+                                <div class="option-letter">${letters[i]}</div>
+                                <div class="option-text">${opt.text}</div>
+                                <div class="option-icon">${opt.correct ? '✅' : '❌'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="feedback-section" id="feedback-${index}"></div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>
+                        ← Anterior
+                    </button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>
+                        ${index === quizData.length - 1 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            if (answered[questionIndex]) return;
+
+            const q = quizData[questionIndex];
+            const selectedOption = q.shuffledOptions[optionIndex];
+            const isCorrect = selectedOption.correct;
+            const correctOption = q.shuffledOptions.find(o => o.correct);
+
+            answered[questionIndex] = true;
+            if (isCorrect) score++;
+
+            // Update UI
+            const options = document.querySelectorAll(`#options-${questionIndex} .sentence-option`);
+            options.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                const optData = q.shuffledOptions[i];
+                if (optData.correct) {
+                    opt.classList.add('correct');
+                } else if (i === optionIndex) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Build feedback
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+            let feedbackHTML = '';
+
+            if (isCorrect) {
+                feedbackHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-icon">✅</span>
+                        <span class="feedback-title">¡Excelente! Respuesta correcta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <div class="success-box">
+                            <div class="success-header">
+                                <span>📚</span> ¿Por qué es correcta?
+                            </div>
+                            <div class="success-text">
+                                ${q.correctReason}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                feedbackHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-icon">❌</span>
+                        <span class="feedback-title">Respuesta incorrecta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <!-- Sentence Comparison -->
+                        <div class="sentence-comparison">
+                            <div class="comparison-header">
+                                <span>🔍</span> Comparación de oraciones
+                            </div>
+                            <div class="comparison-row">
+                                <span class="comparison-label wrong">Tu elección</span>
+                                <span class="comparison-sentence">${selectedOption.text.replace(selectedOption.errorWord, `<span class="error-in-text">${selectedOption.errorWord}</span>`)}</span>
+                            </div>
+                            <div class="comparison-row">
+                                <span class="comparison-label right">Correcta</span>
+                                <span class="comparison-sentence">${correctOption.text.replace(q.correctForm, `<span class="correct-in-text">${q.correctForm}</span>`)}</span>
+                            </div>
+                        </div>
+
+                        <!-- Error Analysis -->
+                        <div class="error-analysis">
+                            <div class="error-analysis-header">
+                                <span>🔍</span> Análisis del error
+                                <span class="error-type-badge">${selectedOption.errorType}</span>
+                            </div>
+                            <div class="error-visual">
+                                <div class="error-word-box">
+                                    <span class="word-wrong">${selectedOption.errorWord}</span>
+                                    <span class="word-arrow">→</span>
+                                    <span class="word-correct">${selectedOption.correctWord}</span>
+                                </div>
+                            </div>
+                            <div class="error-explanation-text">
+                                ${selectedOption.explanation}
+                            </div>
+                        </div>
+
+                        <!-- Grammar Rule -->
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header">
+                                <span>📖</span> Regla gramatical
+                            </div>
+                            <div class="grammar-formula">
+                                <span class="highlight">${q.rule}</span>
+                            </div>
+                            <div class="grammar-examples">
+                                ${q.examples.map(ex => {
+                                    const parts = ex.split(' → ');
+                                    return `<span class="grammar-example"><span class="base">${parts[0]}</span><span class="arrow">→</span><span class="past">${parts[1]}</span></span>`;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Success Box -->
+                        <div class="success-box">
+                            <div class="success-header">
+                                <span>✓</span> ¿Por qué "${q.correctForm}" es correcto?
+                            </div>
+                            <div class="success-text">
+                                ${q.correctReason}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+
+            // Enable next
+            document.getElementById(`nextBtn-${questionIndex}`).disabled = false;
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => {
+                card.classList.toggle('hidden', i !== index);
+            });
+            currentQuestion = index;
+            document.getElementById('currentQ').textContent = index + 1;
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                showQuestion(currentQuestion + 1);
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+
+            document.getElementById('finalScore').textContent = `${score}/${quizData.length}`;
+
+            const percentage = (score / quizData.length) * 100;
+            const stars = document.querySelectorAll('.star');
+            
+            setTimeout(() => { if (percentage >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (percentage >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (percentage >= 100) stars[2].classList.add('earned'); }, 900);
+
+            let message = '';
+            if (percentage === 100) message = '¡Perfecto! 🎉 ¡Identificas oraciones como un experto!';
+            else if (percentage >= 80) message = '¡Excelente! 🌟 ¡Muy buen ojo para la gramática!';
+            else if (percentage >= 60) message = '¡Buen trabajo! 👍 Sigue practicando.';
+            else message = '¡No te rindas! 💪 Repasa las explicaciones e intenta de nuevo.';
+            
+            document.getElementById('resultsMessage').textContent = message;
+
+            // Save progress
+            const progressData = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            progressData['a1i-M7-identify'] = percentage;
+            localStorage.setItem('jucumProgress', JSON.stringify(progressData));
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fill in the Blanks - A1 Beg M7 Tema 2 | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899; --primary-light: #F9A8D4; --primary-dark: #DB2777;
+            --accent: #F472B6; --bg-gradient-start: #FDF2F8; --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843; --text-medium: #9D174D; --success: #10B981;
+            --success-light: #D1FAE5; --success-dark: #059669; --error: #EF4444;
+            --error-light: #FEE2E2; --error-dark: #DC2626; --info: #3B82F6;
+            --info-light: #DBEAFE; --purple: #8B5CF6; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh; color: var(--text-dark);
+        }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft);
+        }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1.5rem; text-decoration: none; color: white;
+        }
+        .header-info { flex: 1; }
+        .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem;
+            font-weight: 600; color: white;
+        }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem;
+            border-radius: 50px; font-weight: 700; color: white;
+        }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5);
+            border-radius: 4px; overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; width: 0%; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .question-card { background: var(--white); border-radius: 20px;
+            box-shadow: var(--shadow-soft); padding: 1.5rem; margin-bottom: 1rem;
+        }
+        .question-card.hidden { display: none; }
+        .question-number { display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: var(--primary); color: white;
+            border-radius: 50%; font-family: 'Fredoka', sans-serif; font-weight: 700;
+            font-size: 0.9rem; margin-bottom: 1rem;
+        }
+        .question-text { font-size: 1.15rem; line-height: 1.6; margin-bottom: 0.75rem; }
+        .question-text .blank { display: inline-block; min-width: 120px; padding: 0.25rem 0.5rem;
+            background: var(--primary-light); border: 2px dashed var(--primary-dark);
+            border-radius: 8px; text-align: center; font-weight: 700;
+            color: var(--primary-dark); transition: all 0.3s;
+        }
+        .question-text .blank.filled { background: var(--primary); border-style: solid; color: white; }
+        .question-text .blank.correct { background: var(--success-light); border-color: var(--success);
+            color: var(--success-dark);
+        }
+        .question-text .blank.incorrect { background: var(--error-light); border-color: var(--error);
+            color: var(--error-dark);
+        }
+        .hint-box { background: #FFF9C4; border-left: 4px solid var(--primary);
+            padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1rem; font-size: 0.9rem;
+        }
+        .hint-label { font-weight: 700; color: var(--primary); display: flex;
+            align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;
+        }
+        .translation { color: var(--text-medium); font-style: italic; font-size: 0.9rem; margin-top: 0.5rem; }
+        .verb-type-badge { display: inline-flex; align-items: center; gap: 0.3rem;
+            padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem;
+            font-weight: 700; margin-left: 0.5rem; background: #D1FAE5; color: #059669;
+        }
+        .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem; }
+        .option-btn { padding: 1rem; border: 3px solid #E5E7EB; border-radius: 12px;
+            background: var(--white); font-family: 'Nunito', sans-serif; font-size: 1rem;
+            font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--text-dark);
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+        .option-btn.correct { border-color: var(--success); background: var(--success-light);
+            color: var(--success-dark);
+        }
+        .option-btn.incorrect { border-color: var(--error); background: var(--error-light);
+            color: var(--error-dark);
+        }
+        .feedback { margin-top: 1.5rem; padding: 0; border-radius: 20px; display: none; overflow: hidden; }
+        .feedback.show { display: block; }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback.correct .feedback-header { background: var(--success); color: white; }
+        .feedback.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-icon { font-size: 1.5rem; }
+        .feedback-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none;
+            border-radius: 0 0 20px 20px;
+        }
+        .feedback.correct .feedback-body { border-color: var(--success); }
+        .feedback.incorrect .feedback-body { border-color: var(--error); }
+        .error-analysis { background: var(--error-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .error-analysis-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: var(--error-dark); margin-bottom: 0.75rem; font-size: 0.9rem;
+        }
+        .error-type-badge { display: inline-block; padding: 0.2rem 0.5rem; background: var(--error);
+            color: white; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: auto;
+        }
+        .error-comparison { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 0.75rem 0; }
+        .error-word { padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700; font-size: 1.1rem; }
+        .error-word.wrong { background: white; color: var(--error); text-decoration: line-through;
+            border: 2px solid var(--error);
+        }
+        .error-word.right { background: var(--success); color: white; border: 2px solid var(--success-dark); }
+        .error-arrow { font-size: 1.5rem; color: var(--text-medium); }
+        .error-explanation { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .grammar-rule-box { background: var(--info-light); border-radius: 12px; padding: 1rem;
+            margin-bottom: 1rem; border-left: 4px solid var(--info);
+        }
+        .grammar-rule-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: var(--info); margin-bottom: 0.75rem; font-size: 0.9rem;
+        }
+        .grammar-formula { background: white; padding: 0.75rem 1rem; border-radius: 8px; text-align: center;
+            font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--text-dark); margin-bottom: 0.75rem;
+        }
+        .grammar-formula .highlight { color: var(--info); font-weight: 700; }
+        .grammar-examples { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+        .grammar-example { background: white; padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.8rem; }
+        .correct-answer-box { background: var(--success-light); border-radius: 12px; padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+        .correct-answer-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: var(--success-dark); margin-bottom: 0.5rem; font-size: 0.9rem;
+        }
+        .correct-answer-text { font-size: 1.1rem; font-weight: 700; color: var(--success-dark); margin-bottom: 0.5rem; }
+        .success-explanation { background: var(--success-light); border-radius: 12px; padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+        .success-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: var(--success-dark); margin-bottom: 0.5rem;
+        }
+        .success-text { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+        }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .nav-btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--primary-dark); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; transition: all 0.5s ease; }
+        .star.earned { opacity: 1; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0.5rem 0;
+        }
+        .result-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+        @media (max-width: 500px) {
+            .options-grid { grid-template-columns: 1fr; }
+            .error-comparison { flex-direction: column; gap: 0.5rem; }
+            .error-arrow { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">✏️ Fill in the Blanks - Regular Verbs</div>
+            <div class="header-subtitle">🩷 A1 Beginner • M7 • Tema 2</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <main class="main-content">
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+            <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {
+                id: 1, sentence: "Ana, Carlos, and Diego _____ (work) together as a team.",
+                translation: "Ana, Carlos y Diego trabajaban juntos como un equipo.",
+                hint: "Verbo REGULAR terminado en consonante. Agrega -ed.",
+                baseVerb: "work", options: ["worked", "workt", "working"],
+                correct: "worked",
+                feedback: {
+                    workt: { errorType: "Error ortográfico", explanation: "Los verbos regulares NUNCA terminan en '-t' en pasado. Siempre '-ed'." },
+                    working: { errorType: "Forma -ing", explanation: "'Working' es gerundio. Para pasado simple agregamos '-ed': worked." }
+                },
+                correctReason: "'Work' es REGULAR. Agregamos '-ed' al final: worked.",
+                examples: ["work → worked", "talk → talked", "walk → walked"]
+            },
+            {
+                id: 2, sentence: "A science teacher _____ (appear) at the door in the morning.",
+                translation: "Una profesora de ciencia apareció en la puerta en la mañana.",
+                hint: "Verbo REGULAR. Termina en consonante + vocal + consonante.",
+                baseVerb: "appear", options: ["appeared", "appear", "appearred"],
+                correct: "appeared",
+                feedback: {
+                    appear: { errorType: "Sin transformación", explanation: "'Appear' está en forma base. Necesitas pasado: appeared." },
+                    appearred: { errorType: "Consonante duplicada", explanation: "No se duplica la 'r' porque hay dos vocales ('ea') antes. Correcto: appeared." }
+                },
+                correctReason: "'Appear' es REGULAR. Agregamos '-ed': appeared.",
+                examples: ["appear → appeared", "happen → happened", "listen → listened"]
+            },
+            {
+                id: 3, sentence: "Diego _____ (smile) and walked toward the back shelf.",
+                translation: "Diego sonrió y caminó hacia el estante trasero.",
+                hint: "Verbo REGULAR que termina en 'e'. Solo agrega una letra.",
+                baseVerb: "smile", options: ["smiled", "smileed", "smild"],
+                correct: "smiled",
+                feedback: {
+                    smileed: { errorType: "Doble 'e' innecesaria", explanation: "Cuando un verbo termina en 'e', solo agregamos '-d': smiled." },
+                    smild: { errorType: "Sin 'e'", explanation: "Necesitamos '-ed' o '-d'. Como termina en 'e', agregamos solo '-d': smiled." }
+                },
+                correctReason: "'Smile' termina en 'e', entonces solo agregamos '-d': smiled.",
+                examples: ["smile → smiled", "live → lived", "arrive → arrived"]
+            },
+            {
+                id: 4, sentence: "The teacher _____ (look) at the products along the display.",
+                translation: "La profesora miró los productos a lo largo del exhibidor.",
+                hint: "Verbo REGULAR de dos consonantes al final.",
+                baseVerb: "look", options: ["looked", "lookt", "looking"],
+                correct: "looked",
+                feedback: {
+                    lookt: { errorType: "Terminación incorrecta", explanation: "Los verbos regulares terminan en '-ed', no en '-t'." },
+                    looking: { errorType: "Forma -ing", explanation: "'Looking' es gerundio. Para pasado simple: looked." }
+                },
+                correctReason: "'Look' es REGULAR. Agregamos '-ed': looked.",
+                examples: ["look → looked", "cook → cooked", "book → booked"]
+            },
+            {
+                id: 5, sentence: "Ana _____ (decide) to check on him more often during the day.",
+                translation: "Ana decidió revisarlo más seguido durante el día.",
+                hint: "Verbo REGULAR terminado en 'e'.",
+                baseVerb: "decide", options: ["decided", "decideed", "decide"],
+                correct: "decided",
+                feedback: {
+                    decideed: { errorType: "Doble 'e'", explanation: "'Decide' ya termina en 'e', solo agregamos '-d': decided." },
+                    decide: { errorType: "Sin transformación", explanation: "'Decide' es presente. Necesitas pasado: decided." }
+                },
+                correctReason: "'Decide' termina en 'e', solo agregamos '-d': decided.",
+                examples: ["decide → decided", "use → used", "like → liked"]
+            },
+            {
+                id: 6, sentence: "Diego _____ (help) the teacher carry her purchases toward her car.",
+                translation: "Diego ayudó a la profesora a cargar sus compras hacia su auto.",
+                hint: "Verbo REGULAR corto.",
+                baseVerb: "help", options: ["helped", "helpt", "helping"],
+                correct: "helped",
+                feedback: {
+                    helpt: { errorType: "Error ortográfico", explanation: "Los verbos regulares terminan en '-ed', no '-t'." },
+                    helping: { errorType: "Forma -ing", explanation: "'Helping' es gerundio. Pasado simple: helped." }
+                },
+                correctReason: "'Help' es REGULAR. Agregamos '-ed': helped.",
+                examples: ["help → helped", "watch → watched", "wash → washed"]
+            },
+            {
+                id: 7, sentence: "They _____ (carry) the science kits to the car.",
+                translation: "Ellos cargaron los kits de ciencia al auto.",
+                hint: "Verbo REGULAR terminado en consonante + y. Cambia la 'y'.",
+                baseVerb: "carry", options: ["carried", "carryed", "carryd"],
+                correct: "carried",
+                feedback: {
+                    carryed: { errorType: "Regla no aplicada", explanation: "Consonante + y: cambia 'y' a 'i' y agrega '-ed': carried." },
+                    carryd: { errorType: "Sin 'e'", explanation: "Después de cambiar 'y' a 'i', agregamos '-ed': carried." }
+                },
+                correctReason: "'Carry' termina en consonante + y. Cambiamos 'y' por 'i' y agregamos '-ed'.",
+                examples: ["carry → carried", "study → studied", "try → tried"]
+            },
+            {
+                id: 8, sentence: "Carlos _____ (organize) more boxes in the storage room.",
+                translation: "Carlos organizó más cajas en el almacén.",
+                hint: "Verbo REGULAR terminado en 'e'.",
+                baseVerb: "organize", options: ["organized", "organizeed", "organise"],
+                correct: "organized",
+                feedback: {
+                    organizeed: { errorType: "Doble 'e'", explanation: "'Organize' termina en 'e', solo agregamos '-d': organized." },
+                    organise: { errorType: "Ortografía británica", explanation: "En inglés americano es 'organize', y para pasado: organized." }
+                },
+                correctReason: "'Organize' termina en 'e', solo agregamos '-d': organized.",
+                examples: ["organize → organized", "move → moved", "create → created"]
+            },
+            {
+                id: 9, sentence: "The team _____ (finish) all the work before closing time.",
+                translation: "El equipo terminó todo el trabajo antes del horario de cierre.",
+                hint: "Verbo REGULAR terminado en 'sh'.",
+                baseVerb: "finish", options: ["finished", "finisht", "finishing"],
+                correct: "finished",
+                feedback: {
+                    finisht: { errorType: "Terminación incorrecta", explanation: "Los verbos regulares terminan en '-ed', no '-t'." },
+                    finishing: { errorType: "Forma -ing", explanation: "'Finishing' es gerundio. Pasado: finished." }
+                },
+                correctReason: "'Finish' es REGULAR. Agregamos '-ed': finished.",
+                examples: ["finish → finished", "wash → washed", "push → pushed"]
+            },
+            {
+                id: 10, sentence: "Everyone _____ (enjoy) working together as a team.",
+                translation: "Todos disfrutaron trabajar juntos como un equipo.",
+                hint: "Verbo REGULAR terminado en vocal + y. NO cambies la 'y'.",
+                baseVerb: "enjoy", options: ["enjoyed", "enjoied", "enjoyd"],
+                correct: "enjoyed",
+                feedback: {
+                    enjoied: { errorType: "Cambio innecesario", explanation: "Hay VOCAL antes de 'y' (o-y). Solo agregamos '-ed': enjoyed." },
+                    enjoyd: { errorType: "Sin 'e'", explanation: "Necesitamos '-ed' completo: enjoyed." }
+                },
+                correctReason: "'Enjoy' termina en vocal + y. Solo agregamos '-ed' (no cambiamos la y).",
+                examples: ["enjoy → enjoyed", "play → played", "stay → stayed"]
+            }
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(10).fill(false), answers = new Array(10).fill(null);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, idx) => container.appendChild(createQuestionCard(q, idx)));
+            showQuestion(0);
+            updateProgress();
+        }
+
+        function createQuestionCard(q, index) {
+            const card = document.createElement('div');
+            card.className = `question-card ${index !== 0 ? 'hidden' : ''}`;
+            card.id = `question-${index}`;
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+            card.innerHTML = `
+                <div class="question-number">${index + 1}</div>
+                <div class="hint-box">
+                    <div class="hint-label">💡 Pista:</div>
+                    ${q.hint}
+                </div>
+                <p class="question-text">
+                    ${q.sentence.replace('_____', `<span class="blank" id="blank-${index}">?</span>`)}
+                    <span class="verb-type-badge">✓ Regular</span>
+                </p>
+                <p class="translation">${q.translation}</p>
+                <div class="options-grid" id="options-${index}">
+                    ${shuffledOptions.map(opt => `
+                        <button class="option-btn" data-option="${opt}" onclick="selectOption(${index}, '${opt}')">
+                            ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQuestion()" ${index === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="nextBtn-${index}" onclick="nextQuestion()" disabled>
+                        ${index === 9 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(questionIndex, option) {
+            if (answered[questionIndex]) return;
+            const q = quizData[questionIndex];
+            const isCorrect = option === q.correct;
+            answered[questionIndex] = true;
+            answers[questionIndex] = option;
+
+            const buttons = document.querySelectorAll(`#options-${questionIndex} .option-btn`);
+            const blank = document.getElementById(`blank-${questionIndex}`);
+            const feedback = document.getElementById(`feedback-${questionIndex}`);
+
+            blank.textContent = option;
+            blank.classList.add('filled', isCorrect ? 'correct' : 'incorrect');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.dataset.option === option) btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (btn.dataset.option === q.correct && !isCorrect) btn.classList.add('correct');
+            });
+
+            let feedbackHTML = '';
+            if (isCorrect) {
+                score++;
+                feedbackHTML = `
+                    <div class="feedback-header"><span class="feedback-icon">✅</span>
+                        <span class="feedback-title">¡Excelente! Respuesta correcta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <div class="success-explanation">
+                            <div class="success-header"><span>📚</span> ¿Por qué "${q.correct}" es correcto?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const errorFeedback = q.feedback[option];
+                feedbackHTML = `
+                    <div class="feedback-header"><span class="feedback-icon">❌</span>
+                        <span class="feedback-title">Respuesta incorrecta</span>
+                    </div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis del error
+                                <span class="error-type-badge">${errorFeedback.errorType}</span>
+                            </div>
+                            <div class="error-comparison">
+                                <span class="error-word wrong">${option}</span>
+                                <span class="error-arrow">→</span>
+                                <span class="error-word right">${q.correct}</span>
+                            </div>
+                            <div class="error-explanation">${errorFeedback.explanation}</div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla gramatical</div>
+                            <div class="grammar-formula">
+                                <span class="highlight">${q.baseVerb}</span> + <span class="highlight">ed</span> = <span class="highlight">${q.correct}</span>
+                            </div>
+                            <div class="grammar-examples">
+                                ${q.examples.map(ex => `<span class="grammar-example">${ex}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="correct-answer-box">
+                            <div class="correct-answer-header"><span>✓</span> La respuesta correcta es:</div>
+                            <div class="correct-answer-text">"${q.correct}"</div>
+                            <div>${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            document.getElementById(`nextBtn-${questionIndex}`).disabled = false;
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach((card, i) => card.classList.toggle('hidden', i !== index));
+            currentQuestion = index;
+            document.getElementById('currentQ').textContent = index + 1;
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 9) showQuestion(currentQuestion + 1);
+            else showResults();
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) showQuestion(currentQuestion - 1);
+        }
+
+        function updateProgress() {
+            document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / 10) * 100}%`;
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            const resultsScreen = document.getElementById('resultsScreen');
+            resultsScreen.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/10`;
+            const percentage = (score / 10) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (percentage >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (percentage >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (percentage >= 100) stars[2].classList.add('earned'); }, 900);
+            let message = percentage === 100 ? '¡Perfecto! 🎉 ¡Dominas los verbos regulares!' :
+                          percentage >= 80 ? '¡Excelente! 🌟 ¡Casi perfecto!' :
+                          percentage >= 60 ? '¡Buen trabajo! 👍 Sigue practicando.' :
+                          '¡No te rindas! 💪 Repasa las reglas e intenta de nuevo.';
+            document.getElementById('resultsMessage').textContent = message;
+            const progressData = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            progressData['a1i-M7-tema2-fill'] = percentage;
+            localStorage.setItem('jucumProgress', JSON.stringify(progressData));
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

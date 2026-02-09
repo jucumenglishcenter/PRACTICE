@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transform - A1 Beg M7 Tema 3 | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899; --primary-light: #F9A8D4; --primary-dark: #DB2777;
+            --accent: #F472B6; --bg-gradient-start: #FDF2F8; --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843; --text-medium: #9D174D; --success: #10B981;
+            --success-light: #D1FAE5; --error: #EF4444; --error-light: #FEE2E2;
+            --info: #3B82F6; --info-light: #DBEAFE; --purple: #8B5CF6; --purple-light: #EDE9FE;
+            --orange: #F97316; --orange-light: #FFEDD5; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh; color: var(--text-dark);
+        }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft);
+        }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1.5rem; text-decoration: none; color: white;
+        }
+        .header-info { flex: 1; }
+        .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; color: white; }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem;
+            border-radius: 50px; font-weight: 700; color: white;
+        }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .instructions { background: var(--purple-light); border: 2px solid var(--purple);
+            padding: 1rem; border-radius: 20px; margin-bottom: 1.5rem; text-align: center;
+        }
+        .instructions-icon { font-size: 2rem; }
+        .instructions-title { font-family: 'Fredoka', sans-serif; font-weight: 600; color: var(--purple); }
+        .question-card { background: var(--white); border-radius: 20px; box-shadow: var(--shadow-soft);
+            overflow: hidden; margin-bottom: 1rem;
+        }
+        .question-card.hidden { display: none; }
+        .question-header { background: linear-gradient(135deg, var(--purple-light), #E0D4FC);
+            padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+        }
+        .question-number { width: 36px; height: 36px; background: var(--purple); color: var(--white);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: 'Fredoka', sans-serif; font-weight: 700;
+        }
+        .question-body { padding: 1.5rem; }
+        .transform-visual { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .transform-box { padding: 1rem 1.25rem; border-radius: 12px; position: relative; }
+        .transform-box.base { background: var(--orange-light); border: 2px solid var(--orange); }
+        .transform-box.goal { background: var(--purple-light); border: 2px solid var(--purple); }
+        .transform-label { position: absolute; top: -10px; left: 12px; background: var(--white);
+            padding: 0 8px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        }
+        .transform-box.base .transform-label { color: var(--orange); }
+        .transform-box.goal .transform-label { color: var(--purple); }
+        .transform-sentence { font-size: 1.05rem; font-weight: 600; line-height: 1.5; }
+        .verb-present { background: var(--orange); color: white; padding: 0.1rem 0.4rem; border-radius: 4px; }
+        .transform-arrow { text-align: center; font-size: 1.5rem; color: var(--text-medium); }
+        .options-container { display: flex; flex-direction: column; gap: 0.75rem; }
+        .option-btn { display: flex; align-items: center; gap: 0.75rem; padding: 1rem;
+            border: 3px solid #E5E7EB; border-radius: 12px; background: var(--white);
+            cursor: pointer; transition: all 0.2s; text-align: left; font-family: 'Nunito', sans-serif;
+        }
+        .option-btn:hover:not(.disabled) { border-color: var(--purple); background: var(--purple-light); }
+        .option-btn.disabled { cursor: not-allowed; }
+        .option-btn.correct { border-color: var(--success); background: var(--success-light); }
+        .option-btn.incorrect { border-color: var(--error); background: var(--error-light); }
+        .option-letter { width: 28px; height: 28px; background: #E5E7EB; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 700;
+            font-size: 0.85rem; flex-shrink: 0;
+        }
+        .option-btn.correct .option-letter { background: var(--success); color: white; }
+        .option-btn.incorrect .option-letter { background: var(--error); color: white; }
+        .option-text { flex: 1; font-size: 1rem; }
+        .option-icon { font-size: 1.2rem; display: none; }
+        .option-btn.correct .option-icon, .option-btn.incorrect .option-icon { display: block; }
+        .feedback-section { margin-top: 1.5rem; display: none; border-radius: 20px; overflow: hidden; }
+        .feedback-section.show { display: block; }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback-section.correct .feedback-header { background: var(--success); color: white; }
+        .feedback-section.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none; }
+        .feedback-section.correct .feedback-body { border-color: var(--success); }
+        .feedback-section.incorrect .feedback-body { border-color: var(--error); }
+        .transformation-visual { background: #F9FAFB; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .transformation-header { font-weight: 700; font-size: 0.85rem; color: var(--text-medium);
+            margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .transformation-flow { display: flex; flex-direction: column; gap: 0.5rem; }
+        .transformation-step { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: 8px; }
+        .transformation-step.present { background: var(--orange-light); }
+        .transformation-step.past { background: var(--success-light); }
+        .step-label { font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem;
+            border-radius: 6px; flex-shrink: 0;
+        }
+        .step-label.present { background: var(--orange); color: white; }
+        .step-label.past { background: var(--success); color: white; }
+        .step-sentence { font-size: 0.95rem; }
+        .step-sentence .highlight-verb { font-weight: 700; text-decoration: underline; }
+        .step-arrow { text-align: center; font-size: 1.2rem; color: var(--purple); padding: 0.25rem 0; }
+        .error-analysis { background: var(--error-light); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .error-analysis-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: #DC2626; margin-bottom: 0.75rem; font-size: 0.9rem;
+        }
+        .error-type-badge { display: inline-block; padding: 0.2rem 0.5rem; background: var(--error);
+            color: white; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: auto;
+        }
+        .error-explanation { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .grammar-rule-box { background: var(--info-light); border-radius: 12px; padding: 1rem;
+            margin-bottom: 1rem; border-left: 4px solid var(--info);
+        }
+        .grammar-rule-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: var(--info); margin-bottom: 0.75rem; font-size: 0.9rem;
+        }
+        .grammar-table { background: white; border-radius: 8px; overflow: hidden; margin-bottom: 0.75rem; }
+        .grammar-table table { width: 100%; border-collapse: collapse; }
+        .grammar-table th { background: var(--info); color: white; padding: 0.5rem; font-size: 0.85rem; }
+        .grammar-table td { padding: 0.5rem; text-align: center; border-bottom: 1px solid #E5E7EB; font-size: 0.9rem; }
+        .success-box { background: var(--success-light); border-radius: 12px; padding: 1rem;
+            border-left: 4px solid var(--success);
+        }
+        .success-header { display: flex; align-items: center; gap: 0.5rem; font-weight: 700;
+            color: #059669; margin-bottom: 0.5rem;
+        }
+        .success-text { font-size: 0.9rem; color: var(--text-dark); line-height: 1.5; }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px;
+            font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--purple); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; transition: all 0.5s ease; }
+        .star.earned { opacity: 1; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px;
+            font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; text-decoration: none; display: flex; align-items: center;
+            justify-content: center; gap: 0.5rem; margin: 0.5rem 0;
+        }
+        .result-btn.primary { background: linear-gradient(135deg, var(--purple) 0%, #7C3AED 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔄 Transform - Was/Were</div>
+            <div class="header-subtitle">🩷 A1 Beginner • M7 • Tema 3</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔄</div>
+            <div class="instructions-title">Transforma al Past Simple</div>
+            <div class="instructions-text">Cambia "am/is/are" a "was/were".</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+            <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {
+                id: 1, base: "It is a busy day at the store.", presentVerb: "is",
+                goal: "Past Simple", options: [
+                    {text: "It was a busy day at the store.", correct: true, pastVerb: "was"},
+                    {text: "It were a busy day at the store.", correct: false, pastVerb: "were",
+                        errorType: "Concordancia incorrecta", explanation: "'It' es SINGULAR. Con singulares usamos 'was', no 'were'."}
+                ],
+                correctReason: "'It' es SINGULAR. 'Is' (singular) → 'was' (singular).",
+                rule: "is → was"
+            },
+            {
+                id: 2, base: "Ana, Carlos, and Diego are ready to help.", presentVerb: "are",
+                goal: "Past Simple", options: [
+                    {text: "Ana, Carlos, and Diego was ready to help.", correct: false, pastVerb: "was",
+                        errorType: "Concordancia incorrecta", explanation: "El sujeto es PLURAL (tres personas). Con plurales usamos 'were', no 'was'."},
+                    {text: "Ana, Carlos, and Diego were ready to help.", correct: true, pastVerb: "were"}
+                ],
+                correctReason: "El sujeto es PLURAL. 'Are' (plural) → 'were' (plural).",
+                rule: "are → were"
+            },
+            {
+                id: 3, base: "The science teacher is very polite and kind.", presentVerb: "is",
+                goal: "Past Simple", options: [
+                    {text: "The science teacher was very polite and kind.", correct: true, pastVerb: "was"},
+                    {text: "The science teacher were very polite and kind.", correct: false, pastVerb: "were",
+                        errorType: "Concordancia incorrecta", explanation: "'The science teacher' es SINGULAR (she). Usamos 'was' con singulares."}
+                ],
+                correctReason: "'The science teacher' es SINGULAR. 'Is' → 'was'.",
+                rule: "is → was"
+            },
+            {
+                id: 4, base: "There are many science kits in her cart.", presentVerb: "are",
+                goal: "Past Simple", options: [
+                    {text: "There was many science kits in her cart.", correct: false, pastVerb: "was",
+                        errorType: "Concordancia incorrecta", explanation: "Con 'There', miramos el sustantivo: 'science kits' es PLURAL. Usamos 'were'."},
+                    {text: "There were many science kits in her cart.", correct: true, pastVerb: "were"}
+                ],
+                correctReason: "'Science kits' es PLURAL. 'Are' → 'were'.",
+                rule: "are → were"
+            },
+            {
+                id: 5, base: "Diego is helpful and friendly.", presentVerb: "is",
+                goal: "Past Simple", options: [
+                    {text: "Diego was helpful and friendly.", correct: true, pastVerb: "was"},
+                    {text: "Diego were helpful and friendly.", correct: false, pastVerb: "were",
+                        errorType: "Concordancia incorrecta", explanation: "'Diego' es SINGULAR (he). Usamos 'was', no 'were'."}
+                ],
+                correctReason: "'Diego' es SINGULAR. 'Is' → 'was'.",
+                rule: "is → was"
+            },
+            {
+                id: 6, base: "The products are organized on the shelves.", presentVerb: "are",
+                goal: "Past Simple", options: [
+                    {text: "The products was organized on the shelves.", correct: false, pastVerb: "was",
+                        errorType: "Concordancia incorrecta", explanation: "'The products' es PLURAL. Con plurales usamos 'were', no 'was'."},
+                    {text: "The products were organized on the shelves.", correct: true, pastVerb: "were"}
+                ],
+                correctReason: "'The products' es PLURAL. 'Are' → 'were'.",
+                rule: "are → were"
+            },
+            {
+                id: 7, base: "Carlos is busy in the storage room.", presentVerb: "is",
+                goal: "Past Simple", options: [
+                    {text: "Carlos was busy in the storage room.", correct: true, pastVerb: "was"},
+                    {text: "Carlos were busy in the storage room.", correct: false, pastVerb: "were",
+                        errorType: "Concordancia incorrecta", explanation: "'Carlos' es SINGULAR (he). Usamos 'was' con singulares."}
+                ],
+                correctReason: "'Carlos' es SINGULAR. 'Is' → 'was'.",
+                rule: "is → was"
+            },
+            {
+                id: 8, base: "The team members are proud of their work.", presentVerb: "are",
+                goal: "Past Simple", options: [
+                    {text: "The team members was proud of their work.", correct: false, pastVerb: "was",
+                        errorType: "Concordancia incorrecta", explanation: "'The team members' es PLURAL. Con plurales usamos 'were', no 'was'."},
+                    {text: "The team members were proud of their work.", correct: true, pastVerb: "were"}
+                ],
+                correctReason: "'The team members' es PLURAL. 'Are' → 'were'.",
+                rule: "are → were"
+            },
+            {
+                id: 9, base: "Ana is very attentive to Diego's needs.", presentVerb: "is",
+                goal: "Past Simple", options: [
+                    {text: "Ana was very attentive to Diego's needs.", correct: true, pastVerb: "was"},
+                    {text: "Ana were very attentive to Diego's needs.", correct: false, pastVerb: "were",
+                        errorType: "Concordancia incorrecta", explanation: "'Ana' es SINGULAR (she). Con singulares usamos 'was'."}
+                ],
+                correctReason: "'Ana' es SINGULAR. 'Is' → 'was'.",
+                rule: "is → was"
+            },
+            {
+                id: 10, base: "They are all satisfied with the teamwork.", presentVerb: "are",
+                goal: "Past Simple", options: [
+                    {text: "They was all satisfied with the teamwork.", correct: false, pastVerb: "was",
+                        errorType: "Concordancia incorrecta", explanation: "'They' es PLURAL. Con plurales usamos 'were', no 'was'."},
+                    {text: "They were all satisfied with the teamwork.", correct: true, pastVerb: "were"}
+                ],
+                correctReason: "'They' es PLURAL. 'Are' → 'were'.",
+                rule: "are → were"
+            }
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(10).fill(false);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, idx) => {
+                q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                container.appendChild(createCard(q, idx));
+            });
+            showQuestion(0);
+        }
+
+        function createCard(q, idx) {
+            const card = document.createElement('div');
+            card.className = `question-card ${idx !== 0 ? 'hidden' : ''}`;
+            card.id = `q-${idx}`;
+            const letters = ['A', 'B'];
+            const baseHighlight = q.base.replace(q.presentVerb, `<span class="verb-present">${q.presentVerb}</span>`);
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${idx + 1}</div>
+                    <div>Transforma esta oración:</div>
+                </div>
+                <div class="question-body">
+                    <div class="transform-visual">
+                        <div class="transform-box base">
+                            <span class="transform-label">🔶 Presente</span>
+                            <div class="transform-sentence">${baseHighlight}</div>
+                        </div>
+                        <div class="transform-arrow">⬇️ Transforma a...</div>
+                        <div class="transform-box goal">
+                            <span class="transform-label">🎯 Objetivo</span>
+                            <div class="transform-sentence">${q.goal}</div>
+                        </div>
+                    </div>
+                    <div class="options-container" id="opts-${idx}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <button class="option-btn" onclick="selectOption(${idx}, ${i})">
+                                <span class="option-letter">${letters[i]}</span>
+                                <span class="option-text">${opt.text}</span>
+                                <span class="option-icon">${opt.correct ? '✅' : '❌'}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="fb-${idx}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQ()" ${idx === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="next-${idx}" onclick="nextQ()" disabled>
+                        ${idx === 9 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(qIdx, optIdx) {
+            if (answered[qIdx]) return;
+            const q = quizData[qIdx];
+            const selected = q.shuffledOptions[optIdx];
+            const isCorrect = selected.correct;
+            const correctOpt = q.shuffledOptions.find(o => o.correct);
+            answered[qIdx] = true;
+            if (isCorrect) score++;
+
+            const buttons = document.querySelectorAll(`#opts-${qIdx} .option-btn`);
+            buttons.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                if (q.shuffledOptions[i].correct) btn.classList.add('correct');
+                else if (i === optIdx) btn.classList.add('incorrect');
+            });
+
+            const fb = document.getElementById(`fb-${qIdx}`);
+            let fbHTML = '';
+            if (isCorrect) {
+                fbHTML = `
+                    <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente! Transformación correcta</span></div>
+                    <div class="feedback-body">
+                        <div class="transformation-visual">
+                            <div class="transformation-header"><span>🔄</span> Transformación realizada</div>
+                            <div class="transformation-flow">
+                                <div class="transformation-step present">
+                                    <span class="step-label present">Presente</span>
+                                    <span class="step-sentence">${q.base.replace(q.presentVerb, `<span class="highlight-verb">${q.presentVerb}</span>`)}</span>
+                                </div>
+                                <div class="step-arrow">⬇️</div>
+                                <div class="transformation-step past">
+                                    <span class="step-label past">Pasado</span>
+                                    <span class="step-sentence">${correctOpt.text.replace(correctOpt.pastVerb, `<span class="highlight-verb">${correctOpt.pastVerb}</span>`)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>📚</span> ¿Por qué es correcta?</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                fbHTML = `
+                    <div class="feedback-header"><span>❌</span><span class="feedback-title">Transformación incorrecta</span></div>
+                    <div class="feedback-body">
+                        <div class="error-analysis">
+                            <div class="error-analysis-header"><span>🔍</span> Análisis del error
+                                <span class="error-type-badge">${selected.errorType}</span>
+                            </div>
+                            <div class="error-explanation">${selected.explanation}</div>
+                        </div>
+                        <div class="transformation-visual">
+                            <div class="transformation-header"><span>🔄</span> Transformación correcta</div>
+                            <div class="transformation-flow">
+                                <div class="transformation-step present">
+                                    <span class="step-label present">Presente</span>
+                                    <span class="step-sentence">${q.base.replace(q.presentVerb, `<span class="highlight-verb">${q.presentVerb}</span>`)}</span>
+                                </div>
+                                <div class="step-arrow">⬇️</div>
+                                <div class="transformation-step past">
+                                    <span class="step-label past">Pasado</span>
+                                    <span class="step-sentence">${correctOpt.text.replace(correctOpt.pastVerb, `<span class="highlight-verb">${correctOpt.pastVerb}</span>`)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grammar-rule-box">
+                            <div class="grammar-rule-header"><span>📖</span> Regla gramatical</div>
+                            <div class="grammar-table">
+                                <table>
+                                    <tr>
+                                        <th>Presente</th>
+                                        <th>Pasado</th>
+                                    </tr>
+                                    <tr>
+                                        <td>am / is</td>
+                                        <td>was</td>
+                                    </tr>
+                                    <tr>
+                                        <td>are</td>
+                                        <td>were</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="success-box">
+                            <div class="success-header"><span>✓</span> Correcto:</div>
+                            <div class="success-text">${q.correctReason}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            fb.innerHTML = fbHTML;
+            fb.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+            document.getElementById(`next-${qIdx}`).disabled = false;
+        }
+
+        function showQuestion(idx) {
+            document.querySelectorAll('.question-card').forEach((c, i) => c.classList.toggle('hidden', i !== idx));
+            currentQuestion = idx;
+            document.getElementById('currentQ').textContent = idx + 1;
+            document.getElementById('progressFill').style.width = `${((idx + 1) / 10) * 100}%`;
+        }
+
+        function nextQ() {
+            if (currentQuestion < 9) showQuestion(currentQuestion + 1);
+            else showResults();
+        }
+
+        function prevQ() {
+            if (currentQuestion > 0) showQuestion(currentQuestion - 1);
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            const rs = document.getElementById('resultsScreen');
+            rs.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/10`;
+            const pct = (score / 10) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (pct >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (pct >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (pct >= 100) stars[2].classList.add('earned'); }, 900);
+            let msg = pct === 100 ? '¡Perfecto! 🎉 ¡Transformas was/were como un experto!' :
+                      pct >= 80 ? '¡Excelente! 🌟 ¡Dominas las transformaciones!' :
+                      pct >= 60 ? '¡Buen trabajo! 👍 Sigue practicando.' :
+                      '¡No te rindas! 💪 Repasa las reglas.';
+            document.getElementById('resultsMessage').textContent = msg;
+            const prog = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            prog['a1i-M7-tema3-transform'] = pct;
+            localStorage.setItem('jucumProgress', JSON.stringify(prog));
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

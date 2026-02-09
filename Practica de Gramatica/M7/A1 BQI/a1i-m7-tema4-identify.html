@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identify - A1 Beg M7 Tema 4 | JUCUM English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #EC4899; --primary-light: #F9A8D4; --primary-dark: #DB2777;
+            --accent: #F472B6; --bg-gradient-start: #FDF2F8; --bg-gradient-end: #FCE7F3;
+            --text-dark: #831843; --text-medium: #9D174D; --success: #10B981;
+            --success-light: #D1FAE5; --error: #EF4444; --error-light: #FEE2E2;
+            --info: #3B82F6; --info-light: #DBEAFE; --white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(236, 72, 153, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh; color: var(--text-dark);
+        }
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+            position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-soft);
+        }
+        .back-btn { width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1.5rem; text-decoration: none; color: white;
+        }
+        .header-info { flex: 1; }
+        .header-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; color: white; }
+        .header-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+        .progress-indicator { background: rgba(255,255,255,0.3); padding: 0.5rem 1rem;
+            border-radius: 50px; font-weight: 700; color: white;
+        }
+        .progress-container { padding: 0 1.5rem; margin-top: -8px; }
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.5); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+        .main-content { padding: 1.5rem; max-width: 650px; margin: 0 auto; }
+        .instructions { background: var(--white); padding: 1rem 1.25rem; border-radius: 20px;
+            margin-bottom: 1.5rem; text-align: center; border: 2px solid var(--info);
+        }
+        .instructions-icon { font-size: 2rem; }
+        .instructions-title { font-family: 'Fredoka', sans-serif; font-weight: 600; color: var(--info); }
+        .question-card { background: var(--white); border-radius: 20px; box-shadow: var(--shadow-soft);
+            overflow: hidden; margin-bottom: 1rem;
+        }
+        .question-card.hidden { display: none; }
+        .question-header { background: var(--primary-light); padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        }
+        .question-number { width: 36px; height: 36px; background: var(--primary); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-family: 'Fredoka', sans-serif; font-weight: 700;
+        }
+        .question-body { padding: 1.5rem; }
+        .sentence-options { display: flex; flex-direction: column; gap: 0.75rem; }
+        .sentence-option { padding: 1rem 1.25rem; border: 3px solid #E5E7EB; border-radius: 12px;
+            cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start;
+            gap: 0.75rem; background: var(--white);
+        }
+        .sentence-option:hover:not(.disabled) { border-color: var(--primary); background: var(--primary-light); }
+        .sentence-option.disabled { cursor: not-allowed; }
+        .sentence-option.correct { border-color: var(--success); background: var(--success-light); }
+        .sentence-option.incorrect { border-color: var(--error); background: var(--error-light); }
+        .option-letter { width: 28px; height: 28px; background: #E5E7EB; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;
+        }
+        .sentence-option.correct .option-letter { background: var(--success); color: white; }
+        .sentence-option.incorrect .option-letter { background: var(--error); color: white; }
+        .option-text { flex: 1; font-size: 1rem; line-height: 1.6; }
+        .option-icon { font-size: 1.2rem; display: none; }
+        .sentence-option.correct .option-icon, .sentence-option.incorrect .option-icon { display: block; }
+        .feedback-section { margin-top: 1.5rem; display: none; border-radius: 20px; overflow: hidden; }
+        .feedback-section.show { display: block; }
+        .feedback-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feedback-section.correct .feedback-header { background: var(--success); color: white; }
+        .feedback-section.incorrect .feedback-header { background: var(--error); color: white; }
+        .feedback-title { font-family: 'Fredoka', sans-serif; font-size: 1.1rem; font-weight: 600; }
+        .feedback-body { padding: 1.25rem; background: white; border: 2px solid; border-top: none; }
+        .feedback-section.correct .feedback-body { border-color: var(--success); }
+        .feedback-section.incorrect .feedback-body { border-color: var(--error); }
+        .error-box, .success-box { border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+        .error-box { background: var(--error-light); border-left: 4px solid var(--error); }
+        .success-box { background: var(--success-light); border-left: 4px solid var(--success); }
+        .nav-buttons { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #E5E7EB; }
+        .nav-btn { flex: 1; padding: 1rem; border: none; border-radius: 12px;
+            font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .nav-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .nav-btn.secondary { background: #F3F4F6; color: var(--text-medium); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .results-screen { display: none; text-align: center; padding: 2rem 1.5rem; }
+        .results-screen.show { display: block; }
+        .results-emoji { font-size: 4rem; }
+        .results-title { font-family: 'Fredoka', sans-serif; font-size: 2rem; }
+        .results-score { font-size: 3rem; font-weight: 800; color: var(--primary-dark); margin: 1rem 0; }
+        .stars-container { display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; }
+        .star { font-size: 2.5rem; opacity: 0.3; }
+        .star.earned { opacity: 1; }
+        .result-btn { padding: 1rem 2rem; border: none; border-radius: 12px;
+            font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700;
+            cursor: pointer; text-decoration: none; display: flex; align-items: center;
+            justify-content: center; gap: 0.5rem; margin: 0.5rem 0;
+        }
+        .result-btn.primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .result-btn.secondary { background: #F3F4F6; color: var(--text-dark); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="back-btn">←</a>
+        <div class="header-info">
+            <div class="header-title">🔍 Identify - Punctuation</div>
+            <div class="header-subtitle">🩷 A1 Beginner • M7 • Tema 4</div>
+        </div>
+        <div class="progress-indicator"><span id="currentQ">1</span>/10</div>
+    </header>
+    <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <main class="main-content">
+        <div class="instructions">
+            <div class="instructions-icon">🔍</div>
+            <div class="instructions-title">Identifica la oración con puntuación correcta</div>
+            <div class="instructions-text">Elige la que tiene comas y punto bien ubicados.</div>
+        </div>
+        <div id="questionsContainer"></div>
+        <div class="results-screen" id="resultsScreen">
+            <div class="results-emoji">🎉</div>
+            <div class="results-title">¡Completado!</div>
+            <div class="results-score" id="finalScore">0/10</div>
+            <div class="stars-container">
+                <span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>
+            </div>
+            <div class="results-message" id="resultsMessage"></div>
+            <button class="result-btn primary" onclick="location.reload()">🔄 Intentar de Nuevo</button>
+            <a href="index.html" class="result-btn secondary">← Volver al Menú</a>
+        </div>
+    </main>
+    <script>
+        const quizData = [
+            {id: 1, options: [
+                {text: "They needed cables, adapters, and batteries.", correct: true},
+                {text: "They needed cables adapters and batteries.", correct: false, errorType: "Faltan comas", explanation: "En listas, debes separar elementos con comas (,)."},
+                {text: "They needed cables, adapters, and batteries", correct: false, errorType: "Falta punto final", explanation: "Toda oración completa termina con punto (.)."}
+            ], correctReason: "Lista correcta: elemento, elemento, y elemento. + punto final."},
+            {id: 2, options: [
+                {text: "The store sells phones tablets and laptops.", correct: false, errorType: "Faltan comas", explanation: "Necesitas comas (,) para separar los elementos de la lista."},
+                {text: "The store sells phones, tablets, and laptops.", correct: true},
+                {text: "The store sells phones, tablets, and laptops", correct: false, errorType: "Falta punto final", explanation: "La oración está completa, necesita punto (.) al final."}
+            ], correctReason: "Comas separan elementos, punto cierra la oración."},
+            {id: 3, options: [
+                {text: "Ana helped customers, Carlos organized boxes, and Diego smiled.", correct: true},
+                {text: "Ana helped customers. Carlos organized boxes. And Diego smiled.", correct: false, errorType: "Puntuación fragmentada", explanation: "Son acciones relacionadas en UNA oración. Usa comas, no múltiples puntos."},
+                {text: "Ana helped customers Carlos organized boxes and Diego smiled.", correct: false, errorType: "Faltan comas", explanation: "Lista de acciones necesita comas (,) entre ellas."}
+            ], correctReason: "Varias acciones en una oración → comas, luego punto final."},
+            {id: 4, options: [
+                {text: "It was a busy day at the store", correct: false, errorType: "Falta punto final", explanation: "Oración completa → debe terminar con punto (.)."},
+                {text: "It was a busy day at the store.", correct: true},
+                {text: "It was a busy day, at the store.", correct: false, errorType: "Coma incorrecta", explanation: "No necesitas coma antes de 'at the store'. Oración simple → solo punto (.)."}
+            ], correctReason: "Oración afirmativa simple → termina con punto (.)."},
+            {id: 5, options: [
+                {text: "Diego carried science kits, microscopes, and test tubes.", correct: true},
+                {text: "Diego carried science kits microscopes and test tubes", correct: false, errorType: "Sin puntuación", explanation: "Faltan comas (,) entre elementos y punto (.) al final."},
+                {text: "Diego carried science kits. Microscopes. And test tubes.", correct: false, errorType: "Fragmentación incorrecta", explanation: "Son elementos de UNA lista, no oraciones separadas."}
+            ], correctReason: "Lista de objetos → comas (,) entre ellos, punto (.) al final."},
+            {id: 6, options: [
+                {text: "The team worked together", correct: false, errorType: "Falta punto final", explanation: "Oración completa → punto (.) obligatorio al final."},
+                {text: "The team, worked together.", correct: false, errorType: "Coma incorrecta", explanation: "No se separa sujeto y verbo con coma. Oración simple → solo punto (.)."},
+                {text: "The team worked together.", correct: true}
+            ], correctReason: "Oración simple completa → punto (.) al final."},
+            {id: 7, options: [
+                {text: "She bought cables, chargers, batteries, and headphones.", correct: true},
+                {text: "She bought cables chargers batteries and headphones.", correct: false, errorType: "Faltan comas", explanation: "Lista de 4 elementos → comas (,) entre cada uno."},
+                {text: "She bought cables; chargers; batteries; and headphones.", correct: false, errorType: "Punto y coma incorrecto", explanation: "En nivel A1 usamos comas (,) para listas simples, no punto y coma (;)."}
+            ], correctReason: "Lista de 4 elementos → comas (,) entre ellos, punto (.) al final."},
+            {id: 8, options: [
+                {text: "Everyone enjoyed working together", correct: false, errorType: "Falta punto final", explanation: "Oración completa → punto (.) al final."},
+                {text: "Everyone enjoyed working together.", correct: true},
+                {text: "Everyone, enjoyed working together.", correct: false, errorType: "Coma incorrecta", explanation: "No separas sujeto-verbo con coma."}
+            ], correctReason: "Afirmación simple → punto (.) al final."},
+            {id: 9, options: [
+                {text: "The teacher needed beakers, flasks, and safety goggles.", correct: true},
+                {text: "The teacher needed beakers. Flasks. And safety goggles.", correct: false, errorType: "Fragmentos incorrectos", explanation: "Son elementos de UNA lista, no oraciones separadas."},
+                {text: "The teacher needed beakers flasks and safety goggles", correct: false, errorType: "Sin puntuación", explanation: "Faltan comas (,) y punto (.) final."}
+            ], correctReason: "Lista de objetos → comas (,), punto (.) al final."},
+            {id: 10, options: [
+                {text: "They were all proud of their teamwork", correct: false, errorType: "Falta punto final", explanation: "Oración completa → punto (.) obligatorio."},
+                {text: "They were all proud of their teamwork.", correct: true},
+                {text: "They were all, proud of their teamwork.", correct: false, errorType: "Coma incorrecta", explanation: "No separas 'all' de 'proud' con coma."}
+            ], correctReason: "Oración declarativa → punto (.) al final."}
+        ];
+
+        let currentQuestion = 0, score = 0, answered = new Array(10).fill(false);
+
+        function initQuiz() {
+            const container = document.getElementById('questionsContainer');
+            quizData.forEach((q, idx) => {
+                q.shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                container.appendChild(createCard(q, idx));
+            });
+            showQuestion(0);
+        }
+
+        function createCard(q, idx) {
+            const card = document.createElement('div');
+            card.className = `question-card ${idx !== 0 ? 'hidden' : ''}`;
+            card.id = `q-${idx}`;
+            const letters = ['A', 'B', 'C'];
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">${idx + 1}</div>
+                    <div>Elige la oración con puntuación correcta:</div>
+                </div>
+                <div class="question-body">
+                    <div class="sentence-options" id="opts-${idx}">
+                        ${q.shuffledOptions.map((opt, i) => `
+                            <div class="sentence-option" onclick="selectOption(${idx}, ${i})">
+                                <div class="option-letter">${letters[i]}</div>
+                                <div class="option-text">${opt.text}</div>
+                                <div class="option-icon">${opt.correct ? '✅' : '❌'}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-section" id="fb-${idx}"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" onclick="prevQ()" ${idx === 0 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="nav-btn primary" id="next-${idx}" onclick="nextQ()" disabled>
+                        ${idx === 9 ? 'Ver Resultados →' : 'Siguiente →'}
+                    </button>
+                </div>
+            `;
+            return card;
+        }
+
+        function selectOption(qIdx, optIdx) {
+            if (answered[qIdx]) return;
+            const q = quizData[qIdx];
+            const selected = q.shuffledOptions[optIdx];
+            const isCorrect = selected.correct;
+            answered[qIdx] = true;
+            if (isCorrect) score++;
+
+            const opts = document.querySelectorAll(`#opts-${qIdx} .sentence-option`);
+            opts.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                if (q.shuffledOptions[i].correct) opt.classList.add('correct');
+                else if (i === optIdx) opt.classList.add('incorrect');
+            });
+
+            const fb = document.getElementById(`fb-${qIdx}`);
+            fb.className = `feedback-section show ${isCorrect ? 'correct' : 'incorrect'}`;
+            fb.innerHTML = isCorrect ? `
+                <div class="feedback-header"><span>✅</span><span class="feedback-title">¡Excelente!</span></div>
+                <div class="feedback-body">
+                    <div class="success-box"><strong>✓ Correcto:</strong> ${q.correctReason}</div>
+                </div>
+            ` : `
+                <div class="feedback-header"><span>❌</span><span class="feedback-title">Incorrecto</span></div>
+                <div class="feedback-body">
+                    <div class="error-box"><strong>Error: ${selected.errorType}</strong><br>${selected.explanation}</div>
+                    <div class="success-box"><strong>✓ Correcto:</strong> ${q.correctReason}</div>
+                </div>
+            `;
+            document.getElementById(`next-${qIdx}`).disabled = false;
+        }
+
+        function showQuestion(idx) {
+            document.querySelectorAll('.question-card').forEach((c, i) => c.classList.toggle('hidden', i !== idx));
+            currentQuestion = idx;
+            document.getElementById('currentQ').textContent = idx + 1;
+            document.getElementById('progressFill').style.width = `${((idx + 1) / 10) * 100}%`;
+        }
+
+        function nextQ() {
+            if (currentQuestion < 9) showQuestion(currentQuestion + 1);
+            else showResults();
+        }
+
+        function prevQ() {
+            if (currentQuestion > 0) showQuestion(currentQuestion - 1);
+        }
+
+        function showResults() {
+            document.getElementById('questionsContainer').style.display = 'none';
+            document.querySelector('.instructions').style.display = 'none';
+            const rs = document.getElementById('resultsScreen');
+            rs.classList.add('show');
+            document.getElementById('finalScore').textContent = `${score}/10`;
+            const pct = (score / 10) * 100;
+            const stars = document.querySelectorAll('.star');
+            setTimeout(() => { if (pct >= 60) stars[0].classList.add('earned'); }, 300);
+            setTimeout(() => { if (pct >= 80) stars[1].classList.add('earned'); }, 600);
+            setTimeout(() => { if (pct >= 100) stars[2].classList.add('earned'); }, 900);
+            let msg = pct === 100 ? '¡Perfecto! 🎉 ¡Dominas la puntuación!' :
+                      pct >= 80 ? '¡Excelente! 🌟' :
+                      pct >= 60 ? '¡Buen trabajo! 👍' :
+                      '¡Repasa! 💪';
+            document.getElementById('resultsMessage').textContent = msg;
+            const prog = JSON.parse(localStorage.getItem('jucumProgress') || '{}');
+            prog['a1i-M7-tema4-identify'] = pct;
+            localStorage.setItem('jucumProgress', JSON.stringify(prog));
+        }
+
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>
